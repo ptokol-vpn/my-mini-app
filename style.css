@@ -756,4 +756,37 @@ button {
 
         right: -10px;
 
-       
+        font-size: 75px;
+    }
+
+    .quick-actions {
+        gap: 7px;
+    }
+
+    .quick-actions button {
+        border-radius: 19px;
+    }
+
+    .action-icon {
+        width: 46px;
+        height: 46px;
+
+        font-size: 23px;
+    }
+
+    .quick-actions b {
+        font-size: 12px;
+    }
+
+    .quick-actions small {
+        font-size: 10px;
+    }
+
+    .section-title h2 {
+        font-size: 32px;
+    }
+
+    .game-info b {
+        font-size: 17px;
+    }
+}
