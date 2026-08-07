@@ -9,8 +9,11 @@
                    maximum-scale=1.0,
                    user-scalable=no">
 
-    <title>Game</title>
+    <meta name="theme-color" content="#111111">
 
+    <title>WXS Game</title>
+
+    <!-- Telegram Mini App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <link rel="stylesheet" href="style.css">
@@ -20,14 +23,20 @@
 
 <div class="app">
 
-    <!-- ПРОФИЛЬ + БАЛАНС -->
+    <!-- =========================
+         ПРОФИЛЬ
+    ========================== -->
 
     <header class="top">
 
-        <div class="profile">
+        <div class="profile-card">
 
-            <div class="avatar" id="avatar">
-                👤
+            <div class="avatar-frame">
+
+                <div class="avatar" id="avatar">
+                    👤
+                </div>
+
             </div>
 
             <div class="profile-info">
@@ -48,22 +57,39 @@
 
         </div>
 
+
+        <!-- Баланс -->
+
         <div class="balance">
 
-            <span id="balance">
-                0.00 $
-            </span>
+            <div class="balance-info">
 
-            <button onclick="deposit()">+</button>
+                <small>Баланс</small>
+
+                <span id="balance">
+                    0.00 $
+                </span>
+
+            </div>
+
+            <button
+                class="balance-add"
+                onclick="deposit()">
+                +
+            </button>
 
         </div>
 
     </header>
 
 
-    <!-- БОЛЬШОЙ БАННЕР -->
+    <!-- =========================
+         БАННЕР
+    ========================== -->
 
     <section class="hero">
+
+        <div class="hero-glow"></div>
 
         <div class="hero-content">
 
@@ -81,116 +107,226 @@
                 больше наград
             </p>
 
-            <button class="bonus-button"
-                    onclick="openBonus()">
-                🎁 Ежедневный бонус
+            <button
+                class="bonus-button"
+                onclick="openBonus()">
+
+                <span>🎁</span>
+                Ежедневный бонус
+
             </button>
 
         </div>
 
         <div class="money-orb">
-            $
+
+            <div class="money-ring"></div>
+
+            <span>$</span>
+
         </div>
 
     </section>
 
 
-    <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
+    <!-- =========================
+         БЫСТРЫЕ ДЕЙСТВИЯ
+    ========================== -->
 
     <section class="quick-actions">
 
-        <button onclick="deposit()">
-            <div class="action-icon">💰</div>
+
+        <button
+            class="action"
+            onclick="deposit()">
+
+            <div class="action-icon">
+                💰
+            </div>
+
             <b>Пополнить</b>
-            <small>Баланс</small>
+
+            <small>
+                Баланс
+            </small>
+
         </button>
 
-        <button onclick="withdraw()">
-            <div class="action-icon">💸</div>
+
+        <button
+            class="action"
+            onclick="withdraw()">
+
+            <div class="action-icon">
+                💸
+            </div>
+
             <b>Вывести</b>
-            <small>Средства</small>
+
+            <small>
+                Средства
+            </small>
+
         </button>
 
-        <button onclick="openVip()">
-            <div class="action-icon">👑</div>
+
+        <button
+            class="action"
+            onclick="openVip()">
+
+            <div class="action-icon">
+                👑
+            </div>
+
             <b>VIP</b>
-            <small>Статус</small>
+
+            <small>
+                Статус
+            </small>
+
         </button>
 
-        <button onclick="openTasks()">
-            <div class="action-icon">📋</div>
+
+        <button
+            class="action"
+            onclick="openTasks()">
+
+            <div class="action-icon">
+                📋
+            </div>
+
             <b>Задания</b>
-            <small>Награды</small>
+
+            <small>
+                Награды
+            </small>
+
         </button>
 
     </section>
 
 
-    <!-- ИГРЫ -->
+    <!-- =========================
+         ИГРЫ
+    ========================== -->
 
     <section class="games-section">
 
         <div class="section-title">
-            <h2>Игры</h2>
+
+            <h2>
+                Игры
+            </h2>
+
         </div>
+
 
         <div class="games">
 
-            <button class="game"
-                    onclick="openGame('cube')">
+
+            <!-- КУБ -->
+
+            <button
+                class="game"
+                onclick="openGame('cube')">
 
                 <div class="game-image cube">
-                    🎲
+
+                    <div class="game-glow"></div>
+
+                    <span class="game-emoji">
+                        🎲
+                    </span>
+
                 </div>
 
-                <div class="game-info">
-                    <b>Куб</b>
-                    <small>Испытай удачу</small>
+                <div class="game-name">
+                    Куб
+                </div>
+
+                <div class="game-description">
+                    Испытай удачу
                 </div>
 
             </button>
 
 
-            <button class="game"
-                    onclick="openGame('mines')">
+            <!-- МИНЫ -->
+
+            <button
+                class="game"
+                onclick="openGame('mines')">
 
                 <div class="game-image mines">
-                    💣
+
+                    <div class="game-glow"></div>
+
+                    <span class="game-emoji">
+                        💣
+                    </span>
+
                 </div>
 
-                <div class="game-info">
-                    <b>Мины</b>
-                    <small>Найди безопасную клетку</small>
+                <div class="game-name">
+                    Мины
+                </div>
+
+                <div class="game-description">
+                    Найди безопасные клетки
                 </div>
 
             </button>
 
 
-            <button class="game"
-                    onclick="openGame('wheel')">
+            <!-- КОЛЕСО -->
+
+            <button
+                class="game"
+                onclick="openGame('wheel')">
 
                 <div class="game-image wheel">
-                    🎡
+
+                    <div class="game-glow"></div>
+
+                    <span class="game-emoji">
+                        🎡
+                    </span>
+
                 </div>
 
-                <div class="game-info">
-                    <b>Колесо</b>
-                    <small>Крути и выигрывай</small>
+                <div class="game-name">
+                    Колесо
+                </div>
+
+                <div class="game-description">
+                    Крути и выигрывай
                 </div>
 
             </button>
 
 
-            <button class="game"
-                    onclick="openGame('crash')">
+            <!-- КРАШ -->
+
+            <button
+                class="game"
+                onclick="openGame('crash')">
 
                 <div class="game-image crash">
-                    🚀
+
+                    <div class="game-glow"></div>
+
+                    <span class="game-emoji">
+                        🚀
+                    </span>
+
                 </div>
 
-                <div class="game-info">
-                    <b>Краш</b>
-                    <small>Забери вовремя</small>
+                <div class="game-name">
+                    Краш
+                </div>
+
+                <div class="game-description">
+                    Забери вовремя
                 </div>
 
             </button>
@@ -200,51 +336,84 @@
     </section>
 
 
-    <!-- НИЖНЯЯ ПАНЕЛЬ -->
+    <!-- =========================
+         НИЖНЕЕ МЕНЮ
+    ========================== -->
 
     <nav class="bottom-nav">
 
-        <button class="nav-item active"
-                onclick="goHome()">
 
-            <span>🏠</span>
-            <small>Главная</small>
+        <button
+            class="nav-item active"
+            onclick="goHome()">
 
-        </button>
+            <span class="nav-icon">
+                🏠
+            </span>
 
-
-        <button class="nav-item"
-                onclick="openGames()">
-
-            <span>🎮</span>
-            <small>Игры</small>
+            <small>
+                Главная
+            </small>
 
         </button>
 
 
-        <button class="nav-item"
-                onclick="openBalance()">
+        <button
+            class="nav-item"
+            onclick="openAllGames()">
 
-            <span>💰</span>
-            <small>Баланс</small>
+            <span class="nav-icon">
+                🎮
+            </span>
 
-        </button>
-
-
-        <button class="nav-item"
-                onclick="openBonus()">
-
-            <span>🎁</span>
-            <small>Бонусы</small>
+            <small>
+                Игры
+            </small>
 
         </button>
 
 
-        <button class="nav-item"
-                onclick="openProfile()">
+        <button
+            class="nav-item"
+            onclick="openBalance()">
 
-            <span>👤</span>
-            <small>Профиль</small>
+            <span class="nav-icon">
+                💰
+            </span>
+
+            <small>
+                Баланс
+            </small>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="openBonus()">
+
+            <span class="nav-icon">
+                🎁
+            </span>
+
+            <small>
+                Бонусы
+            </small>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="openProfile()">
+
+            <span class="nav-icon">
+                👤
+            </span>
+
+            <small>
+                Профиль
+            </small>
 
         </button>
 
@@ -253,6 +422,56 @@
 </div>
 
 
+<!-- =========================
+     TELEGRAM
+========================== -->
+
+<script>
+
+const tg = window.Telegram?.WebApp;
+
+if (tg) {
+
+    tg.ready();
+
+    tg.expand();
+
+    const user =
+        tg.initDataUnsafe?.user;
+
+    if (user) {
+
+        const username =
+            document.getElementById("username");
+
+        const avatar =
+            document.getElementById("avatar");
+
+
+        username.textContent =
+            user.first_name ||
+            user.username ||
+            "Игрок";
+
+
+        if (user.photo_url) {
+
+            avatar.innerHTML = `
+                <img
+                    src="${user.photo_url}"
+                    alt="avatar">
+            `;
+
+        }
+
+    }
+
+}
+
+</script>
+
+
+<!-- Твой JS -->
 <script src="script.js"></script>
 
 </body>
