@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <meta name="theme-color" content="#0d0d0f">
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
 
     <title>Game</title>
 
-    <!-- Telegram Mini App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- Стили -->
     <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
 <div class="app">
 
-
-    <!-- ========================= -->
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
-    <!-- ========================= -->
+    <!-- ПРОФИЛЬ + БАЛАНС -->
 
     <header class="top">
 
@@ -54,32 +48,22 @@
 
         </div>
 
-
-        <!-- Баланс -->
-
         <div class="balance">
 
             <span id="balance">
                 0.00 $
             </span>
 
-            <button onclick="deposit()">
-                +
-            </button>
+            <button onclick="deposit()">+</button>
 
         </div>
 
     </header>
 
 
-
-    <!-- ========================= -->
-    <!-- ГЛАВНЫЙ БАННЕР -->
-    <!-- ========================= -->
+    <!-- БОЛЬШОЙ БАННЕР -->
 
     <section class="hero">
-
-        <div class="hero-bg-glow"></div>
 
         <div class="hero-content">
 
@@ -99,14 +83,10 @@
 
             <button class="bonus-button"
                     onclick="openBonus()">
-
-                🎁
-                <span>Ежедневный бонус</span>
-
+                🎁 Ежедневный бонус
             </button>
 
         </div>
-
 
         <div class="money-orb">
             $
@@ -115,120 +95,165 @@
     </section>
 
 
-
-    <!-- ========================= -->
     <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
-    <!-- ========================= -->
 
     <section class="quick-actions">
 
-
         <button onclick="deposit()">
-
-            <div class="action-icon">
-                💰
-            </div>
-
-            <b>
-                Пополнить
-            </b>
-
-            <small>
-                Баланс
-            </small>
-
+            <div class="action-icon">💰</div>
+            <b>Пополнить</b>
+            <small>Баланс</small>
         </button>
-
-
 
         <button onclick="withdraw()">
-
-            <div class="action-icon">
-                💸
-            </div>
-
-            <b>
-                Вывести
-            </b>
-
-            <small>
-                Средства
-            </small>
-
+            <div class="action-icon">💸</div>
+            <b>Вывести</b>
+            <small>Средства</small>
         </button>
-
-
 
         <button onclick="openVip()">
-
-            <div class="action-icon">
-                👑
-            </div>
-
-            <b>
-                VIP
-            </b>
-
-            <small>
-                Статус
-            </small>
-
+            <div class="action-icon">👑</div>
+            <b>VIP</b>
+            <small>Статус</small>
         </button>
-
-
 
         <button onclick="openTasks()">
-
-            <div class="action-icon">
-                📋
-            </div>
-
-            <b>
-                Задания
-            </b>
-
-            <small>
-                Награды
-            </small>
-
+            <div class="action-icon">📋</div>
+            <b>Задания</b>
+            <small>Награды</small>
         </button>
-
 
     </section>
 
 
-
-    <!-- ========================= -->
     <!-- ИГРЫ -->
-    <!-- ========================= -->
 
     <section class="games-section">
 
-
         <div class="section-title">
-
-            <h2>
-                Игры
-            </h2>
-
+            <h2>Игры</h2>
         </div>
-
-
 
         <div class="games">
 
-
-            <!-- КУБ -->
-
-            <button class="game game-cube"
+            <button class="game"
                     onclick="openGame('cube')">
 
-                <div class="game-glow"></div>
-
-                <div class="game-icon">
+                <div class="game-image cube">
                     🎲
                 </div>
 
                 <div class="game-info">
+                    <b>Куб</b>
+                    <small>Испытай удачу</small>
+                </div>
 
-                   
+            </button>
+
+
+            <button class="game"
+                    onclick="openGame('mines')">
+
+                <div class="game-image mines">
+                    💣
+                </div>
+
+                <div class="game-info">
+                    <b>Мины</b>
+                    <small>Найди безопасную клетку</small>
+                </div>
+
+            </button>
+
+
+            <button class="game"
+                    onclick="openGame('wheel')">
+
+                <div class="game-image wheel">
+                    🎡
+                </div>
+
+                <div class="game-info">
+                    <b>Колесо</b>
+                    <small>Крути и выигрывай</small>
+                </div>
+
+            </button>
+
+
+            <button class="game"
+                    onclick="openGame('crash')">
+
+                <div class="game-image crash">
+                    🚀
+                </div>
+
+                <div class="game-info">
+                    <b>Краш</b>
+                    <small>Забери вовремя</small>
+                </div>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- НИЖНЯЯ ПАНЕЛЬ -->
+
+    <nav class="bottom-nav">
+
+        <button class="nav-item active"
+                onclick="goHome()">
+
+            <span>🏠</span>
+            <small>Главная</small>
+
+        </button>
+
+
+        <button class="nav-item"
+                onclick="openGames()">
+
+            <span>🎮</span>
+            <small>Игры</small>
+
+        </button>
+
+
+        <button class="nav-item"
+                onclick="openBalance()">
+
+            <span>💰</span>
+            <small>Баланс</small>
+
+        </button>
+
+
+        <button class="nav-item"
+                onclick="openBonus()">
+
+            <span>🎁</span>
+            <small>Бонусы</small>
+
+        </button>
+
+
+        <button class="nav-item"
+                onclick="openProfile()">
+
+            <span>👤</span>
+            <small>Профиль</small>
+
+        </button>
+
+    </nav>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
