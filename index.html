@@ -2,98 +2,245 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>Mini App</title>
+    <meta name="viewport"
+          content="width=device-width,
+          initial-scale=1.0,
+          maximum-scale=1.0,
+          user-scalable=no">
+
+    <title>Game</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<div class="glow glow-one"></div>
+<div class="glow glow-two"></div>
+
 <div class="app">
 
-    <header class="header">
-        <div>
-            <div class="welcome">Добро пожаловать</div>
-            <div class="username" id="username">Игрок</div>
+    <!-- TOP -->
+
+    <header class="top">
+
+        <div class="logo">
+            <div class="logo-circle">$</div>
+
+            <div>
+                <div class="logo-title">LUCKY</div>
+                <div class="logo-subtitle">GAME</div>
+            </div>
         </div>
 
-        <div class="avatar" id="avatar">👤</div>
+        <button class="profile-mini" onclick="openProfile()">
+            <img id="avatar"
+                 src=""
+                 alt="">
+            <span id="avatar-fallback">👤</span>
+        </button>
+
     </header>
 
-    <section class="balance-card">
-        <div class="balance-title">Ваш баланс</div>
-        <div class="balance" id="balance">0.00 ₽</div>
 
-        <div class="balance-buttons">
-            <button class="deposit" onclick="deposit()">+ Пополнить</button>
-            <button class="withdraw" onclick="withdraw()">Вывести</button>
+    <!-- BALANCE -->
+
+    <section class="balance-card">
+
+        <div class="balance-top">
+            <span>ВАШ БАЛАНС</span>
+            <span class="currency">$</span>
         </div>
+
+        <div class="balance" id="balance">
+            $0.00
+        </div>
+
+        <div class="balance-actions">
+
+            <button onclick="deposit()" class="yellow-button">
+                + Пополнить
+            </button>
+
+            <button onclick="withdraw()" class="dark-button">
+                Вывести
+            </button>
+
+        </div>
+
     </section>
 
-    <h2>Игры</h2>
+
+    <!-- USER -->
+
+    <section class="user-card">
+
+        <div class="user-avatar">
+            <img id="big-avatar" src="" alt="">
+            <span id="big-avatar-fallback">👤</span>
+        </div>
+
+        <div class="user-info">
+
+            <div class="hello">
+                Добро пожаловать
+            </div>
+
+            <div class="user-name" id="username">
+                Игрок
+            </div>
+
+        </div>
+
+        <button onclick="openProfile()" class="arrow">
+            ›
+        </button>
+
+    </section>
+
+
+    <!-- GAMES -->
+
+    <div class="section-header">
+
+        <h2>Игры</h2>
+
+        <button onclick="openAllGames()">
+            Все игры
+            <span>›</span>
+        </button>
+
+    </div>
+
 
     <section class="games">
 
-        <button class="game-card" onclick="openGame('cube')">
-            <div class="game-icon">🎲</div>
-            <div class="game-name">Куб</div>
-            <div class="game-description">Испытай удачу</div>
+        <button class="game-card mines"
+                onclick="openGame('mines')">
+
+            <div class="game-decoration">✦</div>
+
+            <div class="game-icon">
+                💣
+            </div>
+
+            <div class="game-title">
+                MINES
+            </div>
+
+            <div class="game-subtitle">
+                Найди безопасные клетки
+            </div>
+
+            <div class="play">
+                ИГРАТЬ
+            </div>
+
         </button>
 
-        <button class="game-card" onclick="openGame('mines')">
-            <div class="game-icon">💣</div>
-            <div class="game-name">Мины</div>
-            <div class="game-description">Найди безопасные клетки</div>
+
+        <button class="game-card tower"
+                onclick="openGame('tower')">
+
+            <div class="game-decoration">✦</div>
+
+            <div class="game-icon">
+                🏰
+            </div>
+
+            <div class="game-title">
+                TOWER
+            </div>
+
+            <div class="game-subtitle">
+                Поднимайся выше
+            </div>
+
+            <div class="play">
+                ИГРАТЬ
+            </div>
+
+        </button>
+
+
+        <button class="game-card crash"
+                onclick="openGame('crash')">
+
+            <div class="game-decoration">✦</div>
+
+            <div class="game-icon">
+                🚀
+            </div>
+
+            <div class="game-title">
+                CRASH
+            </div>
+
+            <div class="game-subtitle">
+                Забери вовремя
+            </div>
+
+            <div class="play">
+                ИГРАТЬ
+            </div>
+
         </button>
 
     </section>
 
-    <h2>Разделы</h2>
 
-    <section class="menu">
+    <!-- BONUS -->
 
-        <button onclick="openBet()">
-            <span>🎯</span>
-            <div>
-                <b>Ставка</b>
-                <small>Сделать ставку</small>
+    <section class="bonus-card">
+
+        <div>
+
+            <div class="bonus-small">
+                БОНУС
             </div>
-            <strong>›</strong>
-        </button>
+
+            <div class="bonus-title">
+                Получи награду
+            </div>
+
+            <div class="bonus-text">
+                Заходи каждый день
+            </div>
+
+        </div>
 
         <button onclick="openBonus()">
-            <span>🎁</span>
-            <div>
-                <b>Бонус</b>
-                <small>Получить бонус</small>
-            </div>
-            <strong>›</strong>
-        </button>
-
-        <button onclick="openProfile()">
-            <span>👤</span>
-            <div>
-                <b>Профиль</b>
-                <small>Ваш аккаунт</small>
-            </div>
-            <strong>›</strong>
+            🎁
         </button>
 
     </section>
+
+
+    <!-- BOTTOM -->
 
     <nav class="bottom-nav">
 
         <button class="active" onclick="goHome()">
-            <span>⌂</span>
-            <small>Главная</small>
+            <span>🎮</span>
+            <small>Играть</small>
         </button>
 
-        <button onclick="openGame('mines')">
-            <span>🎮</span>
-            <small>Игры</small>
+        <button onclick="openFinance()">
+            <span>💵</span>
+            <small>Финансы</small>
+        </button>
+
+        <button onclick="openCases()">
+            <span>🎁</span>
+            <small>Бонусы</small>
+        </button>
+
+        <button onclick="openTasks()">
+            <span>🎯</span>
+            <small>Задания</small>
         </button>
 
         <button onclick="openProfile()">
