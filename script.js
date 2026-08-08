@@ -34,32 +34,64 @@ function loadTelegramUser() {
 
     if (!user) return;
 
+
     const usernameElement =
         document.getElementById("username");
 
     const avatarElement =
         document.getElementById("avatar");
 
+    const profileName =
+        document.getElementById("profileName");
 
-    usernameElement.textContent =
+    const profileUsername =
+        document.getElementById("profileUsername");
+
+    const profileAvatar =
+        document.getElementById("profileAvatar");
+
+
+    const name =
         user.first_name ||
         user.username ||
         "Игрок";
 
 
+    usernameElement.textContent = name;
+
+    profileName.textContent = name;
+
+
+    if (user.username) {
+
+        profileUsername.textContent =
+            "@" + user.username;
+
+    } else {
+
+        profileUsername.textContent =
+            "Telegram пользователь";
+
+    }
+
+
     if (user.photo_url) {
 
-        avatarElement.innerHTML = `
+        const imageHTML = `
             <img
                 src="${user.photo_url}"
                 alt="avatar">
         `;
+
+        avatarElement.innerHTML = imageHTML;
+
+        profileAvatar.innerHTML = imageHTML;
     }
 }
 
 
 /* =========================================
-   БАЛАНС
+   ОБНОВЛЕНИЕ БАЛАНСА
 ========================================= */
 
 function updateBalance() {
@@ -74,6 +106,9 @@ function updateBalance() {
     const bigBalance =
         document.getElementById("bigBalance");
 
+    const profileBalance =
+        document.getElementById("profileBalance");
+
 
     if (topBalance) {
         topBalance.textContent = value;
@@ -82,37 +117,59 @@ function updateBalance() {
     if (bigBalance) {
         bigBalance.textContent = value;
     }
+
+    if (profileBalance) {
+        profileBalance.textContent = value;
+    }
 }
 
 
 /* =========================================
-   ОТКРЫТЬ БАЛАНС
+   СКРЫТИЕ ВСЕХ СТРАНИЦ
 ========================================= */
 
-function openBalance(mode = "deposit") {
+function hideAllPages() {
 
-    const home =
-        document.getElementById("homePage");
-
-    const balance =
-        document.getElementById("balancePage");
-
-
-    home.classList.add("hidden");
-
-    balance.classList.remove("hidden");
+    const pages = [
+        "homePage",
+        "balancePage",
+        "profilePage",
+        "bonusPage"
+    ];
 
 
-    setBalanceMode(mode);
+    pages.forEach(id => {
+
+        const page =
+            document.getElementById(id);
+
+        if (page) {
+            page.classList.add("hidden");
+        }
+    });
+}
+
+
+/* =========================================
+   ОТКРЫТЬ СТРАНИЦУ
+========================================= */
+
+function showPage(id) {
+
+    hideAllPages();
+
+    const page =
+        document.getElementById(id);
+
+    if (page) {
+        page.classList.remove("hidden");
+    }
 
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
-
-
-    updateNav("balance");
 }
 
 
@@ -122,25 +179,82 @@ function openBalance(mode = "deposit") {
 
 function goHome() {
 
-    const home =
-        document.getElementById("homePage");
-
-    const balance =
-        document.getElementById("balancePage");
-
-
-    balance.classList.add("hidden");
-
-    home.classList.remove("hidden");
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
+    showPage("homePage");
 
     updateNav("home");
+}
+
+
+/* =========================================
+   БАЛАНС
+========================================= */
+
+function openBalance(mode = "deposit") {
+
+    showPage("balancePage");
+
+    setBalanceMode(mode);
+
+    updateNav("balance");
+
+    updateBalance();
+}
+
+
+/* =========================================
+   ПРОФИЛЬ
+========================================= */
+
+function openProfile() {
+
+    showPage("profilePage");
+
+    updateNav("profile");
+
+    updateBalance();
+
+    loadTelegramUser();
+}
+
+
+/* =========================================
+   БОНУСЫ
+========================================= */
+
+function openBonus() {
+
+    showPage("bonusPage");
+
+    updateNav("bonus");
+}
+
+
+/* =========================================
+   ИГРЫ
+========================================= */
+
+function openGames() {
+
+    showPage("homePage");
+
+    updateNav("games");
+
+
+    setTimeout(() => {
+
+        const games =
+            document.querySelector(".games-section");
+
+        if (games) {
+
+            games.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }, 50);
 }
 
 
@@ -150,30 +264,44 @@ function goHome() {
 
 function updateNav(active) {
 
-    const homeNav =
-        document.getElementById("homeNav");
-
-    const balanceNav =
-        document.getElementById("balanceNav");
+    const navItems =
+        document.querySelectorAll(".nav-item");
 
 
-    homeNav.classList.remove("active");
+    navItems.forEach(item => {
 
-    balanceNav.classList.remove("active");
+        item.classList.remove("active");
+
+    });
 
 
-    if (active === "home") {
-        homeNav.classList.add("active");
-    }
+    const map = {
 
-    if (active === "balance") {
-        balanceNav.classList.add("active");
+        home: "homeNav",
+
+        games: "gamesNav",
+
+        balance: "balanceNav",
+
+        bonus: "bonusNav",
+
+        profile: "profileNav"
+
+    };
+
+
+    const activeElement =
+        document.getElementById(map[active]);
+
+
+    if (activeElement) {
+        activeElement.classList.add("active");
     }
 }
 
 
 /* =========================================
-   ПОПОЛНИТЬ / ВЫВЕСТИ
+   ПОПОЛНЕНИЕ / ВЫВОД
 ========================================= */
 
 function setBalanceMode(mode) {
@@ -195,6 +323,16 @@ function setBalanceMode(mode) {
 
     const action =
         document.getElementById("balanceAction");
+
+
+    if (!depositTab ||
+        !withdrawTab ||
+        !title ||
+        !subtitle ||
+        !action) {
+
+        return;
+    }
 
 
     depositTab.classList.remove("active");
@@ -237,7 +375,7 @@ function setBalanceMode(mode) {
 
 
 /* =========================================
-   ВЫБОР МЕТОДА
+   МЕТОДЫ ОПЛАТЫ
 ========================================= */
 
 function toggleMethods() {
@@ -247,6 +385,9 @@ function toggleMethods() {
 
     const arrow =
         document.getElementById("methodArrow");
+
+
+    if (!dropdown) return;
 
 
     dropdown.classList.toggle("open");
@@ -270,35 +411,54 @@ function selectMethod(method, icon) {
     selectedMethodIcon = icon;
 
 
-    document.getElementById(
-        "selectedMethod"
-    ).textContent = method;
+    const selected =
+        document.getElementById("selectedMethod");
+
+    const iconElement =
+        document.getElementById(
+            "selectedMethodIcon"
+        );
 
 
-    document.getElementById(
-        "selectedMethodIcon"
-    ).textContent = icon;
+    if (selected) {
+        selected.textContent = method;
+    }
 
 
-    document
-        .getElementById("methodsDropdown")
-        .classList.remove("open");
+    if (iconElement) {
+        iconElement.textContent = icon;
+    }
 
 
-    document.getElementById(
-        "methodArrow"
-    ).textContent = "▼";
+    const dropdown =
+        document.getElementById("methodsDropdown");
+
+    const arrow =
+        document.getElementById("methodArrow");
+
+
+    if (dropdown) {
+        dropdown.classList.remove("open");
+    }
+
+    if (arrow) {
+        arrow.textContent = "▼";
+    }
 }
 
 
 /* =========================================
-   ДЕМО КНОПКА
+   ДЕМО БАЛАНСА
 ========================================= */
 
 function demoBalanceAction() {
 
     const input =
         document.getElementById("amountInput");
+
+
+    if (!input) return;
+
 
     const amount =
         parseFloat(input.value);
@@ -320,27 +480,40 @@ function demoBalanceAction() {
             `Демо: пополнение ${amount.toFixed(2)} $ через ${selectedMethod}`
         );
 
-    } else {
+        return;
+    }
 
-        if (amount > currentBalance) {
 
-            showMessage(
-                "Недостаточно средств"
-            );
-
-            return;
-        }
-
+    if (amount > currentBalance) {
 
         showMessage(
-            `Демо: вывод ${amount.toFixed(2)} $ через ${selectedMethod}`
+            "Недостаточно средств"
         );
+
+        return;
     }
+
+
+    showMessage(
+        `Демо: вывод ${amount.toFixed(2)} $ через ${selectedMethod}`
+    );
 }
 
 
 /* =========================================
-   УВЕДОМЛЕНИЕ
+   БОНУС
+========================================= */
+
+function claimBonus() {
+
+    showMessage(
+        "Демо: ежедневный бонус пока не подключён"
+    );
+}
+
+
+/* =========================================
+   УВЕДОМЛЕНИЯ
 ========================================= */
 
 function showMessage(text) {
@@ -358,18 +531,6 @@ function showMessage(text) {
 
 
 /* =========================================
-   БОНУС
-========================================= */
-
-function openBonus() {
-
-    showMessage(
-        "Раздел бонусов пока в разработке"
-    );
-}
-
-
-/* =========================================
    ЗАПУСК
 ========================================= */
 
@@ -380,6 +541,8 @@ document.addEventListener(
         loadTelegramUser();
 
         updateBalance();
+
+        goHome();
 
     }
 );
