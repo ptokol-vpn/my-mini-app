@@ -65,7 +65,7 @@
         </section>
 
         <section class="games-section" id="gamesListSection">
-            <div class="section-title"><h2>Иигры</h2></div>
+            <div class="section-title"><h2>Игры</h2></div>
             <div class="games">
                 <button class="game" onclick="showMessage('Игра «Куб» пока в разработке')">
                     <div class="game-image"><div class="game-glow"></div><span class="game-emoji">🎲</span></div>
@@ -91,90 +91,89 @@
         </section>
     </main>
 
-<!-- ==================== КОЛЕСО ==================== -->
-<main id="wheelPage" class="wheel-page hidden">
-    <div class="page-header">
-        <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
-        <h1>Колесо</h1>
-        <div class="header-space"></div>
-    </div>
+    <!-- ==================== КОЛЕСО ==================== -->
+    <main id="wheelPage" class="wheel-page hidden">
+        <div class="page-header">
+            <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
+            <h1>Колесо</h1>
+            <div class="header-space"></div>
+        </div>
 
-    <section class="wheel-card">
-        <h2>Колесо Фортуны</h2>
-        <p class="wheel-subtitle">Выберите цвет, укажите сумму и испытайте удачу!</p>
+        <section class="wheel-card">
+            <h2>Колесо Фортуны</h2>
+            <p class="wheel-subtitle">Выберите цвет, укажите сумму и испытайте удачу!</p>
 
-        <div class="wheel-stage">
-            <div class="wheel-pointer">
-                <div class="pointer-tip"></div>
-            </div>
-            
-            <!-- Роскошная 3D золотая окантовка -->
-            <div class="wheel-gold-frame">
-                <div class="gold-bezel-glow"></div>
-                <div class="wheel-outer">
-                    <svg class="wheel-svg" id="wheelSvg" viewBox="0 0 300 300"></svg>
-                    <div class="wheel-center">
-                        <span>WXS</span>
+            <div class="wheel-stage">
+                <div class="wheel-pointer">
+                    <div class="pointer-tip"></div>
+                </div>
+                
+                <!-- Роскошная 3D золотая окантовка -->
+                <div class="wheel-gold-frame">
+                    <div class="gold-bezel-glow"></div>
+                    <div class="wheel-outer">
+                        <svg class="wheel-svg" id="wheelSvg" viewBox="0 0 300 300"></svg>
+                        <div class="wheel-center">
+                            <span>WXS</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="wheel-result" id="wheelResult">
-            <span class="result-small">РЕЗУЛЬТАТ</span>
-            <strong id="resultValue">?</strong>
-        </div>
-
-        <!-- Переключатель цветов в 1 строку и единая клавиатура ставок -->
-        <div class="wheel-bet-panels">
-            <div class="bet-panel-header">
-                <span>Выберите цвет ставки</span>
-                <span id="betBalanceText">Баланс: 125.50 $</span>
+            <div class="wheel-result" id="wheelResult">
+                <span class="result-small">РЕЗУЛЬТАТ</span>
+                <strong id="resultValue">?</strong>
             </div>
 
-            <!-- 1 строка с выбором цвета -->
-            <div class="color-tabs-row" id="colorTabsRow">
-                <!-- Генерируется скриптом -->
-            </div>
+            <!-- Переключатель цветов в 1 строку и единая клавиатура ставок -->
+            <div class="wheel-bet-panels">
+                <div class="bet-panel-header">
+                    <span>Выберите цвет ставки</span>
+                    <span id="betBalanceText">Баланс: 125.50 $</span>
+                </div>
 
-            <!-- Поле ввода и быстрые кнопки для ВЫБРАННОГО цвета -->
-            <div class="active-bet-box" id="activeBetBox">
-                <div class="card-top">
-                    <div class="card-title" id="activeColorTitle">
-                        <!-- Название активного цвета -->
+                <!-- 1 строка с выбором цвета -->
+                <div class="color-tabs-row" id="colorTabsRow">
+                    <!-- Генерируется скриптом -->
+                </div>
+
+                <!-- Поле ввода и быстрые кнопки для ВЫБРАННОГО цвета -->
+                <div class="active-bet-box" id="activeBetBox">
+                    <div class="card-top">
+                        <div class="card-title" id="activeColorTitle">
+                            <!-- Название активного цвета -->
+                        </div>
+                        <div class="card-input-wrap">
+                            <input type="number" 
+                                   id="activeBetInput" 
+                                   placeholder="0" 
+                                   min="0" 
+                                   step="any" 
+                                   oninput="onActiveColorInput(this.value)">
+                            <span style="color:#666; font-size:14px; margin-left:4px;">$</span>
+                        </div>
                     </div>
-                    <div class="card-input-wrap">
-                        <input type="number" 
-                               id="activeBetInput" 
-                               placeholder="0" 
-                               min="0" 
-                               step="any" 
-                               oninput="onActiveColorInput(this.value)">
-                        <span style="color:#666; font-size:14px; margin-left:4px;">$</span>
+                    <div class="card-percent-btns">
+                        <button class="pct-btn" onclick="applyPercentToActive(0.10)">10%</button>
+                        <button class="pct-btn" onclick="applyPercentToActive(0.25)">25%</button>
+                        <button class="pct-btn" onclick="applyPercentToActive(0.50)">50%</button>
+                        <button class="pct-btn" onclick="applyPercentToActive(1.00)">100%</button>
                     </div>
                 </div>
-                <div class="card-percent-btns">
-                    <button class="pct-btn" onclick="applyPercentToActive(0.10)">10%</button>
-                    <button class="pct-btn" onclick="applyPercentToActive(0.25)">25%</button>
-                    <button class="pct-btn" onclick="applyPercentToActive(0.50)">50%</button>
-                    <button class="pct-btn" onclick="applyPercentToActive(1.00)">100%</button>
-                </div>
+
+                <div class="total-bet-info" id="totalBetInfo">Общая ставка: 0.00 $</div>
             </div>
 
-            <div class="total-bet-info" id="totalBetInfo">Общая ставка: 0.00 $</div>
-        </div>
+            <button class="spin-button-gold" id="spinButton" onclick="spinWheel()">
+                <span>↻ Сделать ставку</span>
+            </button>
+        </section>
 
-        <button class="spin-button-gold" id="spinButton" onclick="spinWheel()">
-            <span>↻ Сделать ставку</span>
-        </button>
-    </section>
-
-    <section class="wheel-rewards" style="margin-top: 20px;">
-        <div class="section-title"><h2>Сектора</h2></div>
-        <div class="reward-list" id="rewardList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;"></div>
-    </section>
-</main>
-
+        <section class="wheel-rewards" style="margin-top: 20px;">
+            <div class="section-title"><h2>Сектора</h2></div>
+            <div class="reward-list" id="rewardList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;"></div>
+        </section>
+    </main>
 
     <!-- ==================== БАЛАНС ==================== -->
     <main id="balancePage" class="balance-page hidden">
@@ -323,7 +322,7 @@
             <span class="nav-icon">🏠</span><small>Главная</small>
         </button>
         <button class="nav-item" id="gamesNav" onclick="openGamesMenu()">
-            <span class="nav-icon">🎮</span><small>Иигры</small>
+            <span class="nav-icon">🎮</span><small>Игры</small>
         </button>
         <button class="nav-item" id="balanceNav" onclick="openBalance('deposit')">
             <span class="nav-icon">💰</span><small>Баланс</small>
