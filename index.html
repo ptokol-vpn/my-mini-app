@@ -208,26 +208,30 @@
             <p class="sub-text" id="formSubtitle">Выберите удобный способ пополнения</p>
 
             <div class="input-group">
-                <label>МЕТОД</label>
-                <div class="custom-select" onclick="toggleMethods()">
-                    <div class="select-selected">
-                        <span class="m-icon" id="selectedMethodIcon">🤖</span>
-                        <div class="m-text">
-                            <strong id="selectedMethod">CryptoBot</strong>
-                            <small id="selectedMethodSub">Криптовалюта</small>
-                        </div>
-                        <span class="arrow" id="methodArrow">▼</span>
-                    </div>
-                    <div class="select-items" id="methodsDropdown">
-                        <div onclick="selectMethod('CryptoBot', '🤖', 'Криптовалюта')">
-                            <span>🤖</span> <div><strong>CryptoBot</strong><small>Криптовалюта</small></div>
-                        </div>
-                        <div onclick="selectMethod('xRocket', '🚀', 'Криптовалюта')">
-                            <span>🚀</span> <div><strong>xRocket</strong><small>Криптовалюта</small></div>
-                        </div>
-                    </div>
-                </div>
+                
+    <label>МЕТОД</label>
+    <div class="custom-select" onclick="toggleMethods()">
+        <div class="select-selected">
+            <img class="m-icon" id="selectedMethodIcon" src="cryptobot.png" alt="CryptoBot" style="width: 26px; height: 26px; object-fit: contain;">
+            <div class="m-text">
+                <strong id="selectedMethod">CryptoBot</strong>
+                <small id="selectedMethodSub">Криптовалюта</small>
             </div>
+            <span class="arrow" id="methodArrow">▼</span>
+        </div>
+        <div class="select-items" id="methodsDropdown">
+            <div onclick="selectMethod('CryptoBot', 'cryptobot.png', 'Криптовалюта')">
+                <img src="cryptobot.png" alt="CryptoBot" style="width: 24px; height: 24px; object-fit: contain;"> 
+                <div><strong>CryptoBot</strong><small>Криптовалюта</small></div>
+            </div>
+            <div onclick="selectMethod('xRocket', 'xrocket.png', 'Криптовалюта')">
+                <img src="xrocket.png" alt="xRocket" style="width: 24px; height: 24px; object-fit: contain;"> 
+                <div><strong>xRocket</strong><small>Криптовалюта</small></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
             <div class="input-group">
                 <label>СУММА</label>
