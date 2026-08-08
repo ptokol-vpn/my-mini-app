@@ -1,4 +1,4 @@
-const tg = window.Telegram?.WebApp;
+Const tg = window.Telegram?.WebApp;
 
 if (tg) {
     tg.ready();
@@ -16,7 +16,7 @@ let selectedMethod = "CryptoBot";
 let selectedMethodSub = "Криптовалюта";
 let selectedMethodIcon = "cryptobot.png";
 
-// Конфигурация кастомизации
+// Конфигурация кастомизации фона профиля (8 цветов)
 const COLOR_PALETTE = [
     { id: 'slate', start: '#2c3e50', end: '#1a252f' },
     { id: 'purple', start: '#8e44ad', end: '#2c3e50' },
@@ -28,18 +28,10 @@ const COLOR_PALETTE = [
     { id: 'gold', start: '#f39c12', end: '#4a3004' }
 ];
 
-const EMOJI_LIST = ['❤️', '🛡', '💀', '🔥', '🩸', '✌️'];
-
-let userGifts = JSON.parse(localStorage.getItem('wxs_gifts')) || [
-    { name: "Змея", number: "#167,259", icon: "🐍" },
-    { name: "Сердце", number: "#6,969", icon: "💖" }
-];
-
 let profileDesign = JSON.parse(localStorage.getItem('wxs_profile')) || {
     colorId: 'slate',
     start: '#2c3e50',
-    end: '#1a252f',
-    status: '🔥'
+    end: '#1a252f'
 };
 
 let colorBets = { green: 0, red: 0, blue: 0, yellow: 0, gold: 0 };
@@ -98,6 +90,19 @@ let wheelRotation = 0;
 let wheelSpinning = false;
 
 /* =========================
+   ИГРОВОЕ СОСТОЯНИЕ МИН
+========================= */
+
+let minesGame = {
+    active: false,
+    bet: 0.10,
+    minesCount: 3,
+    field: [],
+    revealed: [],
+    gemsFound: 0
+};
+
+/* =========================
    TELEGRAM USER & БАЛАНС
 ========================= */
 
@@ -149,7 +154,7 @@ function updateBalance() {
 ========================= */
 
 function hideAllPages() {
-    const pages = ["homePage", "wheelPage", "balancePage", "profilePage", "bonusPage"];
+    const pages = ["homePage", "wheelPage", "balancePage", "profilePage", "bonusPage", "minesPage"];
     pages.forEach(id => {
         const page = document.getElementById(id);
         if (page) page.classList.add("hidden");
@@ -195,6 +200,13 @@ function openWheel() {
     selectColorTab(activeColor);
 }
 
+function openMines() {
+    showPage("minesPage");
+    updateNav("games");
+    updateBalance();
+    initMinesGrid();
+}
+
 function openBalance(mode = "deposit") {
     showPage("balancePage");
     setBalanceMode(mode);
@@ -209,7 +221,6 @@ function openProfile() {
     updateBalance();
     loadTelegramUser();
     applyDesign();
-    renderGifts();
     renderCustomizerControls();
 }
 
@@ -225,6 +236,209 @@ function updateNav(active) {
     const map = { home: "homeNav", games: "gamesNav", balance: "balanceNav", bonus: "bonusNav", profile: "profileNav" };
     const activeElement = document.getElementById(map[active]);
     if (activeElement) activeElement.classList.add("active");
+}
+
+/* =========================
+   ИГРА «МИНЫ»
+========================= */
+
+function selectMinesCount(count, btn) {
+    if (minesGame.active) return;
+    minesGame.minesCount = count;
+    
+    document.querySelectorAll('.mines-count-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    renderMinesCoefBar();
+}
+
+function adjustMinesBet(factor) {
+    if (minesGame.active) return;
+    const input = document.getElementById('minesBetInput');
+    if (!input) return;
+    let current = parseFloat(input.value) || 0;
+    current = Math.max(0.10, current * factor);
+    input.value = current.toFixed(2);
+}
+
+function setMinesMaxBet() {
+    if (minesGame.active) return;
+    const input = document.getElementById('minesBetInput');
+    if (input) input.value = currentBalance.toFixed(2);
+}
+
+function getMinesMultiplier(gemsFound, minesCount) {
+    if (gemsFound === 0) return 1.0;
+    const totalTiles = 25;
+    let mult = 1.0;
+    for (let i = 0; i < gemsFound; i++) {
+        mult *= (totalTiles - i) / (totalTiles - minesCount - i);
+    }
+    return Math.floor(mult * 100) / 100;
+}
+
+function renderMinesCoefBar() {
+    const bar = document.getElementById('minesCoefBar');
+    if (!bar) return;
+
+    let html = '';
+    const maxGems = 25 - minesGame.minesCount;
+    for (let step = 1; step <= Math.min(10, maxGems); step++) {
+        const mult = getMinesMultiplier(step, minesGame.minesCount);
+        const isActive = step === minesGame.gemsFound;
+        html += `
+            <div class="coef-item ${isActive ? 'active' : ''}">
+                <span class="step-num">${step}</span>
+                <strong class="mult-val">${mult.toFixed(2)}x</strong>
+            </div>
+        `;
+    }
+    bar.innerHTML = html;
+}
+
+function initMinesGrid() {
+    const grid = document.getElementById('minesGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+    for (let i = 0; i < 25; i++) {
+        grid.innerHTML += `<div class="mine-tile disabled" id="tile-${i}" onclick="clickMinesTile(${i})">•</div>`;
+    }
+    renderMinesCoefBar();
+}
+
+function handleMinesAction() {
+    if (minesGame.active) {
+        cashoutMines();
+    } else {
+        startMinesGame();
+    }
+}
+
+function startMinesGame() {
+    const input = document.getElementById('minesBetInput');
+    const bet = parseFloat(input.value);
+
+    if (isNaN(bet) || bet <= 0) {
+        showMessage("Укажите сумму ставки!");
+        return;
+    }
+    if (bet > currentBalance) {
+        showMessage("Недостаточно средств!");
+        return;
+    }
+
+    currentBalance -= bet;
+    updateBalance();
+
+    minesGame.active = true;
+    minesGame.bet = bet;
+    minesGame.gemsFound = 0;
+    minesGame.revealed = Array(25).fill(false);
+    minesGame.field = Array(25).fill('gem');
+
+    let placedMines = 0;
+    while (placedMines < minesGame.minesCount) {
+        let randIndex = Math.floor(Math.random() * 25);
+        if (minesGame.field[randIndex] !== 'bomb') {
+            minesGame.field[randIndex] = 'bomb';
+            placedMines++;
+        }
+    }
+
+    const actionBtn = document.getElementById('minesActionBtn');
+    const autoBtn = document.getElementById('minesAutoBtn');
+    if (actionBtn) actionBtn.textContent = 'ЗАБРАТЬ 0.00$';
+    if (autoBtn) autoBtn.disabled = false;
+
+    for (let i = 0; i < 25; i++) {
+        const tile = document.getElementById(`tile-${i}`);
+        if (tile) {
+            tile.className = 'mine-tile';
+            tile.textContent = '•';
+        }
+    }
+
+    renderMinesCoefBar();
+}
+
+function clickMinesTile(index) {
+    if (!minesGame.active || minesGame.revealed[index]) return;
+
+    minesGame.revealed[index] = true;
+    const tile = document.getElementById(`tile-${index}`);
+
+    if (minesGame.field[index] === 'bomb') {
+        tile.className = 'mine-tile revealed-bomb';
+        tile.textContent = '💣';
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
+        endMinesGame(false);
+    } else {
+        minesGame.gemsFound++;
+        tile.className = 'mine-tile revealed-gem';
+        tile.textContent = '💎';
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred("light");
+
+        const mult = getMinesMultiplier(minesGame.gemsFound, minesGame.minesCount);
+        const currentWin = (minesGame.bet * mult).toFixed(2);
+
+        const actionBtn = document.getElementById('minesActionBtn');
+        if (actionBtn) actionBtn.textContent = `ЗАБРАТЬ ${currentWin}$`;
+
+        renderMinesCoefBar();
+
+        if (minesGame.gemsFound === 25 - minesGame.minesCount) {
+            cashoutMines();
+        }
+    }
+}
+
+function autoPickMinesTile() {
+    if (!minesGame.active) return;
+    let unrevealed = [];
+    for (let i = 0; i < 25; i++) {
+        if (!minesGame.revealed[i]) unrevealed.push(i);
+    }
+    if (unrevealed.length > 0) {
+        let rand = unrevealed[Math.floor(Math.random() * unrevealed.length)];
+        clickMinesTile(rand);
+    }
+}
+
+function cashoutMines() {
+    const mult = getMinesMultiplier(minesGame.gemsFound, minesGame.minesCount);
+    const winAmount = minesGame.bet * mult;
+    currentBalance += winAmount;
+    updateBalance();
+
+    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+    showMessage(`Выигрыш: +${winAmount.toFixed(2)}$ (${mult.toFixed(2)}x)`);
+
+    endMinesGame(true);
+}
+
+function endMinesGame(isWin) {
+    minesGame.active = false;
+
+    for (let i = 0; i < 25; i++) {
+        const tile = document.getElementById(`tile-${i}`);
+        if (!tile) continue;
+        tile.classList.add('disabled');
+        if (!minesGame.revealed[i]) {
+            if (minesGame.field[i] === 'bomb') {
+                tile.textContent = '💣';
+                tile.style.opacity = '0.4';
+            } else {
+                tile.textContent = '💎';
+                tile.style.opacity = '0.3';
+            }
+        }
+    }
+
+    const actionBtn = document.getElementById('minesActionBtn');
+    const autoBtn = document.getElementById('minesAutoBtn');
+    if (actionBtn) actionBtn.textContent = 'Начать игру';
+    if (autoBtn) autoBtn.disabled = true;
 }
 
 /* =========================
@@ -283,7 +497,7 @@ function drawWheel() {
 }
 
 /* =========================
-   ТАБЫ ЦВЕТОВ И СТАВКИ
+   ТАБЫ ЦВЕТОВ И СТАВКИ КОЛЕСА
 ========================= */
 
 function renderColorTabs() {
@@ -428,7 +642,7 @@ function updateTotalBet() {
 }
 
 /* =========================
-   ВРАЩЕНИЕ
+   ВРАЩЕНИЕ КОЛЕСА
 ========================= */
 
 async function spinWheel() {
@@ -701,37 +915,23 @@ function showMessage(text) {
 }
 
 /* =========================
-   ПРОФИЛЬ, ЭМОДЗИ И ЦВЕТА
+   ПРОФИЛЬ И КАСТОМИЗАЦИЯ ФОНА
 ========================= */
 
 function applyDesign() {
     const cover = document.getElementById('profileCover');
-    const pattern = document.getElementById('bgEmojiPattern');
-    const badge = document.getElementById('profileStatusBadge');
-
-    if (cover) cover.style.background = `linear-gradient(180deg, ${profileDesign.start} 0%, ${profileDesign.end} 100%)`;
-    if (pattern) pattern.textContent = Array(6).fill(profileDesign.status).join(' ');
-    if (badge) badge.textContent = profileDesign.status;
+    if (cover) {
+        cover.style.background = `linear-gradient(180deg, ${profileDesign.start} 0%, ${profileDesign.end} 100%)`;
+    }
 }
 
 function renderCustomizerControls() {
     const colorGrid = document.getElementById('colorPickerGrid');
-    const emojiRow = document.getElementById('emojiPickerRow');
-
     if (colorGrid) {
         colorGrid.innerHTML = COLOR_PALETTE.map(item => `
             <div class="color-option ${item.id === profileDesign.colorId ? 'active' : ''}" 
                  style="background: linear-gradient(135deg, ${item.start}, ${item.end});"
                  onclick="selectGradient('${item.id}', '${item.start}', '${item.end}')">
-            </div>
-        `).join('');
-    }
-
-    if (emojiRow) {
-        emojiRow.innerHTML = EMOJI_LIST.map(e => `
-            <div class="emoji-option ${e === profileDesign.status ? 'active' : ''}" 
-                 onclick="selectStatusEmoji('${e}')">
-                ${e}
             </div>
         `).join('');
     }
@@ -741,12 +941,6 @@ function selectGradient(id, start, end) {
     profileDesign.colorId = id;
     profileDesign.start = start;
     profileDesign.end = end;
-    renderCustomizerControls();
-    applyDesign();
-}
-
-function selectStatusEmoji(emoji) {
-    profileDesign.status = emoji;
     renderCustomizerControls();
     applyDesign();
 }
@@ -763,46 +957,6 @@ function saveProfileCustomization() {
     showMessage("Настройки сохранены!");
 }
 
-function renderGifts() {
-    const grid = document.getElementById("giftsGrid");
-    if (!grid) return;
-
-    grid.innerHTML = userGifts.map(g => `
-        <div class="gift-card" style="background:#1a1a1a; border:1px solid #282828; border-radius:16px; padding:10px; text-align:center; position:relative;">
-            <span class="gift-number" style="position:absolute; top:6px; right:6px; font-size:9px; color:#888;">${g.number}</span>
-            <div style="font-size: 32px; margin: 10px 0;">${g.icon}</div>
-            <small style="font-size:10px; color:#aaa; font-weight:700;">${g.name}</small>
-        </div>
-    `).join('');
-}
-
-function toggleAddGiftBox() {
-    const box = document.getElementById('addGiftBox');
-    if (box) box.classList.toggle('hidden');
-}
-
-function confirmAddGift() {
-    const input = document.getElementById('giftLinkInput');
-    if (!input) return;
-    const url = input.value.trim();
-    if (!url) return;
-
-    const numberMatch = url.match(/(\d+)$/);
-    const num = numberMatch ? "#" + parseInt(numberMatch[0]).toLocaleString() : "#" + Math.floor(Math.random() * 99999);
-
-    userGifts.unshift({
-        name: "NFT Подарок",
-        number: num,
-        icon: "🎁"
-    });
-
-    localStorage.setItem('wxs_gifts', JSON.stringify(userGifts));
-    input.value = "";
-    toggleAddGiftBox();
-    renderGifts();
-    showMessage("Подарок добавлен!");
-}
-
 /* =========================
    ЗАПУСК
 ========================= */
@@ -813,5 +967,4 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTransactions();
     goHome();
     applyDesign();
-    renderGifts();
 });
