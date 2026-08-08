@@ -934,51 +934,37 @@ a {
 }
 
 
-/* ЦЕНТР */
-
-.wheel-center {
+/* ТОЧНОЕ ЦЕНТРИРОВАНИЕ СТРЕЛКИ */
+.wheel-pointer {
     position: absolute;
-
-    z-index: 10;
-
+    z-index: 30;
     left: 50%;
-    top: 50%;
-
-    width: 74px;
-    height: 74px;
-
-    transform: translate(-50%,-50%);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 35% 25%,
-            #3b3b3b,
-            #111 70%
-        );
-
-    border: 5px solid #ffd21c;
-
-    box-shadow:
-        0 0 18px rgba(255,190,0,.55),
-        0 5px 15px rgba(0,0,0,.6);
-
+    top: 0;
+    transform: translate(-50%, -50%);
     pointer-events: none;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
 }
 
-.wheel-center span {
-    color: #ffd21c;
-
-    font-size: 14px;
-    font-weight: 950;
-
-    letter-spacing: 1px;
+.pointer-tip {
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 28px solid #ffd21c;
+    position: relative;
 }
+
+.pointer-tip::after {
+    content: "";
+    position: absolute;
+    left: -6px;
+    top: -26px;
+    width: 12px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff36b;
+}
+
 
 
 /* РЕЗУЛЬТАТ */
