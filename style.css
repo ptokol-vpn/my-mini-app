@@ -2114,96 +2114,124 @@ text-shadow:
 
 }
 
-/* КОЛЕСО */
+/* =========================================
+   КОЛЕСО — ОФОРМЛЕНИЕ
+   ========================================= */
 
 .wheel-page {
-    animation: pageIn .25s ease;
+    min-height: 100vh;
+    padding: 20px 16px 100px;
+    box-sizing: border-box;
 }
 
+.wheel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.wheel-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.wheel-back {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 14px;
+    background: #191919;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+/* ОСНОВНАЯ КАРТОЧКА */
+
 .wheel-card {
-    padding: 28px 18px 24px;
+    position: relative;
+    overflow: hidden;
 
-    text-align: center;
+    padding: 24px 16px 28px;
 
-    border-radius: 30px;
+    border-radius: 28px;
 
     background:
         radial-gradient(
-            circle at 50% 0%,
-            rgba(255,180,0,.18),
-            transparent 45%
+            circle at 50% 35%,
+            rgba(255, 166, 40, .14),
+            transparent 42%
         ),
-        linear-gradient(
-            145deg,
-            #202020,
-            #131313
-        );
+        #111;
 
-    border: 1px solid #303030;
+    border: 1px solid rgba(255,255,255,.06);
 
     box-shadow:
-        0 12px 35px rgba(0,0,0,.25);
+        0 20px 50px rgba(0,0,0,.35);
+
+    text-align: center;
 }
 
-.wheel-title span {
-    display: block;
 
-    font-size: 45px;
+/* ЗАГОЛОВОК */
+
+.wheel-title {
+    margin: 0 0 6px;
+
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
 }
 
-.wheel-title h2 {
-    margin: 8px 0 5px;
+.wheel-subtitle {
+    margin: 0 0 25px;
 
-    font-size: 26px;
-    font-weight: 950;
+    color: #888;
+    font-size: 14px;
 }
 
-.wheel-title p {
-    margin: 0;
 
-    color: #777;
+/* КОНТЕЙНЕР КОЛЕСА */
 
-    font-size: 13px;
-}
-
-/* КОНТЕЙНЕР */
-
-.wheel-wrapper {
+.wheel-container {
     position: relative;
 
-    width: min(330px, 82vw);
-    aspect-ratio: 1;
+    width: min(82vw, 330px);
+    height: min(82vw, 330px);
 
-    margin: 35px auto 30px;
+    margin: 0 auto 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* СТРЕЛКА */
 
-.wheel-pointer {
+/* СВЕЧЕНИЕ */
+
+.wheel-container::before {
+    content: "";
+
     position: absolute;
 
-    z-index: 10;
+    width: 90%;
+    height: 90%;
 
-    left: 50%;
-    top: -9px;
+    border-radius: 50%;
 
-    transform: translateX(-50%);
+    background: rgba(255, 166, 40, .13);
 
-    width: 0;
-    height: 0;
+    filter: blur(25px);
 
-    border-left: 16px solid transparent;
-    border-right: 16px solid transparent;
-    border-top: 0;
-    border-bottom: 31px solid #ffd21c;
-
-    filter:
-        drop-shadow(
-            0 4px 8px rgba(0,0,0,.45)
-        );
+    z-index: 0;
 }
 
-/* КОЛЕСО */
+
+/* САМО КОЛЕСО */
 
 .wheel {
     position: relative;
@@ -2211,254 +2239,274 @@ text-shadow:
     width: 100%;
     height: 100%;
 
-    overflow: hidden;
-
     border-radius: 50%;
 
-    border: 8px solid #292929;
+    border: 8px solid #202020;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
 
     background:
         conic-gradient(
-            #ff9d00 0deg 60deg,
-            #252525 60deg 120deg,
-            #ffb900 120deg 180deg,
-            #252525 180deg 240deg,
-            #ff8b00 240deg 300deg,
-            #252525 300deg 360deg
+            #ffad27 0deg 45deg,
+            #292929 45deg 90deg,
+            #ffad27 90deg 135deg,
+            #292929 135deg 180deg,
+            #ffad27 180deg 225deg,
+            #292929 225deg 270deg,
+            #ffad27 270deg 315deg,
+            #292929 315deg 360deg
         );
 
     box-shadow:
-        0 0 0 2px #454545,
-        0 10px 35px rgba(0,0,0,.45),
-        0 0 35px rgba(255,170,0,.18);
+        0 0 0 3px rgba(255,255,255,.04),
+        0 12px 35px rgba(0,0,0,.5);
+
+    z-index: 1;
 
     transition:
-        transform 4s cubic-bezier(.12,.72,.15,1);
+        transform 4s cubic-bezier(.12,.72,.12,1);
+
+    will-change: transform;
 }
 
-/* ДЕЛЕНИЯ */
 
-.wheel::before {
+/* ВНУТРЕННЕЕ КОЛЬЦО */
+
+.wheel::after {
     content: "";
 
     position: absolute;
-    inset: 0;
-
-    border-radius: 50%;
-
-    background:
-        repeating-conic-gradient(
-            from -30deg,
-            transparent 0deg 58deg,
-            rgba(0,0,0,.45) 58deg 60deg
-        );
-
-    pointer-events: none;
-}
-
-/* ТЕКСТ НА КОЛЕСЕ */
-
-.wheel-segment {
-    position: absolute;
-
-    z-index: 2;
 
     left: 50%;
     top: 50%;
 
-    width: 42%;
-    height: 50%;
-
-    transform-origin: 50% 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-
-    padding-top: 18px;
-
-    pointer-events: none;
-}
-
-.wheel-segment span {
-    font-size: 14px;
-    font-weight: 950;
-
-    color: #fff;
-
-    text-shadow:
-        0 2px 4px rgba(0,0,0,.6);
-
-    white-space: nowrap;
-}
-
-.segment-1 {
-    transform:
-        translate(-50%, -100%)
-        rotate(0deg);
-}
-
-.segment-2 {
-    transform:
-        translate(-50%, -100%)
-        rotate(60deg);
-}
-
-.segment-3 {
-    transform:
-        translate(-50%, -100%)
-        rotate(120deg);
-}
-
-.segment-4 {
-    transform:
-        translate(-50%, -100%)
-        rotate(180deg);
-}
-
-.segment-5 {
-    transform:
-        translate(-50%, -100%)
-        rotate(240deg);
-}
-
-.segment-6 {
-    transform:
-        translate(-50%, -100%)
-        rotate(300deg);
-}
-
-/* ЦЕНТР */
-
-.wheel-center {
-    position: absolute;
-
-    z-index: 5;
-
-    left: 50%;
-    top: 50%;
+    width: 72%;
+    height: 72%;
 
     transform: translate(-50%, -50%);
 
-    width: 72px;
-    height: 72px;
+    border-radius: 50%;
+
+    border: 2px solid rgba(255,255,255,.12);
+
+    box-shadow:
+        inset 0 0 20px rgba(0,0,0,.25);
+
+    pointer-events: none;
+}
+
+
+/* СЕКТОРЫ / ТЕКСТ */
+
+.wheel-item {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 50%;
+    height: 50%;
+
+    transform-origin: 0 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffd928,
-            #ff8b00
-        );
-
-    border: 6px solid #191919;
-
-    box-shadow:
-        0 0 20px rgba(255,170,0,.35);
-
-    font-size: 30px;
-}
-
-/* КНОПКА */
-
-.wheel-spin {
-    width: 100%;
-    height: 58px;
-
-    border-radius: 17px;
-
-    color: #171717;
+    color: #fff;
 
     font-size: 16px;
-    font-weight: 950;
+    font-weight: 800;
 
-    background:
-        linear-gradient(
-            135deg,
-            #ffd928,
-            #ff8b00
-        );
+    text-shadow:
+        0 2px 4px rgba(0,0,0,.5);
 
-    box-shadow:
-        0 8px 25px rgba(255,145,0,.2);
-
-    transition: .15s;
+    pointer-events: none;
 }
 
-.wheel-spin:active {
+
+/* ЦЕНТР КОЛЕСА */
+
+.wheel-center {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 64px;
+    height: 64px;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #151515;
+
+    border: 5px solid #292929;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.5);
+
+    color: #fff;
+
+    font-size: 22px;
+    font-weight: 900;
+
+    z-index: 5;
+}
+
+
+/* УКАЗАТЕЛЬ СВЕРХУ */
+
+.wheel-pointer {
+    position: absolute;
+
+    top: -7px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 0;
+    height: 0;
+
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 0;
+    border-bottom: 30px solid #fff;
+
+    filter:
+        drop-shadow(0 4px 6px rgba(0,0,0,.5));
+
+    z-index: 10;
+}
+
+
+/* ЧЁРНАЯ ОКАНТОВКА УКАЗАТЕЛЯ */
+
+.wheel-pointer::after {
+    content: "";
+
+    position: absolute;
+
+    left: -10px;
+    top: 3px;
+
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,.35);
+}
+
+
+/* ИНФОРМАЦИЯ */
+
+.wheel-result {
+    min-height: 24px;
+
+    margin-bottom: 18px;
+
+    color: #fff;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.wheel-result span {
+    color: #ffad27;
+}
+
+
+/* КНОПКА ВРАЩЕНИЯ */
+
+.wheel-spin-button {
+    width: 100%;
+    max-width: 280px;
+
+    height: 54px;
+
+    border: 0;
+    border-radius: 17px;
+
+    background: linear-gradient(
+        135deg,
+        #ffb52e,
+        #ff9617
+    );
+
+    color: #111;
+
+    font-size: 17px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 22px rgba(255,166,35,.22);
+
+    transition:
+        transform .15s ease,
+        filter .15s ease;
+}
+
+.wheel-spin-button:active {
     transform: scale(.97);
 }
 
-.wheel-spin:disabled {
+.wheel-spin-button:hover {
+    filter: brightness(1.05);
+}
+
+.wheel-spin-button:disabled {
     opacity: .55;
-    cursor: default;
+    cursor: not-allowed;
+    transform: none;
 }
 
-/* РЕЗУЛЬТАТ */
 
-.wheel-result {
-    margin-top: 17px;
+/* ПОДСКАЗКА */
 
-    padding: 16px;
+.wheel-hint {
+    margin-top: 15px;
 
-    border-radius: 18px;
+    color: #666;
 
-    background: #111;
-
-    border: 1px solid #303030;
-
-    animation: pageIn .25s ease;
+    font-size: 12px;
+    line-height: 1.5;
 }
 
-.wheel-result small {
-    display: block;
 
-    color: #777;
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-}
-
-.wheel-result strong {
-    display: block;
-
-    margin-top: 5px;
-
-    color: #ffc400;
-
-    font-size: 24px;
-    font-weight: 950;
-}
+/* АДАПТАЦИЯ ПОД МАЛЕНЬКИЙ ЭКРАН */
 
 @media (max-width: 380px) {
 
     .wheel-card {
-        padding-left: 13px;
-        padding-right: 13px;
+        padding: 20px 12px 24px;
     }
 
-    .wheel-wrapper {
-        width: 78vw;
-    }
-
-    .wheel-segment span {
-        font-size: 12px;
+    .wheel-container {
+        width: 76vw;
+        height: 76vw;
     }
 
     .wheel-center {
-        width: 62px;
-        height: 62px;
-
-        font-size: 25px;
+        width: 56px;
+        height: 56px;
     }
 
+    .wheel-item {
+        font-size: 14px;
+    }
 }
 
 /* ЖЁСТКО УБИРАЕМ ЛЮБЫЕ ПСЕВДОЭЛЕМЕНТЫ,
