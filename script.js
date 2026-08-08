@@ -18,6 +18,13 @@ let selectedMethodIcon = "🤖";
 
 let selectedColors = new Set(['green']); 
 
+// Начальный список последних транзакций
+let transactions = [
+    { type: 'deposit', method: 'CryptoBot', icon: '🤖', amount: 50.00, date: 'Сегодня, 14:20', status: 'success' },
+    { type: 'withdraw', method: 'xRocket', icon: '🚀', amount: 20.00, date: 'Вчера, 18:05', status: 'success' },
+    { type: 'deposit', method: 'CryptoBot', icon: '🤖', amount: 95.50, date: '21 Июля', status: 'success' }
+];
+
 const COLOR_CONFIG = {
     green:  { label: '1x',  mult: 1,  color: '#2ecc71', name: 'Зеленый' },
     red:    { label: '2x',  mult: 2,  color: '#e74c3c', name: 'Красный' },
@@ -112,6 +119,48 @@ function updateBalance() {
 }
 
 /* =========================
+   ТРАНЗАКЦИИ
+========================= */
+
+function renderTransactions() {
+    const list = document.getElementById("historyList");
+    const count = document.getElementById("txCount");
+    if (!list) return;
+
+    if (count) count.textContent = `${transactions.length} операций`;
+
+    if (transactions.length === 0) {
+        list.innerHTML = `<div style="text-align:center; color:#666; font-size:13px; padding:15px;">История пуста</div>`;
+        return;
+    }
+
+    list.innerHTML = transactions.map(tx => {
+        const isDep = tx.type === 'deposit';
+        const sign = isDep ? '+' : '-';
+        const title = isDep ? 'Пополнение' : 'Вывод средств';
+        const statusText = tx.status === 'success' ? 'Успешно' : 'В обработке';
+
+        return `
+            <div class="history-item">
+                <div class="tx-left">
+                    <div class="tx-icon ${tx.type}">
+                        ${isDep ? '↙' : '↗'}
+                    </div>
+                    <div class="tx-details">
+                        <span class="tx-title">${title}</span>
+                        <span class="tx-subtitle">${tx.icon} ${tx.method} • ${tx.date}</span>
+                    </div>
+                </div>
+                <div class="tx-right">
+                    <span class="tx-amount ${tx.type}">${sign}${tx.amount.toFixed(2)} $</span>
+                    <span class="tx-status ${tx.status}">${statusText}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/* =========================
    НАВИГАЦИЯ
 ========================= */
 
@@ -158,6 +207,7 @@ function openBalance(mode = "deposit") {
     setBalanceMode(mode);
     updateNav("balance");
     updateBalance();
+    renderTransactions();
 }
 
 function openProfile() {
@@ -467,6 +517,18 @@ function demoBalanceAction() {
     if (balanceMode === "deposit") {
         currentBalance += amount;
         updateBalance();
+
+        // Добавляем запись в историю транзакций
+        transactions.unshift({
+            type: 'deposit',
+            method: selectedMethod,
+            icon: selectedMethodIcon,
+            amount: amount,
+            date: 'Только что',
+            status: 'success'
+        });
+        renderTransactions();
+
         showMessage(`Демо: пополнено ${amount.toFixed(2)} $ через ${selectedMethod}`);
         return;
     }
@@ -478,6 +540,18 @@ function demoBalanceAction() {
 
     currentBalance -= amount;
     updateBalance();
+
+    // Добавляем запись в историю транзакций
+    transactions.unshift({
+        type: 'withdraw',
+        method: selectedMethod,
+        icon: selectedMethodIcon,
+        amount: amount,
+        date: 'Только что',
+        status: 'pending'
+    });
+    renderTransactions();
+
     showMessage(`Демо: отправлено на вывод ${amount.toFixed(2)} $ через ${selectedMethod}`);
 }
 
@@ -500,6 +574,7 @@ function showMessage(text) {
 document.addEventListener("DOMContentLoaded", () => {
     loadTelegramUser();
     updateBalance();
+    renderTransactions();
     goHome();
 
     const betInput = document.getElementById('betInput');
