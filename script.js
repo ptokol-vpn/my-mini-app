@@ -16,9 +16,16 @@ let selectedMethod = "CryptoBot";
 let selectedMethodSub = "Криптовалюта";
 let selectedMethodIcon = "🤖";
 
-let selectedColors = new Set(['green']); 
+// Объект ставок по каждому цвету
+let colorBets = {
+    green: 0,
+    red: 0,
+    blue: 0,
+    yellow: 0,
+    gold: 0
+};
 
-// Начальный список последних транзакций
+// Начальный список транзакций
 let transactions = [
     { type: 'deposit', method: 'CryptoBot', icon: '🤖', amount: 50.00, date: 'Сегодня, 14:20', status: 'success' },
     { type: 'withdraw', method: 'xRocket', icon: '🚀', amount: 20.00, date: 'Вчера, 18:05', status: 'success' },
@@ -199,7 +206,7 @@ function openWheel() {
     updateNav("games");
     updateBalance();
     drawWheel();
-    renderColorButtons();
+    renderColorBetCards();
 }
 
 function openBalance(mode = "deposit") {
@@ -287,84 +294,105 @@ function drawWheel() {
 }
 
 /* =========================
-   МУЛЬТИ-СТАВКИ И СТАВКА
+   УПРАВЛЕНИЕ СТАВКАМИ КОЛЕСА
 ========================= */
 
-function toggleBetColor(color) {
-    if (wheelSpinning) return;
+function renderColorBetCards() {
+    const container = document.getElementById('colorBetsList');
+    if (!container) return;
 
-    if (selectedColors.has(color)) {
-        if (selectedColors.size > 1) selectedColors.delete(color);
-    } else {
-        selectedColors.add(color);
-    }
+    container.innerHTML = Object.keys(COLOR_CONFIG).map(key => {
+        const cfg = COLOR_CONFIG[key];
+        const val = colorBets[key] > 0 ? colorBets[key] : '';
+        const isActive = colorBets[key] > 0;
 
-    renderColorButtons();
+        return `
+            <div class="color-bet-card ${isActive ? 'active' : ''}" id="card-${key}">
+                <div class="card-top">
+                    <div class="card-title">
+                        <span class="color-indicator" style="background: ${cfg.color};"></span>
+                        <span>${cfg.name} (${cfg.label})</span>
+                    </div>
+                    <div class="card-input-wrap">
+                        <input type="number" 
+                               id="input-${key}" 
+                               placeholder="0" 
+                               min="0" 
+                               step="any" 
+                               value="${val}" 
+                               oninput="onColorInput('${key}', this.value)">
+                        <span style="color:#666; font-size:12px; margin-left:4px;">$</span>
+                    </div>
+                </div>
+                <div class="card-percent-btns">
+                    <button class="pct-btn" onclick="applyPercent('${key}', 0.10)">10%</button>
+                    <button class="pct-btn" onclick="applyPercent('${key}', 0.25)">25%</button>
+                    <button class="pct-btn" onclick="applyPercent('${key}', 0.50)">50%</button>
+                    <button class="pct-btn" onclick="applyPercent('${key}', 1.00)">100%</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
     updateTotalBet();
 }
 
-function renderColorButtons() {
-    const buttons = document.querySelectorAll('.color-btn');
-    buttons.forEach(btn => {
-        const c = btn.getAttribute('data-color');
-        if (selectedColors.has(c)) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
+function onColorInput(color, val) {
+    let parsed = parseFloat(val);
+    if (isNaN(parsed) || parsed <= 0) {
+        colorBets[color] = 0;
+    } else {
+        colorBets[color] = parsed;
+    }
+
+    const card = document.getElementById(`card-${color}`);
+    if (card) {
+        if (colorBets[color] > 0) card.classList.add('active');
+        else card.classList.remove('active');
+    }
+
+    updateTotalBet();
+}
+
+function applyPercent(color, pct) {
+    if (wheelSpinning) return;
+    const amount = Math.floor(currentBalance * pct * 100) / 100;
+    colorBets[color] = amount;
+
+    const input = document.getElementById(`input-${color}`);
+    if (input) input.value = amount > 0 ? amount : '';
+
+    const card = document.getElementById(`card-${color}`);
+    if (card) {
+        if (amount > 0) card.classList.add('active');
+        else card.classList.remove('active');
+    }
+
+    updateTotalBet();
 }
 
 function updateTotalBet() {
-    const betInput = document.getElementById('betInput');
     const totalInfo = document.getElementById('totalBetInfo');
-    if (!betInput || !totalInfo) return;
+    let totalSum = 0;
+    Object.values(colorBets).forEach(val => totalSum += val);
 
-    const baseBet = parseFloat(betInput.value) || 0;
-    const totalBet = baseBet * selectedColors.size;
-    totalInfo.textContent = `Общая ставка (${selectedColors.size} цв.): ${totalBet.toFixed(2)} $`;
+    if (totalInfo) {
+        totalInfo.textContent = `Общая ставка: ${totalSum.toFixed(2)} $`;
+    }
 }
 
-function adjustBet(type) {
-    if (wheelSpinning) return;
-    const input = document.getElementById('betInput');
-    if (!input) return;
-
-    let currentBet = parseFloat(input.value) || 0;
-
-    switch(type) {
-        case 'min': currentBet = 1; break;
-        case 'half': currentBet = Math.max(1, Math.floor(currentBet / 2)); break;
-        case 'x2': currentBet *= 2; break;
-        case 'max': currentBet = Math.floor(currentBalance / selectedColors.size); break;
-    }
-
-    if (currentBet * selectedColors.size > currentBalance) {
-        currentBet = Math.floor(currentBalance / selectedColors.size);
-    }
-    if (currentBet < 1) currentBet = 1;
-
-    input.value = currentBet;
-    updateTotalBet();
-}
+/* =========================
+   ЛОГИКА ВРАЩЕНИЯ КОЛЕСА
+========================= */
 
 async function spinWheel() {
     if (wheelSpinning) return;
 
-    const betInput = document.getElementById('betInput');
-    const button = document.getElementById('spinButton');
-    const result = document.getElementById('wheelResult');
-    const resultValue = document.getElementById('resultValue');
-    const wheelSvg = document.getElementById('wheelSvg');
-    const wheelStage = document.querySelector('.wheel-stage');
+    let totalBet = 0;
+    Object.values(colorBets).forEach(v => totalBet += v);
 
-    if (!betInput || !button || !wheelSvg) return;
-
-    const baseBet = parseFloat(betInput.value);
-    const totalBet = baseBet * selectedColors.size;
-
-    if (isNaN(baseBet) || baseBet < 1) {
-        showMessage("Минимальная ставка: 1 $");
+    if (totalBet <= 0) {
+        showMessage("Укажите сумму хотя бы на один цвет!");
         return;
     }
 
@@ -373,12 +401,20 @@ async function spinWheel() {
         return;
     }
 
+    const button = document.getElementById('spinButton');
+    const result = document.getElementById('wheelResult');
+    const resultValue = document.getElementById('resultValue');
+    const wheelSvg = document.getElementById('wheelSvg');
+    const wheelStage = document.querySelector('.wheel-stage');
+
+    if (!button || !wheelSvg) return;
+
     button.disabled = true;
     currentBalance -= totalBet;
     updateBalance();
 
     wheelSpinning = true;
-    button.innerHTML = '↻ Вращение...';
+    button.innerHTML = '<span>↻ Вращение...</span>';
 
     if (result) result.classList.remove('show');
     if (resultValue) resultValue.textContent = '?';
@@ -387,8 +423,12 @@ async function spinWheel() {
     const totalSectors = sectors.length;
     const sectorAngle = 360 / totalSectors;
 
-    const targetCenter = (rewardIndex * sectorAngle) + (sectorAngle / 2);
-    const stopAngle = 360 - targetCenter;
+    // Случайное смещение остановки стрелки внутри сектора
+    const padding = 0.15; 
+    const randomOffset = (Math.random() * (1 - 2 * padding) + padding) * sectorAngle;
+
+    const targetAngleInSector = (rewardIndex * sectorAngle) + randomOffset;
+    const stopAngle = 360 - targetAngleInSector;
 
     const fullSpins = 6;
     wheelRotation += fullSpins * 360 + (stopAngle - (wheelRotation % 360));
@@ -402,15 +442,16 @@ async function spinWheel() {
     setTimeout(() => {
         wheelSpinning = false;
         button.disabled = false;
-        button.innerHTML = '↻ Сделать ставку';
+        button.innerHTML = '<span>↻ Сделать ставку</span>';
 
         if (wheelStage) wheelStage.classList.remove('zoomed');
 
         const wonSector = sectors[rewardIndex];
-        
+        const betOnWonColor = colorBets[wonSector.type] || 0;
+
         let totalWin = 0;
-        if (selectedColors.has(wonSector.type)) {
-            totalWin = baseBet * wonSector.mult;
+        if (betOnWonColor > 0) {
+            totalWin = betOnWonColor * wonSector.mult;
             currentBalance += totalWin;
             updateBalance();
         }
@@ -518,7 +559,6 @@ function demoBalanceAction() {
         currentBalance += amount;
         updateBalance();
 
-        // Добавляем запись в историю транзакций
         transactions.unshift({
             type: 'deposit',
             method: selectedMethod,
@@ -541,7 +581,6 @@ function demoBalanceAction() {
     currentBalance -= amount;
     updateBalance();
 
-    // Добавляем запись в историю транзакций
     transactions.unshift({
         type: 'withdraw',
         method: selectedMethod,
@@ -576,9 +615,4 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBalance();
     renderTransactions();
     goHome();
-
-    const betInput = document.getElementById('betInput');
-    if (betInput) {
-        betInput.addEventListener('input', updateTotalBet);
-    }
 });
