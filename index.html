@@ -65,7 +65,7 @@
         </section>
 
         <section class="games-section" id="gamesListSection">
-            <div class="section-title"><h2>Игры</h2></div>
+            <div class="section-title"><h2>Иигры</h2></div>
             <div class="games">
                 <button class="game" onclick="showMessage('Игра «Куб» пока в разработке')">
                     <div class="game-image"><div class="game-glow"></div><span class="game-emoji">🎲</span></div>
@@ -172,13 +172,13 @@
             </button>
         </section>
 
-        <section class="wheel-rewards">
+        <section class="wheel-rewards" style="margin-top: 20px;">
             <div class="section-title"><h2>Сектора</h2></div>
-            <div class="reward-list" id="rewardList"></div>
+            <div class="reward-list" id="rewardList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;"></div>
         </section>
     </main>
 
-    <!-- ==================== БАЛАНС (ТОЧНО КАК НА СКРИНШОТЕ) ==================== -->
+    <!-- ==================== БАЛАНС ==================== -->
     <main id="balancePage" class="balance-page hidden">
         <div class="page-header">
             <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
@@ -246,7 +246,7 @@
         </section>
     </main>
 
-    <!-- ==================== ПРОФИЛЬ (ТОЧНО КАК НА СКРИНШОТЕ) ==================== -->
+    <!-- ==================== ПРОФИЛЬ ==================== -->
     <main id="profilePage" class="profile-page hidden">
         <section class="profile-header-card">
             <div class="profile-avatar-wrapper">
@@ -310,7 +310,7 @@
             <h2>Ежедневный бонус</h2>
             <p class="wheel-subtitle">Заходите каждый день и получайте бесплатные средства!</p>
             <div style="font-size: 60px; margin: 20px 0;">🎁</div>
-            <button class="spin-button" onclick="claimBonus()">Забрать бонус</button>
+            <button class="main-action-btn" onclick="claimBonus()">Забрать бонус</button>
         </section>
     </main>
 
