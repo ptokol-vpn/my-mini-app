@@ -60,7 +60,7 @@
                     <small>Баланс</small>
 
                     <span id="topBalance">
-                        125.50 $
+                        1000.00 $
                     </span>
                 </div>
 
@@ -288,7 +288,7 @@
             </h2>
 
             <p class="wheel-subtitle">
-                Испытай удачу и получи случайную награду
+                Делай ставку, крути колесо и забирай множитель!
             </p>
 
 
@@ -311,13 +311,10 @@
 
                     <div class="wheel-ring"></div>
 
-                    <div class="wheel"
-                         id="wheel">
+                    <svg class="wheel-svg" id="wheelSvg" viewBox="0 0 300 300"></svg>
 
-                        <div class="wheel-center">
-                            <span>WXS</span>
-                        </div>
-
+                    <div class="wheel-center">
+                        <span>WXS</span>
                     </div>
 
                 </div>
@@ -341,6 +338,25 @@
             </div>
 
 
+            <!-- ПАНЕЛЬ СТАВКИ -->
+
+            <div class="bet-controls">
+                <div class="bet-label">
+                    <span>Сумма ставки</span>
+                    <span id="betBalanceText">Баланс: 1000.00 $</span>
+                </div>
+                <div class="bet-input-wrapper">
+                    <input type="number" id="betInput" value="10" min="1" step="1">
+                    <div class="bet-quick-btns">
+                        <button class="bet-btn" onclick="adjustBet('min')">MIN</button>
+                        <button class="bet-btn" onclick="adjustBet('half')">1/2</button>
+                        <button class="bet-btn" onclick="adjustBet('x2')">x2</button>
+                        <button class="bet-btn" onclick="adjustBet('max')">MAX</button>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- КНОПКА -->
 
             <button class="spin-button"
@@ -361,7 +377,7 @@
         </section>
 
 
-        <!-- СПИСОК НАГРАД -->
+        <!-- СПИСОК НАГРАД / СЕКТОРОВ -->
 
         <section class="wheel-rewards">
 
@@ -369,7 +385,42 @@
                 <h2>Сектора</h2>
             </div>
 
-            <div class="reward-list">
+            <div class="reward-list" id="rewardList">
+                <!-- Заполняется динамически из JS -->
+            </div>
 
-                <div class="reward-item">
-                    <span>⭐
+        </section>
+
+    </main>
+
+    <!-- НИЖНЕЕ МЕНЮ -->
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="goHome()">
+            <span class="nav-icon">🏠</span>
+            <small>Главная</small>
+        </button>
+        <button class="nav-item" onclick="openWheel()">
+            <span class="nav-icon">🎡</span>
+            <small>Колесо</small>
+        </button>
+        <button class="nav-item" onclick="openBalance('deposit')">
+            <span class="nav-icon">💳</span>
+            <small>Баланс</small>
+        </button>
+        <button class="nav-item" onclick="openBonus()">
+            <span class="nav-icon">🎁</span>
+            <small>Бонус</small>
+        </button>
+        <button class="nav-item" onclick="openProfile()">
+            <span class="nav-icon">👤</span>
+            <small>Профиль</small>
+        </button>
+    </nav>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
