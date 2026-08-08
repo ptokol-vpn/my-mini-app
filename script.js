@@ -16,21 +16,56 @@ let balanceMode = "deposit";
 let selectedMethod = "CryptoBot";
 let selectedMethodIcon = "🤖";
 
+let selectedColor = 'green'; // Выбранный цвет по умолчанию
+
 
 /* =========================
-   МАТЕМАТИКА КОЛЕСА (RTP ~92%)
+   КОЛЕСО НА 32 СЕКЦИИ (DREAM BONANZA MATH)
 ========================= */
 
-// Сектора с коэффициентами, цветами и весами (чем выше weight, тем чаще шанс выпадения)
+// Конфигурация типов секторов
+const COLOR_CONFIG = {
+    green:  { label: '1x',  mult: 1,  color: '#2ecc71', name: 'Зеленый', weight: 52 },
+    red:    { label: '2x',  mult: 2,  color: '#e74c3c', name: 'Красный', weight: 28 },
+    blue:   { label: '3x',  mult: 3,  color: '#3498db', name: 'Синий',   weight: 12 },
+    yellow: { label: '5x',  mult: 5,  color: '#f1c40f', name: 'Желтый',  weight: 6 },
+    gold:   { label: '50x', mult: 50, color: '#ffd700', name: 'Золото',  weight: 2 }
+};
+
+// Генерация 32 секторов с динамическим распределением
 const sectors = [
-    { label: '0.0x', mult: 0.0, color: '#1e1e1e', icon: '💀', weight: 35 },
-    { label: '0.2x', mult: 0.2, color: '#322514', icon: '📉', weight: 25 },
-    { label: '0.5x', mult: 0.5, color: '#4a3311', icon: '🔸', weight: 18 },
-    { label: '1.2x', mult: 1.2, color: '#7a4e06', icon: '🔥', weight: 10 },
-    { label: '2.0x', mult: 2.0, color: '#a86800', icon: '⚡', weight: 6 },
-    { label: '5.0x', mult: 5.0, color: '#d48200', icon: '🎁', weight: 3.5 },
-    { label: '10.0x', mult: 10.0, color: '#ff9d00', icon: '💎', weight: 2 },
-    { label: '50.0x', mult: 50.0, color: '#ffd700', icon: '⭐', weight: 0.5 }
+    { type: 'gold',   ...COLOR_CONFIG.gold },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'blue',   ...COLOR_CONFIG.blue },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red },
+    { type: 'yellow', ...COLOR_CONFIG.yellow },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'blue',   ...COLOR_CONFIG.blue },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'yellow', ...COLOR_CONFIG.yellow },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'blue',   ...COLOR_CONFIG.blue },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'yellow', ...COLOR_CONFIG.yellow },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'blue',   ...COLOR_CONFIG.blue },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red },
+    { type: 'green',  ...COLOR_CONFIG.green },
+    { type: 'red',    ...COLOR_CONFIG.red }
 ];
 
 let wheelRotation = 0;
@@ -166,7 +201,7 @@ function updateNav(active) {
 
 
 /* =========================
-   ОТРИСОВКА SVG-КОЛЕСА
+   ОТРИСОВКА SVG (32 СЕКЦИИ)
 ========================= */
 
 function drawWheel() {
@@ -181,7 +216,6 @@ function drawWheel() {
     const center = 150;
 
     let svgContent = '';
-    let rewardsHtml = '';
 
     sectors.forEach((sector, i) => {
         const startAngle = i * sliceAngle - 90;
@@ -195,33 +229,46 @@ function drawWheel() {
         const pathData = `M ${center} ${center} L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
 
         const textAngle = startAngle + sliceAngle / 2;
-        const textRadius = radius * 0.68;
+        const textRadius = radius * 0.75;
         const textX = center + textRadius * Math.cos((Math.PI * textAngle) / 180);
         const textY = center + textRadius * Math.sin((Math.PI * textAngle) / 180);
 
         svgContent += `
             <path d="${pathData}" fill="${sector.color}" class="wheel-sector" />
-            <text x="${textX}" y="${textY}" class="wheel-sector-text" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">
+            <text x="${textX}" y="${textY}" class="wheel-sector-text" style="font-size: 8px;" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">
                 ${sector.label}
             </text>
-        `;
-
-        rewardsHtml += `
-            <div class="reward-item">
-                <span>${sector.icon}</span>
-                <b>Множитель ${sector.label}</b>
-            </div>
         `;
     });
 
     wheelSvg.innerHTML = svgContent;
-    if (rewardList) rewardList.innerHTML = rewardsHtml;
+
+    if (rewardList) {
+        rewardList.innerHTML = Object.keys(COLOR_CONFIG).map(key => {
+            const cfg = COLOR_CONFIG[key];
+            return `
+                <div class="reward-item">
+                    <span style="background:${cfg.color}; width:18px; height:18px; border-radius:50%;"></span>
+                    <b>${cfg.name} (${cfg.label})</b>
+                </div>
+            `;
+        }).join('');
+    }
 }
 
 
 /* =========================
-   ПАНЕЛЬ СТАВОК
+   УПРАВЛЕНИЕ СТАВКАМИ
 ========================= */
+
+function selectBetColor(color) {
+    if (wheelSpinning) return;
+    selectedColor = color;
+
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-color') === color);
+    });
+}
 
 function adjustBet(type) {
     if (wheelSpinning) return;
@@ -254,20 +301,27 @@ function adjustBet(type) {
 
 
 /* =========================
-   ВРАЩЕНИЕ КОЛЕСА
+   ВРАЩЕНИЕ И ПРИБЛИЖЕНИЕ
 ========================= */
 
 function getRandomSectorIndex() {
-    const totalWeight = sectors.reduce((sum, sector) => sum + sector.weight, 0);
+    const totalWeight = Object.values(COLOR_CONFIG).reduce((sum, cfg) => sum + cfg.weight, 0);
     let randomNum = Math.random() * totalWeight;
 
-    for (let i = 0; i < sectors.length; i++) {
-        if (randomNum < sectors[i].weight) {
-            return i;
+    let chosenType = 'green';
+    for (const [type, cfg] of Object.entries(COLOR_CONFIG)) {
+        if (randomNum < cfg.weight) {
+            chosenType = type;
+            break;
         }
-        randomNum -= sectors[i].weight;
+        randomNum -= cfg.weight;
     }
-    return 0;
+
+    const matchingIndices = sectors
+        .map((s, index) => s.type === chosenType ? index : -1)
+        .filter(index => index !== -1);
+
+    return matchingIndices[Math.floor(Math.random() * matchingIndices.length)];
 }
 
 function spinWheel() {
@@ -278,6 +332,7 @@ function spinWheel() {
     const result = document.getElementById('wheelResult');
     const resultValue = document.getElementById('resultValue');
     const wheelSvg = document.getElementById('wheelSvg');
+    const wheelStage = document.querySelector('.wheel-stage');
 
     if (!betInput || !button || !wheelSvg) return;
 
@@ -304,44 +359,60 @@ function spinWheel() {
     if (result) result.classList.remove('show');
     if (resultValue) resultValue.textContent = '?';
 
-    // Случайный сектор по вероятности
+    // Случайный сектор
     const rewardIndex = getRandomSectorIndex();
     const totalSectors = sectors.length;
     const sectorAngle = 360 / totalSectors;
 
-    // Расчет угла остановки под стрелку вверху
     const targetCenter = (rewardIndex * sectorAngle) + (sectorAngle / 2);
     const stopAngle = 360 - targetCenter;
 
-    const fullSpins = 5 + Math.floor(Math.random() * 2);
+    const fullSpins = 6;
     wheelRotation += fullSpins * 360 + (stopAngle - (wheelRotation % 360));
 
     wheelSvg.style.transform = `rotate(${wheelRotation}deg)`;
 
+    // ЭФФЕКТ ПРИБЛИЖЕНИЯ КАМЕРЫ (за 1.8 сек до конца)
+    setTimeout(() => {
+        if (wheelStage) wheelStage.classList.add('zoomed');
+    }, 3200);
+
+    // ОКОНЧАНИЕ ВРАЩЕНИЯ (Через 5 секунд)
     setTimeout(() => {
         wheelSpinning = false;
         button.disabled = false;
         button.innerHTML = '<span class="spin-icon">↻</span> Крутить колесо';
 
-        const wonSector = sectors[rewardIndex];
-        const winAmount = betAmount * wonSector.mult;
+        // Возвращаем камеру назад
+        if (wheelStage) wheelStage.classList.remove('zoomed');
 
-        // Зачисление выигрыша
-        currentBalance += winAmount;
-        updateBalance();
+        const wonSector = sectors[rewardIndex];
+        const isWin = wonSector.type === selectedColor;
+
+        let winAmount = 0;
+        if (isWin) {
+            winAmount = betAmount * wonSector.mult;
+            currentBalance += winAmount;
+            updateBalance();
+        }
 
         if (resultValue) {
-            resultValue.textContent = `${winAmount.toFixed(2)} $ (${wonSector.label})`;
+            if (isWin) {
+                resultValue.textContent = `Победа +${winAmount.toFixed(2)} $ (${wonSector.label})`;
+                resultValue.style.color = '#2ecc71';
+            } else {
+                resultValue.textContent = `Выпал ${wonSector.name} (${wonSector.label})`;
+                resultValue.style.color = '#e74c3c';
+            }
         }
 
         if (result) result.classList.add('show');
 
-        // Виброотклик Telegram
         if (tg?.HapticFeedback) {
-            tg.HapticFeedback.notificationOccurred(wonSector.mult > 0 ? "success" : "warning");
+            tg.HapticFeedback.notificationOccurred(isWin ? "success" : "error");
         }
 
-    }, 4500);
+    }, 5000);
 }
 
 
