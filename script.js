@@ -256,8 +256,13 @@ function adjustMinesBet(factor) {
     if (minesGame.active) return;
     const input = document.getElementById('minesBetInput');
     if (!input) return;
-    let current = parseFloat(input.value) || 0;
-    current = Math.max(0.10, current * factor);
+    
+    let current = parseFloat(input.value);
+    if (isNaN(current) || current <= 0) {
+        current = 0.10;
+    } else {
+        current = Math.max(0.10, current * factor);
+    }
     input.value = current.toFixed(2);
 }
 
