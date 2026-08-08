@@ -1,4 +1,4 @@
-const tg = window.Telegram?.WebApp;;
+const tg = window.Telegram?.WebApp;
 
 if (tg) {
     tg.ready();
@@ -150,6 +150,7 @@ function showPage(id) {
 function goHome() {
     showPage("homePage");
     updateNav("home");
+    loadTelegramUser();
 }
 
 function openGamesMenu() {
@@ -171,6 +172,7 @@ function openWheel() {
     showPage("wheelPage");
     updateNav("games");
     updateBalance();
+    loadTelegramUser(); // Обновление данных юзера при входе в игру
     drawWheel();
     renderColorTabs();
     selectColorTab(activeColor);
