@@ -1,52 +1,46 @@
-<!DOCTYPE html><html lang="ru"><head>
+<!DOCTYPE html><html lang="ru">
+<head>
     <meta charset="UTF-8"><meta name="viewport"
       content="width=device-width,
                initial-scale=1.0,
                maximum-scale=1.0,
                user-scalable=no">
 
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#090909">
 
 <title>WXS Game</title>
 
-<!-- Telegram Mini App -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <link rel="stylesheet" href="style.css">
 
-</head><body><div class="app"><!-- =================================
-     ВЕРХНИЙ ПРОФИЛЬ
-================================== -->
+</head><body><div class="app"><!-- =========================================
+     ГЛАВНАЯ
+========================================== -->
 
-<header class="top">
+<main id="homePage" class="page active">
 
-    <!-- Профиль -->
+    <!-- ВЕРХНИЙ ПРОФИЛЬ -->
 
-    <div class="profile-card">
+    <header class="top">
 
-        <div class="avatar-frame">
+        <div class="profile-card">
 
-            <div class="avatar" id="avatar">
-                👤
+            <div class="avatar-frame">
+                <div class="avatar" id="topAvatar">
+                    👤
+                </div>
             </div>
 
-        </div>
+            <div class="profile-info">
 
-        <div class="profile-info">
+                <div class="username" id="topUsername">
+                    Игрок
+                </div>
 
-            <div class="username" id="username">
-                Игрок
-            </div>
-
-            <div class="telegram-username" id="telegramUsername">
-                @username
-            </div>
-
-            <div class="profile-level">
-
-                <span>
+                <div class="level">
                     Уровень 1
-                </span>
+                </div>
 
                 <div class="level-line">
                     <div></div>
@@ -56,308 +50,353 @@
 
         </div>
 
-    </div>
 
+        <!-- БАЛАНС -->
 
-    <!-- Баланс -->
+        <div class="balance">
 
-    <div class="balance">
+            <div class="balance-info">
 
-        <div class="balance-info">
+                <small>Баланс</small>
 
-            <small>
-                БАЛАНС
-            </small>
+                <span id="balance">
+                    0.00 $
+                </span>
 
-            <span id="balance">
-                0.00 $
-            </span>
+            </div>
+
+            <button
+                class="balance-add"
+                onclick="deposit()">
+                +
+            </button>
 
         </div>
 
-        <button
-            class="balance-add"
-            onclick="deposit()">
+    </header>
 
-            +
 
+    <!-- БАННЕР -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-small">
+                ДОБРО ПОЖАЛОВАТЬ
+            </div>
+
+            <h1>
+                Играй и<br>
+                <span>зарабатывай!</span>
+            </h1>
+
+            <p>
+                Больше игр —<br>
+                больше наград
+            </p>
+
+            <button
+                class="bonus-button"
+                onclick="openBonus()">
+
+                <span>🎁</span>
+                Ежедневный бонус
+
+            </button>
+
+        </div>
+
+        <div class="money-orb">
+
+            <div class="money-ring"></div>
+
+            <span>$</span>
+
+        </div>
+
+    </section>
+
+
+    <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
+
+    <section class="quick-actions">
+
+        <button class="action" onclick="deposit()">
+            <div class="action-icon">💰</div>
+            <b>Пополнить</b>
+            <small>Баланс</small>
         </button>
 
-    </div>
+        <button class="action" onclick="withdraw()">
+            <div class="action-icon">💸</div>
+            <b>Вывести</b>
+            <small>Средства</small>
+        </button>
 
-</header>
+        <button class="action" onclick="openVip()">
+            <div class="action-icon">👑</div>
+            <b>VIP</b>
+            <small>Статус</small>
+        </button>
+
+        <button class="action" onclick="openTasks()">
+            <div class="action-icon">📋</div>
+            <b>Задания</b>
+            <small>Награды</small>
+        </button>
+
+    </section>
 
 
-<!-- =================================
-     БАННЕР
-================================== -->
+    <!-- ИГРЫ -->
 
-<section class="hero">
+    <section class="games-section">
 
-    <div class="hero-glow"></div>
-
-    <div class="hero-content">
-
-        <div class="hero-small">
-            ДОБРО ПОЖАЛОВАТЬ
+        <div class="section-title">
+            <h2>Игры</h2>
         </div>
 
-        <h1>
-            Играй и<br>
-            <span>зарабатывай!</span>
+        <div class="games">
+
+            <button
+                class="game"
+                onclick="openGame('cube')">
+
+                <div class="game-image cube">
+
+                    <div class="game-glow"></div>
+
+                    <span class="game-emoji">
+                        🎲
+                    </span>
+
+                </div>
+
+                <div class="game-name">
+                    Куб
+                </div>
+
+                <div class="game-description">
+                    Испытай удачу
+                </div>
+
+            </button>
+
+
+            <button
+                class="game"
+                onclick="openGame('mines')">
+
+                <div class="game-image mines">
+
+                    <div class="game-glow"></div>
+
+                    <span class="game-emoji">
+                        💣
+                    </span>
+
+                </div>
+
+                <div class="game-name">
+                    Мины
+                </div>
+
+                <div class="game-description">
+                    Найди безопасные клетки
+                </div>
+
+            </button>
+
+
+            <button
+                class="game"
+                onclick="openGame('wheel')">
+
+                <div class="game-image wheel">
+
+                    <div class="game-glow"></div>
+
+                    <span class="game-emoji">
+                        🎡
+                    </span>
+
+                </div>
+
+                <div class="game-name">
+                    Колесо
+                </div>
+
+                <div class="game-description">
+                    Крути и выигрывай
+                </div>
+
+            </button>
+
+
+            <button
+                class="game"
+                onclick="openGame('crash')">
+
+                <div class="game-image crash">
+
+                    <div class="game-glow"></div>
+
+                    <span class="game-emoji">
+                        🚀
+                    </span>
+
+                </div>
+
+                <div class="game-name">
+                    Краш
+                </div>
+
+                <div class="game-description">
+                    Забери вовремя
+                </div>
+
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================
+     ПРОФИЛЬ
+========================================== -->
+
+<main id="profilePage" class="page profile-page">
+
+    <div class="profile-header">
+
+        <div class="profile-avatar-frame">
+
+            <div class="profile-avatar" id="profileAvatar">
+                👤
+            </div>
+
+        </div>
+
+        <h1 id="profileName">
+            Игрок
         </h1>
 
-        <p>
-            Больше игр —<br>
-            больше наград
-        </p>
+        <div class="profile-username" id="profileUsername">
+            @username
+        </div>
 
-        <button
-            class="bonus-button"
-            onclick="openBonus()">
-
-            <span>🎁</span>
-
-            Ежедневный бонус
-
-        </button>
+        <div class="profile-level">
+            Уровень 1
+        </div>
 
     </div>
 
 
-    <div class="money-orb">
+    <!-- СТАТИСТИКА -->
 
-        <div class="money-ring"></div>
+    <section class="stats-section">
 
-        <span>$</span>
+        <div class="stats-grid">
 
-    </div>
+            <div class="stat-card">
 
-</section>
-
-
-<!-- =================================
-     БЫСТРЫЕ ДЕЙСТВИЯ
-================================== -->
-
-<section class="quick-actions">
-
-    <button
-        class="action"
-        onclick="deposit()">
-
-        <div class="action-icon">
-            💰
-        </div>
-
-        <b>
-            Пополнить
-        </b>
-
-        <small>
-            Баланс
-        </small>
-
-    </button>
-
-
-    <button
-        class="action"
-        onclick="withdraw()">
-
-        <div class="action-icon">
-            💸
-        </div>
-
-        <b>
-            Вывести
-        </b>
-
-        <small>
-            Средства
-        </small>
-
-    </button>
-
-
-    <button
-        class="action"
-        onclick="openVip()">
-
-        <div class="action-icon">
-            👑
-        </div>
-
-        <b>
-            VIP
-        </b>
-
-        <small>
-            Статус
-        </small>
-
-    </button>
-
-
-    <button
-        class="action"
-        onclick="openTasks()">
-
-        <div class="action-icon">
-            📋
-        </div>
-
-        <b>
-            Задания
-        </b>
-
-        <small>
-            Награды
-        </small>
-
-    </button>
-
-</section>
-
-
-<!-- =================================
-     ИГРЫ
-================================== -->
-
-<section class="games-section">
-
-    <div class="section-title">
-
-        <h2>
-            Игры
-        </h2>
-
-    </div>
-
-
-    <div class="games">
-
-        <!-- КУБ -->
-
-        <button
-            class="game"
-            onclick="openGame('cube')">
-
-            <div class="game-image cube">
-
-                <div class="game-glow"></div>
-
-                <span class="game-emoji">
-                    🎲
+                <span>
+                    Оборот
                 </span>
 
+                <strong id="turnover">
+                    0.00 $
+                </strong>
+
             </div>
 
-            <div class="game-name">
-                Куб
-            </div>
 
-            <div class="game-description">
-                Испытай удачу
-            </div>
+            <div class="stat-card">
 
-        </button>
-
-
-        <!-- МИНЫ -->
-
-        <button
-            class="game"
-            onclick="openGame('mines')">
-
-            <div class="game-image mines">
-
-                <div class="game-glow"></div>
-
-                <span class="game-emoji">
-                    💣
+                <span>
+                    Макс. коэффициент
                 </span>
 
+                <strong id="maxCoefficient">
+                    0.00x
+                </strong>
+
             </div>
 
-            <div class="game-name">
-                Мины
-            </div>
 
-            <div class="game-description">
-                Найди безопасные клетки
-            </div>
+            <div class="stat-card">
 
-        </button>
-
-
-        <!-- КОЛЕСО -->
-
-        <button
-            class="game"
-            onclick="openGame('wheel')">
-
-            <div class="game-image wheel">
-
-                <div class="game-glow"></div>
-
-                <span class="game-emoji">
-                    🎡
+                <span>
+                    Общий выигрыш
                 </span>
 
+                <strong id="totalWin">
+                    0.00 $
+                </strong>
+
             </div>
 
-            <div class="game-name">
-                Колесо
-            </div>
 
-            <div class="game-description">
-                Крути и выигрывай
-            </div>
+            <div class="stat-card">
 
-        </button>
-
-
-        <!-- КРАШ -->
-
-        <button
-            class="game"
-            onclick="openGame('crash')">
-
-            <div class="game-image crash">
-
-                <div class="game-glow"></div>
-
-                <span class="game-emoji">
-                    🚀
+                <span>
+                    Кол-во ставок
                 </span>
 
+                <strong id="betsCount">
+                    0
+                </strong>
+
             </div>
 
-            <div class="game-name">
-                Краш
-            </div>
+        </div>
 
-            <div class="game-description">
-                Забери вовремя
-            </div>
-
-        </button>
-
-    </div>
-
-</section>
+    </section>
 
 
-<!-- =================================
+    <!-- ДОПОЛНИТЕЛЬНАЯ КАРТОЧКА -->
+
+    <section class="profile-info-card">
+
+        <div class="profile-info-row">
+
+            <span>Статус</span>
+
+            <b>
+                Обычный игрок
+            </b>
+
+        </div>
+
+        <div class="profile-info-row">
+
+            <span>Баланс</span>
+
+            <b id="profileBalance">
+                0.00 $
+            </b>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================
      НИЖНЕЕ МЕНЮ
-================================== -->
+========================================== -->
 
 <nav class="bottom-nav">
 
     <button
         class="nav-item active"
-        onclick="goHome()">
+        id="navHome"
+        onclick="showPage('home')">
 
         <span class="nav-icon">
             🏠
@@ -372,6 +411,7 @@
 
     <button
         class="nav-item"
+        id="navGames"
         onclick="openAllGames()">
 
         <span class="nav-icon">
@@ -387,6 +427,7 @@
 
     <button
         class="nav-item"
+        id="navBalance"
         onclick="openBalance()">
 
         <span class="nav-icon">
@@ -402,6 +443,7 @@
 
     <button
         class="nav-item"
+        id="navBonus"
         onclick="openBonus()">
 
         <span class="nav-icon">
@@ -417,7 +459,8 @@
 
     <button
         class="nav-item"
-        onclick="openProfile()">
+        id="navProfile"
+        onclick="showPage('profile')">
 
         <span class="nav-icon">
             👤
@@ -431,64 +474,66 @@
 
 </nav>
 
-</div><!-- =================================
-     TELEGRAM
-================================== --><script>
+</div><script>
 
 const tg = window.Telegram?.WebApp;
 
 if (tg) {
 
     tg.ready();
-
     tg.expand();
 
-    const user =
-        tg.initDataUnsafe?.user;
+    const user = tg.initDataUnsafe?.user;
 
     if (user) {
 
-        const username =
-            document.getElementById("username");
-
-        const telegramUsername =
-            document.getElementById("telegramUsername");
-
-        const avatar =
-            document.getElementById("avatar");
-
-
-        /* Имя */
-
-        username.textContent =
+        const firstName =
             user.first_name ||
+            user.username ||
             "Игрок";
 
+        const username =
+            user.username
+                ? "@" + user.username
+                : "Telegram";
 
-        /* Username */
 
-        if (user.username) {
+        /* Верхний профиль */
 
-            telegramUsername.textContent =
-                "@" + user.username;
+        document.getElementById(
+            "topUsername"
+        ).textContent = firstName;
 
-        } else {
 
-            telegramUsername.textContent =
-                "Telegram";
+        /* Большой профиль */
 
-        }
+        document.getElementById(
+            "profileName"
+        ).textContent = firstName;
+
+
+        document.getElementById(
+            "profileUsername"
+        ).textContent = username;
 
 
         /* Аватар */
 
         if (user.photo_url) {
 
-            avatar.innerHTML = `
+            const avatarHTML = `
                 <img
                     src="${user.photo_url}"
                     alt="avatar">
             `;
+
+            document.getElementById(
+                "topAvatar"
+            ).innerHTML = avatarHTML;
+
+            document.getElementById(
+                "profileAvatar"
+            ).innerHTML = avatarHTML;
 
         }
 
@@ -496,4 +541,111 @@ if (tg) {
 
 }
 
-</script><!-- Твой JS --><script src="script.js"></script></body></html>
+
+/* =========================================
+   ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
+========================================= */
+
+function showPage(page) {
+
+    const home =
+        document.getElementById("homePage");
+
+    const profile =
+        document.getElementById("profilePage");
+
+
+    home.classList.remove("active");
+    profile.classList.remove("active");
+
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(item => {
+
+            item.classList.remove("active");
+
+        });
+
+
+    if (page === "profile") {
+
+        profile.classList.add("active");
+
+        document
+            .getElementById("navProfile")
+            .classList.add("active");
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    } else {
+
+        home.classList.add("active");
+
+        document
+            .getElementById("navHome")
+            .classList.add("active");
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+}
+
+
+/* =========================================
+   ВРЕМЕННЫЕ КНОПКИ
+========================================= */
+
+function deposit() {
+    alert("Пополнение баланса");
+}
+
+function withdraw() {
+    alert("Вывод средств");
+}
+
+function openVip() {
+    alert("VIP");
+}
+
+function openTasks() {
+    alert("Задания");
+}
+
+function openBonus() {
+    alert("Ежедневный бонус");
+}
+
+function openGame(game) {
+    alert("Игра: " + game);
+}
+
+function openAllGames() {
+
+    document
+        .getElementById("navGames")
+        .classList.add("active");
+
+    alert("Раздел игр");
+
+}
+
+function openBalance() {
+
+    document
+        .getElementById("navBalance")
+        .classList.add("active");
+
+    alert("Баланс");
+
+}
+
+</script><script src="script.js"></script></body>
+</html>
