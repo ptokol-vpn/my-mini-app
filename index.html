@@ -91,7 +91,6 @@
         </section>
     </main>
 
-    <!-- ==================== КОЛЕСО ==================== -->
 <!-- ==================== КОЛЕСО ==================== -->
 <main id="wheelPage" class="wheel-page hidden">
     <div class="page-header">
@@ -102,14 +101,16 @@
 
     <section class="wheel-card">
         <h2>Колесо Фортуны</h2>
-        <p class="wheel-subtitle">Задай сумму ставки для нужных цветов и крути!</p>
+        <p class="wheel-subtitle">Выберите цвет, укажите сумму и испытайте удачу!</p>
 
         <div class="wheel-stage">
             <div class="wheel-pointer">
                 <div class="pointer-tip"></div>
             </div>
-            <!-- Объемная золотая рамка -->
+            
+            <!-- Роскошная 3D золотая окантовка -->
             <div class="wheel-gold-frame">
+                <div class="gold-bezel-glow"></div>
                 <div class="wheel-outer">
                     <svg class="wheel-svg" id="wheelSvg" viewBox="0 0 300 300"></svg>
                     <div class="wheel-center">
@@ -124,15 +125,40 @@
             <strong id="resultValue">?</strong>
         </div>
 
-        <!-- Раздельные панели ставок под каждый цвет -->
+        <!-- Переключатель цветов в 1 строку и единая клавиатура ставок -->
         <div class="wheel-bet-panels">
             <div class="bet-panel-header">
-                <span>Ставки по секторам</span>
+                <span>Выберите цвет ставки</span>
                 <span id="betBalanceText">Баланс: 125.50 $</span>
             </div>
 
-            <div class="color-bets-list" id="colorBetsList">
-                <!-- Генерируется автоматически скриптом -->
+            <!-- 1 строка с выбором цвета -->
+            <div class="color-tabs-row" id="colorTabsRow">
+                <!-- Генерируется скриптом -->
+            </div>
+
+            <!-- Поле ввода и быстрые кнопки для ВЫБРАННОГО цвета -->
+            <div class="active-bet-box" id="activeBetBox">
+                <div class="card-top">
+                    <div class="card-title" id="activeColorTitle">
+                        <!-- Название активного цвета -->
+                    </div>
+                    <div class="card-input-wrap">
+                        <input type="number" 
+                               id="activeBetInput" 
+                               placeholder="0" 
+                               min="0" 
+                               step="any" 
+                               oninput="onActiveColorInput(this.value)">
+                        <span style="color:#666; font-size:14px; margin-left:4px;">$</span>
+                    </div>
+                </div>
+                <div class="card-percent-btns">
+                    <button class="pct-btn" onclick="applyPercentToActive(0.10)">10%</button>
+                    <button class="pct-btn" onclick="applyPercentToActive(0.25)">25%</button>
+                    <button class="pct-btn" onclick="applyPercentToActive(0.50)">50%</button>
+                    <button class="pct-btn" onclick="applyPercentToActive(1.00)">100%</button>
+                </div>
             </div>
 
             <div class="total-bet-info" id="totalBetInfo">Общая ставка: 0.00 $</div>
@@ -148,6 +174,7 @@
         <div class="reward-list" id="rewardList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;"></div>
     </section>
 </main>
+
 
     <!-- ==================== БАЛАНС ==================== -->
     <main id="balancePage" class="balance-page hidden">
