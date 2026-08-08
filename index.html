@@ -103,7 +103,6 @@
             <h2>Колесо Фортуны</h2>
             <p class="wheel-subtitle">Выбери один или несколько цветов и делай ставки!</p>
 
-            <!-- ОБЛАСТЬ КОЛЕСА -->
             <div class="wheel-stage">
                 <div class="wheel-pointer">
                     <div class="pointer-tip"></div>
@@ -117,13 +116,11 @@
                 </div>
             </div>
 
-            <!-- РЕЗУЛЬТАТ -->
             <div class="wheel-result" id="wheelResult">
                 <span class="result-small">РЕЗУЛЬТАТ</span>
                 <strong id="resultValue">?</strong>
             </div>
 
-            <!-- ПАНЕЛЬ МУЛЬТИ-СТАВОК -->
             <div class="bet-controls">
                 <div class="bet-label">
                     <span>Выберите ставки</span>
@@ -178,6 +175,93 @@
         <section class="wheel-rewards">
             <div class="section-title"><h2>Сектора</h2></div>
             <div class="reward-list" id="rewardList"></div>
+        </section>
+    </main>
+
+    <!-- ==================== БАЛАНС ==================== -->
+    <main id="balancePage" class="balance-page hidden">
+        <div class="page-header">
+            <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
+            <h1>Управление балансом</h1>
+            <div class="header-space"></div>
+        </div>
+
+        <section class="wheel-card">
+            <div class="balance-tabs">
+                <button class="tab-btn active" id="depositTab" onclick="setBalanceMode('deposit')">Пополнение</button>
+                <button class="tab-btn" id="withdrawTab" onclick="setBalanceMode('withdraw')">Вывод</button>
+            </div>
+
+            <h2 id="formTitle">Пополнение баланса</h2>
+            <p class="wheel-subtitle" id="formSubtitle">Выберите удобный способ пополнения</p>
+
+            <div class="bet-controls" style="margin-top: 20px;">
+                <div class="bet-label">Способ оплаты</div>
+                <div class="custom-select" onclick="toggleMethods()">
+                    <div class="select-selected">
+                        <span id="selectedMethodIcon">🤖</span>
+                        <span id="selectedMethod">CryptoBot</span>
+                        <span class="arrow" id="methodArrow">▼</span>
+                    </div>
+                    <div class="select-items" id="methodsDropdown">
+                        <div onclick="selectMethod('CryptoBot', '🤖')">🤖 CryptoBot</div>
+                        <div onclick="selectMethod('xRocket', '🚀')">🚀 xRocket</div>
+                        <div onclick="selectMethod('TON Wallet', '💎')">💎 TON Wallet</div>
+                        <div onclick="selectMethod('Bank Card', '💳')">💳 Банковская карта</div>
+                    </div>
+                </div>
+
+                <div class="bet-label" style="margin-top: 10px;">Сумма ($)</div>
+                <div class="bet-input-wrapper">
+                    <input type="number" id="amountInput" value="50" min="1">
+                </div>
+            </div>
+
+            <button class="spin-button" id="balanceAction" onclick="demoBalanceAction()">
+                Пополнить
+            </button>
+        </section>
+    </main>
+
+    <!-- ==================== ПРОФИЛЬ ==================== -->
+    <main id="profilePage" class="profile-page hidden">
+        <div class="page-header">
+            <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
+            <h1>Профиль</h1>
+            <div class="header-space"></div>
+        </div>
+
+        <section class="wheel-card" style="text-align: center;">
+            <div class="profile-big-avatar-frame" style="width: 90px; height: 90px; margin: 0 auto 15px; border-radius: 50%; padding: 4px;">
+                <div class="profile-big-avatar" id="profileAvatar">👤</div>
+            </div>
+            <h2 id="profileName">Игрок</h2>
+            <p class="wheel-subtitle" id="profileUsername">@username</p>
+
+            <div class="bet-controls" style="margin-top: 20px;">
+                <div class="bet-label">Баланс счета</div>
+                <div style="font-size: 24px; font-weight: 900; color: #ffd21c;" id="profileBalance">1000.00 $</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== БОНУС ==================== -->
+    <main id="bonusPage" class="bonus-page hidden">
+        <div class="page-header">
+            <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
+            <h1>Бонусы</h1>
+            <div class="header-space"></div>
+        </div>
+
+        <section class="wheel-card">
+            <h2>Ежедневный бонус</h2>
+            <p class="wheel-subtitle">Заходите каждый день и получайте бесплатные средства!</p>
+            
+            <div style="font-size: 60px; margin: 20px 0;">🎁</div>
+
+            <button class="spin-button" onclick="claimBonus()">
+                Забрать бонус
+            </button>
         </section>
     </main>
 
