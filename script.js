@@ -152,6 +152,23 @@ function goHome() {
     updateNav("home");
 }
 
+function openGamesMenu() {
+    const homePage = document.getElementById('homePage');
+    const gamesSection = document.getElementById('gamesListSection');
+
+    // Если закрыта главная страница — переходим на главную
+    if (homePage && homePage.classList.contains('hidden')) {
+        showPage("homePage");
+    }
+
+    updateNav("games");
+
+    // Плавный скролл к блоку со списком игр
+    if (gamesSection) {
+        gamesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
 function openWheel() {
     showPage("wheelPage");
     updateNav("games");
