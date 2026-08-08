@@ -1,20 +1,31 @@
-<!DOCTYPE html><html lang="ru">
+<!DOCTYPE html>
+<html lang="ru">
+
 <head>
-    <meta charset="UTF-8"><meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+    <meta charset="UTF-8">
 
-<meta name="theme-color" content="#090909">
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
 
-<title>WXS Game</title>
+    <meta name="theme-color" content="#090909">
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>WXS Game</title>
 
-<link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-</head><body><div class="app"><main id="homePage">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- ==================== ГЛАВНАЯ ==================== -->
+
+<main id="homePage">
 
     <header class="top">
 
@@ -43,6 +54,7 @@
             </div>
 
         </div>
+
 
         <div class="balance">
 
@@ -95,6 +107,7 @@
             </button>
 
         </div>
+
 
         <div class="money-orb">
 
@@ -159,11 +172,14 @@
     </section>
 
 
+    <!-- ==================== ИГРЫ ==================== -->
+
     <section class="games-section">
 
         <div class="section-title">
             <h2>Игры</h2>
         </div>
+
 
         <div class="games">
 
@@ -178,7 +194,9 @@
 
                 </div>
 
-                <div class="game-name">Куб</div>
+                <div class="game-name">
+                    Куб
+                </div>
 
                 <div class="game-description">
                     Испытай удачу
@@ -198,7 +216,9 @@
 
                 </div>
 
-                <div class="game-name">Мины</div>
+                <div class="game-name">
+                    Мины
+                </div>
 
                 <div class="game-description">
                     Найди безопасные клетки
@@ -207,8 +227,10 @@
             </button>
 
 
+            <!-- НОВОЕ КОЛЕСО -->
+
             <button class="game"
-                    onclick="showMessage('Игра «Колесо» пока в разработке')">
+                    onclick="openWheel()">
 
                 <div class="game-image wheel">
 
@@ -218,10 +240,12 @@
 
                 </div>
 
-                <div class="game-name">Колесо</div>
+                <div class="game-name">
+                    Колесо
+                </div>
 
                 <div class="game-description">
-                    Крути и выигрывай
+                    Крути колесо
                 </div>
 
             </button>
@@ -238,7 +262,9 @@
 
                 </div>
 
-                <div class="game-name">Краш</div>
+                <div class="game-name">
+                    Краш
+                </div>
 
                 <div class="game-description">
                     Забери вовремя
@@ -253,6 +279,88 @@
 </main>
 
 
+<!-- ==================== КОЛЕСО ==================== -->
+
+<main id="wheelPage"
+     class="wheel-page hidden">
+
+    <div class="page-header">
+
+        <button
+            class="back-button"
+            aria-label="Назад"
+            onclick="goHome()">
+        </button>
+
+        <h1>
+            Колесо
+        </h1>
+
+        <div class="header-space"></div>
+
+    </div>
+
+
+    <section class="wheel-card">
+
+        <div class="wheel-subtitle">
+            ДЕМО-РЕЖИМ
+        </div>
+
+        <h2>
+            Колесо удачи
+        </h2>
+
+        <p>
+            Крути колесо и получай случайный результат
+        </p>
+
+
+        <div class="wheel-wrapper">
+
+            <div class="wheel-pointer">
+                ▼
+            </div>
+
+
+            <div
+                class="wheel"
+                id="wheel">
+
+                <div class="wheel-center">
+                    🎡
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="wheel-result"
+            id="wheelResult">
+
+            Нажми «Крутить»
+
+        </div>
+
+
+        <button
+            class="spin-button"
+            id="spinButton"
+            onclick="spinWheel()">
+
+            🎡 Крутить колесо
+
+        </button>
+
+    </section>
+
+</main>
+
+
+<!-- ==================== БАЛАНС ==================== -->
+
 <main id="balancePage"
       class="balance-page hidden">
 
@@ -264,7 +372,9 @@
             onclick="goHome()">
         </button>
 
-        <h1>Баланс</h1>
+        <h1>
+            Баланс
+        </h1>
 
         <div class="header-space"></div>
 
@@ -277,8 +387,11 @@
             ТЕКУЩИЙ БАЛАНС
         </div>
 
-        <div class="big-balance" id="bigBalance">
+        <div class="big-balance"
+             id="bigBalance">
+
             125.50 $
+
         </div>
 
         <div class="balance-card-glow"></div>
@@ -314,13 +427,20 @@
 
     <section class="balance-form">
 
-        <div class="form-title" id="formTitle">
+        <div class="form-title"
+             id="formTitle">
+
             Пополнение баланса
+
         </div>
 
-        <div class="form-subtitle" id="formSubtitle">
+        <div class="form-subtitle"
+             id="formSubtitle">
+
             Выберите удобный способ пополнения
+
         </div>
+
 
         <div class="field-label">
             Метод
@@ -336,7 +456,9 @@
                 <div
                     class="method-icon"
                     id="selectedMethodIcon">
+
                     🤖
+
                 </div>
 
                 <div>
@@ -344,7 +466,9 @@
                     <div
                         class="method-name"
                         id="selectedMethod">
+
                         CryptoBot
+
                     </div>
 
                     <div class="method-desc">
@@ -355,10 +479,13 @@
 
             </div>
 
+
             <span
                 class="select-arrow"
                 id="methodArrow">
+
                 ▼
+
             </span>
 
         </button>
@@ -438,9 +565,13 @@
 
         <div class="transactions-header">
 
-            <h2>История операций</h2>
+            <h2>
+                История операций
+            </h2>
 
-            <span>Все</span>
+            <span>
+                Все
+            </span>
 
         </div>
 
@@ -492,58 +623,14 @@
 
             </div>
 
-
-            <div class="transaction">
-
-                <div class="transaction-icon deposit">
-                    ↓
-                </div>
-
-                <div class="transaction-info">
-
-                    <b>Пополнение</b>
-
-                    <small>
-                        xRocket • Вчера, 20:18
-                    </small>
-
-                </div>
-
-                <div class="transaction-amount positive">
-                    +25.00 $
-                </div>
-
-            </div>
-
-
-            <div class="transaction">
-
-                <div class="transaction-icon withdraw">
-                    ↑
-                </div>
-
-                <div class="transaction-info">
-
-                    <b>Вывод</b>
-
-                    <small>
-                        CryptoBot • Вчера, 18:03
-                    </small>
-
-                </div>
-
-                <div class="transaction-amount negative">
-                    -12.50 $
-                </div>
-
-            </div>
-
         </div>
 
     </section>
 
 </main>
 
+
+<!-- ==================== ПРОФИЛЬ ==================== -->
 
 <main id="profilePage"
       class="profile-page hidden">
@@ -556,7 +643,9 @@
             onclick="goHome()">
         </button>
 
-        <h1>Профиль</h1>
+        <h1>
+            Профиль
+        </h1>
 
         <div class="header-space"></div>
 
@@ -570,7 +659,9 @@
             <div
                 class="profile-big-avatar"
                 id="profileAvatar">
+
                 👤
+
             </div>
 
         </div>
@@ -579,14 +670,18 @@
         <div
             class="profile-big-name"
             id="profileName">
+
             Игрок
+
         </div>
 
 
         <div
             class="profile-username"
             id="profileUsername">
+
             @player
+
         </div>
 
 
@@ -594,9 +689,13 @@
 
             <div class="profile-level-top">
 
-                <span>Уровень 1</span>
+                <span>
+                    Уровень 1
+                </span>
 
-                <span>52%</span>
+                <span>
+                    52%
+                </span>
 
             </div>
 
@@ -613,9 +712,13 @@
 
         <div class="stat-card">
 
-            <div class="stat-icon">💰</div>
+            <div class="stat-icon">
+                💰
+            </div>
 
-            <div class="stat-value">$0.00</div>
+            <div class="stat-value">
+                $0.00
+            </div>
 
             <div class="stat-name">
                 Оборот
@@ -626,9 +729,13 @@
 
         <div class="stat-card">
 
-            <div class="stat-icon">📈</div>
+            <div class="stat-icon">
+                📈
+            </div>
 
-            <div class="stat-value">x0.00</div>
+            <div class="stat-value">
+                x0.00
+            </div>
 
             <div class="stat-name">
                 Макс. коэффициент
@@ -639,9 +746,13 @@
 
         <div class="stat-card">
 
-            <div class="stat-icon">🏆</div>
+            <div class="stat-icon">
+                🏆
+            </div>
 
-            <div class="stat-value">$0.00</div>
+            <div class="stat-value">
+                $0.00
+            </div>
 
             <div class="stat-name">
                 Общий выигрыш
@@ -652,12 +763,16 @@
 
         <div class="stat-card">
 
-            <div class="stat-icon">🎯</div>
+            <div class="stat-icon">
+                🎯
+            </div>
 
-            <div class="stat-value">0</div>
+            <div class="stat-value">
+                0
+            </div>
 
             <div class="stat-name">
-                Кол-во ставок
+                Кол-во игр
             </div>
 
         </div>
@@ -669,13 +784,16 @@
 
         <div>
 
-            <small>Текущий баланс</small>
+            <small>
+                Текущий баланс
+            </small>
 
             <strong id="profileBalance">
                 125.50 $
             </strong>
 
         </div>
+
 
         <button onclick="openBalance('deposit')">
             Пополнить
@@ -685,6 +803,8 @@
 
 </main>
 
+
+<!-- ==================== БОНУСЫ ==================== -->
 
 <main id="bonusPage"
       class="bonus-page hidden">
@@ -697,7 +817,9 @@
             onclick="goHome()">
         </button>
 
-        <h1>Бонусы</h1>
+        <h1>
+            Бонусы
+        </h1>
 
         <div class="header-space"></div>
 
@@ -731,6 +853,8 @@
 </main>
 
 
+<!-- ==================== НИЖНЕЕ МЕНЮ ==================== -->
+
 <nav class="bottom-nav">
 
     <button
@@ -738,9 +862,13 @@
         id="homeNav"
         onclick="goHome()">
 
-        <span class="nav-icon">🏠</span>
+        <span class="nav-icon">
+            🏠
+        </span>
 
-        <small>Главная</small>
+        <small>
+            Главная
+        </small>
 
     </button>
 
@@ -750,9 +878,13 @@
         id="gamesNav"
         onclick="openGames()">
 
-        <span class="nav-icon">🎮</span>
+        <span class="nav-icon">
+            🎮
+        </span>
 
-        <small>Игры</small>
+        <small>
+            Игры
+        </small>
 
     </button>
 
@@ -762,9 +894,13 @@
         id="balanceNav"
         onclick="openBalance()">
 
-        <span class="nav-icon">💰</span>
+        <span class="nav-icon">
+            💰
+        </span>
 
-        <small>Баланс</small>
+        <small>
+            Баланс
+        </small>
 
     </button>
 
@@ -774,9 +910,13 @@
         id="bonusNav"
         onclick="openBonus()">
 
-        <span class="nav-icon">🎁</span>
+        <span class="nav-icon">
+            🎁
+        </span>
 
-        <small>Бонусы</small>
+        <small>
+            Бонусы
+        </small>
 
     </button>
 
@@ -786,13 +926,135 @@
         id="profileNav"
         onclick="openProfile()">
 
-        <span class="nav-icon">👤</span>
+        <span class="nav-icon">
+            👤
+        </span>
 
-        <small>Профиль</small>
+        <small>
+            Профиль
+        </small>
 
     </button>
 
 </nav>
 
-</div><script src="script.js"></script></body>
+</div>
+
+
+<script src="script.js"></script>
+
+
+<!-- ==================== КОД КОЛЕСА ==================== -->
+
+<script>
+
+let wheelRotation = 0;
+let wheelSpinning = false;
+
+
+function openWheel() {
+
+    hideAllPages();
+
+    const page =
+        document.getElementById("wheelPage");
+
+    if (page) {
+        page.classList.remove("hidden");
+    }
+
+    updateNav("games");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+function spinWheel() {
+
+    if (wheelSpinning) {
+        return;
+    }
+
+    const wheel =
+        document.getElementById("wheel");
+
+    const result =
+        document.getElementById("wheelResult");
+
+    const button =
+        document.getElementById("spinButton");
+
+    if (!wheel) {
+        return;
+    }
+
+
+    wheelSpinning = true;
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = "⏳ Крутится...";
+    }
+
+
+    const results = [
+        "⭐ Звезда",
+        "🔥 Огонь",
+        "💎 Алмаз",
+        "🌙 Луна",
+        "⚡ Молния",
+        "🍀 Удача",
+        "🎁 Подарок",
+        "🚀 Ракета"
+    ];
+
+
+    const randomResult =
+        results[
+            Math.floor(
+                Math.random() * results.length
+            )
+        ];
+
+
+    const extraRotation =
+        1440 +
+        Math.floor(
+            Math.random() * 360
+        );
+
+
+    wheelRotation += extraRotation;
+
+
+    wheel.style.transform =
+        `rotate(${wheelRotation}deg)`;
+
+
+    setTimeout(() => {
+
+        if (result) {
+            result.textContent =
+                randomResult;
+        }
+
+        if (button) {
+            button.disabled = false;
+            button.textContent =
+                "🎡 Крутить колесо";
+        }
+
+        wheelSpinning = false;
+
+    }, 4200);
+
+}
+
+</script>
+
+</body>
 </html>
