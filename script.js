@@ -249,30 +249,42 @@ function drawWheel() {
    ТАБЫ ЦВЕТОВ И СТАВКИ
 ========================= */
 
+// 1. Отрисовка табов с индикатором того, что на цвет уже сделана ставка
 function renderColorTabs() {
     const row = document.getElementById('colorTabsRow');
     if (!row) return;
 
     row.innerHTML = Object.keys(COLOR_CONFIG).map(key => {
         const cfg = COLOR_CONFIG[key];
+        const hasBet = colorBets[key] > 0;
+        
         return `
             <div class="color-tab-btn ${key === activeColor ? 'active' : ''}" 
                  id="tab-${key}" 
                  onclick="selectColorTab('${key}')">
                 <span class="tab-indicator" style="background: ${cfg.color};"></span>
                 <span class="tab-name">${cfg.name}</span>
-                <span class="tab-mult">${cfg.label}</span>
+                <span class="tab-mult" id="tab-val-${key}">
+                    ${hasBet ? colorBets[key] + ' $' : cfg.label}
+                </span>
             </div>
         `;
     }).join('');
 }
 
+// 2. Переключение табов без сброса предыдущих ставок
 function selectColorTab(color) {
     if (wheelSpinning) return;
 
+    // Сохраняем введенное значение из текущего поля перед переключением
+    const currentInput = document.getElementById('activeBetInput');
+    if (currentInput) {
+        onActiveColorInput(currentInput.value);
+    }
+
     activeColor = color;
 
-    // Обновляем визуальный выбор таба
+    // Обновляем визуальный класс табов
     document.querySelectorAll('.color-tab-btn').forEach(btn => btn.classList.remove('active'));
     const currentTab = document.getElementById(`tab-${color}`);
     if (currentTab) currentTab.classList.add('active');
@@ -287,16 +299,16 @@ function selectColorTab(color) {
         `;
     }
 
-    // Загружаем ранее сохраненное значение
-    const input = document.getElementById('activeBetInput');
-    if (input) {
+    // Загружаем сохраненную ставку именно для ЭТОГО цвета
+    if (currentInput) {
         const savedVal = colorBets[color];
-        input.value = savedVal > 0 ? savedVal : '';
+        currentInput.value = savedVal > 0 ? savedVal : '';
     }
 
     updateTotalBet();
 }
 
+// 3. Обработка ввода суммы
 function onActiveColorInput(val) {
     let parsed = parseFloat(val);
     if (isNaN(parsed) || parsed <= 0) {
@@ -305,24 +317,53 @@ function onActiveColorInput(val) {
         colorBets[activeColor] = parsed;
     }
 
+    // Обновляем текст на кнопке таба (показываем сумму или x-множитель)
+    const tabVal = document.getElementById(`tab-val-${activeColor}`);
+    if (tabVal) {
+        const cfg = COLOR_CONFIG[activeColor];
+        tabVal.textContent = colorBets[activeColor] > 0 ? `${colorBets[activeColor]} $` : cfg.label;
+    }
+
     updateTotalBet();
 }
 
+// 4. Быстрые проценты для выбранного цвета
 function applyPercentToActive(pct) {
     if (wheelSpinning) return;
-    const amount = Math.floor(currentBalance * pct * 100) / 100;
+
+    // Считаем доступный остаток баланса за вычетом ставок на ДРУГИЕ цвета
+    let otherBetsSum = 0;
+    Object.keys(colorBets).forEach(key => {
+        if (key !== activeColor) otherBetsSum += colorBets[key];
+    });
+
+    const availableBalance = currentBalance - otherBetsSum;
+    if (availableBalance <= 0) return;
+
+    const amount = Math.floor(availableBalance * pct * 100) / 100;
     colorBets[activeColor] = amount;
 
     const input = document.getElementById('activeBetInput');
     if (input) input.value = amount > 0 ? amount : '';
 
+    // Обновляем подпись в табе
+    const tabVal = document.getElementById(`tab-val-${activeColor}`);
+    if (tabVal) {
+        const cfg = COLOR_CONFIG[activeColor];
+        tabVal.textContent = amount > 0 ? `${amount} $` : cfg.label;
+    }
+
     updateTotalBet();
 }
 
+// 5. Расчет суммарной ставки со всех выбранных цветов
 function updateTotalBet() {
     const totalInfo = document.getElementById('totalBetInfo');
     let totalSum = 0;
-    Object.values(colorBets).forEach(val => totalSum += val);
+    
+    Object.values(colorBets).forEach(val => {
+        totalSum += val;
+    });
 
     if (totalInfo) {
         totalInfo.textContent = `Общая ставка: ${totalSum.toFixed(2)} $`;
