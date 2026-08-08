@@ -77,104 +77,12 @@
                     <div class="game-name">Мины</div>
                     <div class="game-description">Найди безопасные клетки</div>
                 </button>
-                <button class="game" onclick="openWheel()">
-                    <div class="game-image wheel"><div class="game-glow"></div><span class="game-emoji">🎡</span></div>
-                    <div class="game-name">Колесо</div>
-                    <div class="game-description">Крути и получай награду</div>
-                </button>
                 <button class="game" onclick="showMessage('Игра «Краш» пока в разработке')">
                     <div class="game-image crash"><div class="game-glow"></div><span class="game-emoji">🚀</span></div>
                     <div class="game-name">Краш</div>
                     <div class="game-description">Забери вовремя</div>
                 </button>
             </div>
-        </section>
-    </main>
-
-    <!-- ==================== КОЛЕСО ==================== -->
-    <main id="wheelPage" class="wheel-page hidden">
-        <div class="page-header">
-            <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
-            <h1>Колесо</h1>
-            <div class="header-space"></div>
-        </div>
-
-        <section class="wheel-card">
-            <h2>Колесо Фортуны</h2>
-            <p class="wheel-subtitle">Выбери один или несколько цветов и делай ставки!</p>
-
-            <div class="wheel-stage">
-                <div class="wheel-pointer">
-                    <div class="pointer-tip"></div>
-                </div>
-                <div class="wheel-outer">
-                    <div class="wheel-ring"></div>
-                    <svg class="wheel-svg" id="wheelSvg" viewBox="0 0 300 300"></svg>
-                    <div class="wheel-center">
-                        <span>WXS</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="wheel-result" id="wheelResult">
-                <span class="result-small">РЕЗУЛЬТАТ</span>
-                <strong id="resultValue">?</strong>
-            </div>
-
-            <div class="bet-controls">
-                <div class="bet-label">
-                    <span>Выберите ставки</span>
-                    <span id="betBalanceText">Баланс: 1000.00 $</span>
-                </div>
-
-                <div class="color-selector">
-                    <button class="color-btn active" data-color="green" onclick="toggleBetColor('green')">
-                        <div class="color-box"></div>
-                        <span>1x</span>
-                        <small>Зеленый</small>
-                    </button>
-                    <button class="color-btn" data-color="red" onclick="toggleBetColor('red')">
-                        <div class="color-box"></div>
-                        <span>2x</span>
-                        <small>Красный</small>
-                    </button>
-                    <button class="color-btn" data-color="blue" onclick="toggleBetColor('blue')">
-                        <div class="color-box"></div>
-                        <span>3x</span>
-                        <small>Синий</small>
-                    </button>
-                    <button class="color-btn" data-color="yellow" onclick="toggleBetColor('yellow')">
-                        <div class="color-box"></div>
-                        <span>5x</span>
-                        <small>Желтый</small>
-                    </button>
-                    <button class="color-btn" data-color="gold" onclick="toggleBetColor('gold')">
-                        <div class="color-box"></div>
-                        <span>50x</span>
-                        <small>Золото</small>
-                    </button>
-                </div>
-
-                <div class="bet-input-wrapper">
-                    <input type="number" id="betInput" value="10" min="1" step="1">
-                    <div class="bet-quick-btns">
-                        <button class="bet-btn" onclick="adjustBet('min')">MIN</button>
-                        <button class="bet-btn" onclick="adjustBet('half')">1/2</button>
-                        <button class="bet-btn" onclick="adjustBet('x2')">x2</button>
-                        <button class="bet-btn" onclick="adjustBet('max')">MAX</button>
-                    </div>
-                </div>
-                <div class="total-bet-info" id="totalBetInfo">Общая ставка: 10.00 $</div>
-            </div>
-
-            <button class="spin-button" id="spinButton" onclick="spinWheel()">
-                <span class="spin-icon">↻</span> Сделать ставку
-            </button>
-        </section>
-
-        <section class="wheel-rewards">
-            <div class="section-title"><h2>Сектора</h2></div>
-            <div class="reward-list" id="rewardList"></div>
         </section>
     </main>
 
@@ -265,7 +173,7 @@
         </section>
     </main>
 
-    <!-- НИЖНЕЕ МЕНЮ (НАЗВАНИЕ КНОПКИ "ИГРЫ") -->
+    <!-- НИЖНЕЕ МЕНЮ -->
     <nav class="bottom-nav">
         <button class="nav-item active" id="homeNav" onclick="goHome()">
             <span class="nav-icon">🏠</span><small>Главная</small>
