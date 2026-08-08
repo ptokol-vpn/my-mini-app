@@ -153,13 +153,19 @@
                             <span style="color:#666; font-size:14px; margin-left:4px;">$</span>
                         </div>
                     </div>
-                    <div class="card-percent-btns">
-                        <button class="pct-btn" onclick="applyPercentToActive(0.10)">10%</button>
-                        <button class="pct-btn" onclick="applyPercentToActive(0.25)">25%</button>
-                        <button class="pct-btn" onclick="applyPercentToActive(0.50)">50%</button>
-                        <button class="pct-btn" onclick="applyPercentToActive(1.00)">100%</button>
-                    </div>
-                </div>
+                    <div class="card-percent-btns" style="grid-template-columns: repeat(5, 1fr);">
+    <button class="pct-btn" onclick="applyMinToActive()">MIN</button>
+    <button class="pct-btn" onclick="applyPercentToActive(0.10)">10%</button>
+    <button class="pct-btn" onclick="applyPercentToActive(0.25)">25%</button>
+    <button class="pct-btn" onclick="applyPercentToActive(0.50)">50%</button>
+    <button class="pct-btn" onclick="applyPercentToActive(1.00)">MAX</button>
+</div>
+
+<!-- Кнопка сброса ставки под процентами -->
+<button class="reset-bet-btn" onclick="resetActiveBet()" style="width: 100%; margin-top: 8px; padding: 6px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #888; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s ease;">
+    ✕ Сбросить ставку
+</button>
+
 
                 <div class="total-bet-info" id="totalBetInfo">Общая ставка: 0.00 $</div>
             </div>
