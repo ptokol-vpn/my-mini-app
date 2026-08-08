@@ -3,510 +3,751 @@ const tg = window.Telegram?.WebApp;
 if (tg) {
     tg.ready();
     tg.expand();
-    tg.BackButton.hide();
 }
 
-/* ДАННЫЕ */
+
+/* =========================
+   ДАННЫЕ
+========================= */
 
 let currentBalance = 125.50;
+
 let balanceMode = "deposit";
 
 let selectedMethod = "CryptoBot";
 let selectedMethodIcon = "🤖";
 
-/* TELEGRAM USER */
+
+/* =========================
+   TELEGRAM USER
+========================= */
 
 function loadTelegramUser() {
 
-if (!tg) return;
+    if (!tg) return;
 
-const user = tg.initDataUnsafe?.user;
+    const user = tg.initDataUnsafe?.user;
 
-if (!user) return;
-
-const usernameElement =
-    document.getElementById("username");
-
-const avatarElement =
-    document.getElementById("avatar");
-
-const profileName =
-    document.getElementById("profileName");
-
-const profileUsername =
-    document.getElementById("profileUsername");
-
-const profileAvatar =
-    document.getElementById("profileAvatar");
+    if (!user) return;
 
 
-const name =
-    user.first_name ||
-    user.username ||
-    "Игрок";
+    const usernameElement =
+        document.getElementById("username");
+
+    const avatarElement =
+        document.getElementById("avatar");
+
+    const profileName =
+        document.getElementById("profileName");
+
+    const profileUsername =
+        document.getElementById("profileUsername");
+
+    const profileAvatar =
+        document.getElementById("profileAvatar");
 
 
-if (usernameElement) {
-    usernameElement.textContent = name;
-}
-
-if (profileName) {
-    profileName.textContent = name;
-}
+    const name =
+        user.first_name ||
+        user.username ||
+        "Игрок";
 
 
-if (profileUsername) {
-
-    if (user.username) {
-
-        profileUsername.textContent =
-            "@" + user.username;
-
-    } else {
-
-        profileUsername.textContent =
-            "Telegram пользователь";
-
-    }
-}
-
-
-if (user.photo_url) {
-
-    const imageHTML = `
-        <img
-            src="${user.photo_url}"
-            alt="avatar">
-    `;
-
-    if (avatarElement) {
-        avatarElement.innerHTML = imageHTML;
+    if (usernameElement) {
+        usernameElement.textContent = name;
     }
 
-    if (profileAvatar) {
-        profileAvatar.innerHTML = imageHTML;
+    if (profileName) {
+        profileName.textContent = name;
     }
-}
+
+
+    if (profileUsername) {
+
+        if (user.username) {
+            profileUsername.textContent =
+                "@" + user.username;
+        } else {
+            profileUsername.textContent =
+                "Telegram пользователь";
+        }
+
+    }
+
+
+    if (user.photo_url) {
+
+        const imageHTML = `
+            <img
+                src="${user.photo_url}"
+                alt="avatar">
+        `;
+
+        if (avatarElement) {
+            avatarElement.innerHTML = imageHTML;
+        }
+
+        if (profileAvatar) {
+            profileAvatar.innerHTML = imageHTML;
+        }
+
+    }
 
 }
 
-/* БАЛАНС */
+
+/* =========================
+   БАЛАНС
+========================= */
 
 function updateBalance() {
 
-const value =
-    currentBalance.toFixed(2) + " $";
+    const value =
+        currentBalance.toFixed(2) + " $";
 
 
-const topBalance =
-    document.getElementById("topBalance");
+    const topBalance =
+        document.getElementById("topBalance");
 
-const bigBalance =
-    document.getElementById("bigBalance");
+    const bigBalance =
+        document.getElementById("bigBalance");
 
-const profileBalance =
-    document.getElementById("profileBalance");
+    const profileBalance =
+        document.getElementById("profileBalance");
 
 
-if (topBalance) {
-    topBalance.textContent = value;
+    if (topBalance) {
+        topBalance.textContent = value;
+    }
+
+    if (bigBalance) {
+        bigBalance.textContent = value;
+    }
+
+    if (profileBalance) {
+        profileBalance.textContent = value;
+    }
+
 }
 
-if (bigBalance) {
-    bigBalance.textContent = value;
-}
 
-if (profileBalance) {
-    profileBalance.textContent = value;
-}
-
-}
-
-/* СКРЫТЬ ВСЕ СТРАНИЦЫ */
+/* =========================
+   СТРАНИЦЫ
+========================= */
 
 function hideAllPages() {
 
-const pages = [
-    "homePage",
-    "balancePage",
-    "profilePage",
-    "bonusPage"
-];
+    const pages = [
+        "homePage",
+        "wheelPage",
+        "balancePage",
+        "profilePage",
+        "bonusPage"
+    ];
 
 
-pages.forEach(id => {
+    pages.forEach(id => {
+
+        const page =
+            document.getElementById(id);
+
+        if (page) {
+            page.classList.add("hidden");
+        }
+
+    });
+
+}
+
+
+function showPage(id) {
+
+    hideAllPages();
+
 
     const page =
         document.getElementById(id);
 
+
     if (page) {
-        page.classList.add("hidden");
+        page.classList.remove("hidden");
     }
 
-});
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 
-/* ПОКАЗАТЬ СТРАНИЦУ */
 
-function showPage(id) {
-
-hideAllPages();
-
-
-const page =
-    document.getElementById(id);
-
-
-if (page) {
-    page.classList.remove("hidden");
-}
-
-
-window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-});
-
-}
-
-/* ДОМОЙ */
+/* =========================
+   ГЛАВНАЯ
+========================= */
 
 function goHome() {
 
-showPage("homePage");
+    showPage("homePage");
 
-updateNav("home");
-
-}
-
-/* БАЛАНС */
-
-function openBalance(mode = "deposit") {
-
-showPage("balancePage");
-
-setBalanceMode(mode);
-
-updateNav("balance");
-
-updateBalance();
+    updateNav("home");
 
 }
 
-/* ПРОФИЛЬ */
 
-function openProfile() {
+/* =========================
+   КОЛЕСО
+========================= */
 
-showPage("profilePage");
+function openWheel() {
 
-updateNav("profile");
+    showPage("wheelPage");
 
-updateBalance();
-
-loadTelegramUser();
-
-}
-
-/* БОНУСЫ */
-
-function openBonus() {
-
-showPage("bonusPage");
-
-updateNav("bonus");
+    updateNav("games");
 
 }
 
-/* ИГРЫ */
+
+/*
+    Сектора колеса.
+
+    Это обычные игровые результаты,
+    без денежных ставок.
+*/
+
+const wheelRewards = [
+    "⭐ Большая награда",
+    "🔥 Супер награда",
+    "⚡ Буст",
+    "🎁 Бонус",
+    "💎 Редкая награда",
+    "✨ Маленькая награда"
+];
+
+
+let wheelRotation = 0;
+
+let wheelSpinning = false;
+
+
+/*
+    Вращение колеса.
+
+    Стрелка находится отдельно сверху
+    и НЕ вращается.
+*/
+
+function spinWheel() {
+
+    if (wheelSpinning) return;
+
+
+    const wheel =
+        document.getElementById("wheel");
+
+    const button =
+        document.getElementById("spinButton");
+
+    const result =
+        document.getElementById("wheelResult");
+
+    const resultValue =
+        document.getElementById("resultValue");
+
+
+    if (!wheel || !button) return;
+
+
+    wheelSpinning = true;
+
+
+    button.disabled = true;
+
+    button.innerHTML =
+        '<span class="spin-icon">↻</span> Вращение...';
+
+
+    if (result) {
+        result.classList.remove("show");
+    }
+
+    if (resultValue) {
+        resultValue.textContent = "?";
+    }
+
+
+    /*
+        Случайный сектор.
+    */
+
+    const rewardIndex =
+        Math.floor(
+            Math.random() * wheelRewards.length
+        );
+
+
+    /*
+        Каждый сектор = 60 градусов.
+
+        Добавляем несколько полных оборотов,
+        чтобы вращение выглядело красиво.
+    */
+
+    const sectorSize = 60;
+
+    const fullSpins =
+        5 + Math.floor(Math.random() * 3);
+
+
+    /*
+        Центр выбранного сектора.
+
+        Из-за того, что стрелка сверху,
+        колесо доводим соответствующим образом.
+    */
+
+    const targetAngle =
+        360 -
+        (
+            rewardIndex * sectorSize +
+            sectorSize / 2
+        );
+
+
+    wheelRotation +=
+        fullSpins * 360 +
+        targetAngle;
+
+
+    wheel.style.transition =
+        "transform 5s cubic-bezier(.12,.78,.18,1)";
+
+    wheel.style.transform =
+        `rotate(${wheelRotation}deg)`;
+
+
+    setTimeout(() => {
+
+        wheelSpinning = false;
+
+        button.disabled = false;
+
+        button.innerHTML =
+            '<span class="spin-icon">↻</span> Крутить колесо';
+
+
+        if (resultValue) {
+            resultValue.textContent =
+                wheelRewards[rewardIndex];
+        }
+
+
+        if (result) {
+            result.classList.add("show");
+        }
+
+
+        /*
+            Небольшая вибрация Telegram
+            при наличии этой функции.
+        */
+
+        if (
+            tg &&
+            tg.HapticFeedback
+        ) {
+
+            tg.HapticFeedback.notificationOccurred(
+                "success"
+            );
+
+        }
+
+    }, 5100);
+
+}
+
+
+/* =========================
+   ИГРЫ
+========================= */
 
 function openGames() {
 
-showPage("homePage");
+    showPage("homePage");
 
-updateNav("games");
-
-
-setTimeout(() => {
-
-    const games =
-        document.querySelector(".games-section");
+    updateNav("games");
 
 
-    if (games) {
+    setTimeout(() => {
 
-        games.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+        const games =
+            document.querySelector(".games-section");
 
-    }
 
-}, 50);
+        if (games) {
+
+            games.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }, 50);
 
 }
 
-/* НИЖНЕЕ МЕНЮ */
+
+/* =========================
+   БАЛАНС
+========================= */
+
+function openBalance(mode = "deposit") {
+
+    showPage("balancePage");
+
+    setBalanceMode(mode);
+
+    updateNav("balance");
+
+    updateBalance();
+
+}
+
+
+/* =========================
+   ПРОФИЛЬ
+========================= */
+
+function openProfile() {
+
+    showPage("profilePage");
+
+    updateNav("profile");
+
+    updateBalance();
+
+    loadTelegramUser();
+
+}
+
+
+/* =========================
+   БОНУС
+========================= */
+
+function openBonus() {
+
+    showPage("bonusPage");
+
+    updateNav("bonus");
+
+}
+
+
+/* =========================
+   НИЖНЕЕ МЕНЮ
+========================= */
 
 function updateNav(active) {
 
-const navItems =
-    document.querySelectorAll(".nav-item");
+    const navItems =
+        document.querySelectorAll(".nav-item");
 
 
-navItems.forEach(item => {
-    item.classList.remove("active");
-});
+    navItems.forEach(item => {
+        item.classList.remove("active");
+    });
 
 
-const map = {
+    const map = {
 
-    home: "homeNav",
-    games: "gamesNav",
-    balance: "balanceNav",
-    bonus: "bonusNav",
-    profile: "profileNav"
+        home: "homeNav",
+        games: "gamesNav",
+        balance: "balanceNav",
+        bonus: "bonusNav",
+        profile: "profileNav"
 
-};
-
-
-const activeElement =
-    document.getElementById(map[active]);
+    };
 
 
-if (activeElement) {
-    activeElement.classList.add("active");
+    const activeElement =
+        document.getElementById(
+            map[active]
+        );
+
+
+    if (activeElement) {
+        activeElement.classList.add("active");
+    }
+
 }
 
-}
 
-/* БАЛАНС: ПОПОЛНЕНИЕ / ВЫВОД */
+/* =========================
+   ПОПОЛНЕНИЕ / ВЫВОД
+========================= */
 
 function setBalanceMode(mode) {
 
-balanceMode = mode;
+    balanceMode = mode;
 
 
-const depositTab =
-    document.getElementById("depositTab");
+    const depositTab =
+        document.getElementById("depositTab");
 
-const withdrawTab =
-    document.getElementById("withdrawTab");
+    const withdrawTab =
+        document.getElementById("withdrawTab");
 
-const title =
-    document.getElementById("formTitle");
+    const title =
+        document.getElementById("formTitle");
 
-const subtitle =
-    document.getElementById("formSubtitle");
+    const subtitle =
+        document.getElementById("formSubtitle");
 
-const action =
-    document.getElementById("balanceAction");
+    const action =
+        document.getElementById("balanceAction");
 
 
-if (
-    !depositTab ||
-    !withdrawTab ||
-    !title ||
-    !subtitle ||
-    !action
-) {
-    return;
+    if (
+        !depositTab ||
+        !withdrawTab ||
+        !title ||
+        !subtitle ||
+        !action
+    ) {
+        return;
+    }
+
+
+    depositTab.classList.remove("active");
+    withdrawTab.classList.remove("active");
+
+
+    if (mode === "deposit") {
+
+        depositTab.classList.add("active");
+
+        title.textContent =
+            "Пополнение баланса";
+
+        subtitle.textContent =
+            "Выберите удобный способ пополнения";
+
+        action.textContent =
+            "Пополнить";
+
+    }
+
+
+    if (mode === "withdraw") {
+
+        withdrawTab.classList.add("active");
+
+        title.textContent =
+            "Вывод средств";
+
+        subtitle.textContent =
+            "Выберите способ вывода средств";
+
+        action.textContent =
+            "Вывести";
+
+    }
+
 }
 
 
-depositTab.classList.remove("active");
-withdrawTab.classList.remove("active");
-
-
-if (mode === "deposit") {
-
-    depositTab.classList.add("active");
-
-    title.textContent =
-        "Пополнение баланса";
-
-    subtitle.textContent =
-        "Выберите удобный способ пополнения";
-
-    action.textContent =
-        "Пополнить";
-}
-
-
-if (mode === "withdraw") {
-
-    withdrawTab.classList.add("active");
-
-    title.textContent =
-        "Вывод средств";
-
-    subtitle.textContent =
-        "Выберите способ вывода средств";
-
-    action.textContent =
-        "Вывести";
-}
-
-}
-
-/* МЕТОДЫ ОПЛАТЫ */
+/* =========================
+   МЕТОДЫ
+========================= */
 
 function toggleMethods() {
 
-const dropdown =
-    document.getElementById("methodsDropdown");
+    const dropdown =
+        document.getElementById(
+            "methodsDropdown"
+        );
 
-const arrow =
-    document.getElementById("methodArrow");
-
-
-if (!dropdown) return;
-
-
-dropdown.classList.toggle("open");
+    const arrow =
+        document.getElementById(
+            "methodArrow"
+        );
 
 
-if (dropdown.classList.contains("open")) {
+    if (!dropdown) return;
 
-    if (arrow) {
-        arrow.textContent = "▲";
+
+    dropdown.classList.toggle("open");
+
+
+    if (dropdown.classList.contains("open")) {
+
+        if (arrow) {
+            arrow.textContent = "▲";
+        }
+
+    } else {
+
+        if (arrow) {
+            arrow.textContent = "▼";
+        }
+
     }
 
-} else {
+}
+
+
+function selectMethod(method, icon) {
+
+    selectedMethod = method;
+    selectedMethodIcon = icon;
+
+
+    const selected =
+        document.getElementById(
+            "selectedMethod"
+        );
+
+    const iconElement =
+        document.getElementById(
+            "selectedMethodIcon"
+        );
+
+
+    if (selected) {
+        selected.textContent = method;
+    }
+
+    if (iconElement) {
+        iconElement.textContent = icon;
+    }
+
+
+    const dropdown =
+        document.getElementById(
+            "methodsDropdown"
+        );
+
+    const arrow =
+        document.getElementById(
+            "methodArrow"
+        );
+
+
+    if (dropdown) {
+        dropdown.classList.remove("open");
+    }
 
     if (arrow) {
         arrow.textContent = "▼";
     }
-}
 
 }
 
-function selectMethod(method, icon) {
 
-selectedMethod = method;
-selectedMethodIcon = icon;
-
-
-const selected =
-    document.getElementById("selectedMethod");
-
-const iconElement =
-    document.getElementById(
-        "selectedMethodIcon"
-    );
-
-
-if (selected) {
-    selected.textContent = method;
-}
-
-if (iconElement) {
-    iconElement.textContent = icon;
-}
-
-
-const dropdown =
-    document.getElementById("methodsDropdown");
-
-const arrow =
-    document.getElementById("methodArrow");
-
-
-if (dropdown) {
-    dropdown.classList.remove("open");
-}
-
-if (arrow) {
-    arrow.textContent = "▼";
-}
-
-}
-
-/* ДЕМО БАЛАНСА */
+/* =========================
+   ДЕМО БАЛАНС
+========================= */
 
 function demoBalanceAction() {
 
-const input =
-    document.getElementById("amountInput");
+    const input =
+        document.getElementById(
+            "amountInput"
+        );
 
 
-if (!input) return;
+    if (!input) return;
 
 
-const amount =
-    parseFloat(input.value);
+    const amount =
+        parseFloat(input.value);
 
 
-if (!amount || amount <= 0) {
+    if (!amount || amount <= 0) {
 
-    showMessage("Введите сумму");
+        showMessage("Введите сумму");
 
-    return;
-}
+        return;
+
+    }
 
 
-if (balanceMode === "deposit") {
+    if (balanceMode === "deposit") {
+
+        showMessage(
+            `Демо: пополнение ${amount.toFixed(2)} $ через ${selectedMethod}`
+        );
+
+        return;
+
+    }
+
+
+    if (amount > currentBalance) {
+
+        showMessage("Недостаточно средств");
+
+        return;
+
+    }
+
 
     showMessage(
-        `Демо: пополнение ${amount.toFixed(2)} $ через ${selectedMethod}`
+        `Демо: вывод ${amount.toFixed(2)} $ через ${selectedMethod}`
     );
 
-    return;
 }
 
 
-if (amount > currentBalance) {
-
-    showMessage("Недостаточно средств");
-
-    return;
-}
-
-
-showMessage(
-    `Демо: вывод ${amount.toFixed(2)} $ через ${selectedMethod}`
-);
-
-}
-
-/* БОНУС */
+/* =========================
+   БОНУС
+========================= */
 
 function claimBonus() {
 
-showMessage(
-    "Демо: ежедневный бонус пока не подключён"
-);
+    showMessage(
+        "Демо: ежедневный бонус пока не подключён"
+    );
 
 }
 
-/* УВЕДОМЛЕНИЯ */
+
+/* =========================
+   УВЕДОМЛЕНИЯ
+========================= */
 
 function showMessage(text) {
 
-if (tg?.showAlert) {
+    if (tg?.showAlert) {
 
-    tg.showAlert(text);
+        tg.showAlert(text);
 
-    return;
+        return;
+
+    }
+
+
+    alert(text);
+
 }
 
 
-alert(text);
-
-}
-
-/* ЗАПУСК */
+/* =========================
+   ЗАПУСК
+========================= */
 
 document.addEventListener(
-"DOMContentLoaded",
-() => {
+    "DOMContentLoaded",
+    () => {
 
-    loadTelegramUser();
+        loadTelegramUser();
 
-    updateBalance();
+        updateBalance();
 
-    goHome();
+        goHome();
 
-}
-
+    }
 );
