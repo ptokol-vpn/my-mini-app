@@ -12,29 +12,30 @@
 
 <div class="app">
 
+    <!-- ==================== ЕДИНАЯ ВЕРХНЯЯ ШАПКА (ВИДНА ВЕЗДЕ) ==================== -->
+    <header class="top">
+        <div class="profile-card" onclick="openProfile()">
+            <div class="avatar-frame">
+                <div class="avatar" id="avatar">👤</div>
+            </div>
+            <div class="profile-info">
+                <div class="username" id="username">Игрок</div>
+                <div class="level">Уровень 1</div>
+                <div class="level-line"><div id="homeLevelBar" style="width: 52%;"></div></div>
+            </div>
+        </div>
+        <div class="balance">
+            <div class="balance-info">
+                <small>Баланс</small>
+                <span id="topBalance">125.50 $</span>
+            </div>
+            <button class="balance-add" onclick="openBalance('deposit')">+</button>
+        </div>
+    </header>
+
     <!-- ==================== ГЛАВНАЯ ==================== -->
     <main id="homePage">
-        <header class="top">
-            <div class="profile-card" onclick="openProfile()">
-                <div class="avatar-frame">
-                    <div class="avatar" id="avatar">👤</div>
-                </div>
-                <div class="profile-info">
-                    <div class="username" id="username">Игрок</div>
-                    <div class="level">Уровень 1</div>
-                    <div class="level-line"><div id="homeLevelBar" style="width: 52%;"></div></div>
-                </div>
-            </div>
-            <div class="balance">
-                <div class="balance-info">
-                    <small>Баланс</small>
-                    <span id="topBalance">125.50 $</span>
-                </div>
-                <button class="balance-add" onclick="openBalance('deposit')">+</button>
-            </div>
-        </header>
-
-        <section class="hero">
+        <section class="hero" style="margin-top: 10px;">
             <div class="hero-content">
                 <div class="hero-small">ДОБРО ПОЖАЛОВАТЬ</div>
                 <h1>Играй и<br><span>развлекайся!</span></h1>
@@ -93,7 +94,7 @@
 
     <!-- ==================== КОЛЕСО ==================== -->
     <main id="wheelPage" class="wheel-page hidden">
-        <div class="page-header">
+        <div class="page-header" style="margin-top: 10px;">
             <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
             <h1>Колесо</h1>
             <div class="header-space"></div>
@@ -153,21 +154,22 @@
                             <span style="color:#666; font-size:14px; margin-left:4px;">$</span>
                         </div>
                     </div>
-                    <div class="card-percent-btns" style="grid-template-columns: repeat(5, 1fr);">
-    <button class="pct-btn" onclick="applyMinToActive()">MIN</button>
-    <button class="pct-btn" onclick="applyPercentToActive(0.10)">10%</button>
-    <button class="pct-btn" onclick="applyPercentToActive(0.25)">25%</button>
-    <button class="pct-btn" onclick="applyPercentToActive(0.50)">50%</button>
-    <button class="pct-btn" onclick="applyPercentToActive(1.00)">MAX</button>
-</div>
 
-<!-- Кнопка сброса ставки под процентами -->
-<button class="reset-bet-btn" onclick="resetActiveBet()" style="width: 100%; margin-top: 8px; padding: 6px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #888; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s ease;">
-    ✕ Сбросить ставку
-</button>
+                    <div class="card-percent-btns" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 10px;">
+                        <button class="pct-btn" onclick="applyMinToActive()">MIN</button>
+                        <button class="pct-btn" onclick="applyPercentToActive(0.10)">10%</button>
+                        <button class="pct-btn" onclick="applyPercentToActive(0.25)">25%</button>
+                        <button class="pct-btn" onclick="applyPercentToActive(0.50)">50%</button>
+                        <button class="pct-btn" onclick="applyPercentToActive(1.00)">MAX</button>
+                    </div>
 
+                    <!-- Кнопка сброса ставки под процентами -->
+                    <button class="reset-bet-btn" onclick="resetActiveBet()" style="width: 100%; margin-top: 8px; padding: 6px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #888; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s ease;">
+                        ✕ Сбросить ставку
+                    </button>
+                </div>
 
-                <div class="total-bet-info" id="totalBetInfo">Общая ставка: 0.00 $</div>
+                <div class="total-bet-info" id="totalBetInfo" style="margin-top: 10px;">Общая ставка: 0.00 $</div>
             </div>
 
             <button class="spin-button-gold" id="spinButton" onclick="spinWheel()">
@@ -183,7 +185,7 @@
 
     <!-- ==================== БАЛАНС ==================== -->
     <main id="balancePage" class="balance-page hidden">
-        <div class="page-header">
+        <div class="page-header" style="margin-top: 10px;">
             <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
             <h1>Баланс</h1>
             <div class="header-space"></div>
@@ -208,30 +210,28 @@
             <p class="sub-text" id="formSubtitle">Выберите удобный способ пополнения</p>
 
             <div class="input-group">
-                
-    <label>МЕТОД</label>
-    <div class="custom-select" onclick="toggleMethods()">
-        <div class="select-selected">
-            <img class="m-icon" id="selectedMethodIcon" src="cryptobot.png" alt="CryptoBot" style="width: 26px; height: 26px; object-fit: contain;">
-            <div class="m-text">
-                <strong id="selectedMethod">CryptoBot</strong>
-                <small id="selectedMethodSub">Криптовалюта</small>
+                <label>МЕТОД</label>
+                <div class="custom-select" onclick="toggleMethods()">
+                    <div class="select-selected">
+                        <img class="m-icon" id="selectedMethodIcon" src="cryptobot.png" alt="CryptoBot" style="width: 26px; height: 26px; object-fit: contain;">
+                        <div class="m-text">
+                            <strong id="selectedMethod">CryptoBot</strong>
+                            <small id="selectedMethodSub">Криптовалюта</small>
+                        </div>
+                        <span class="arrow" id="methodArrow">▼</span>
+                    </div>
+                    <div class="select-items" id="methodsDropdown">
+                        <div onclick="selectMethod('CryptoBot', 'cryptobot.png', 'Криптовалюта')">
+                            <img src="cryptobot.png" alt="CryptoBot" style="width: 24px; height: 24px; object-fit: contain;"> 
+                            <div><strong>CryptoBot</strong><small>Криптовалюта</small></div>
+                        </div>
+                        <div onclick="selectMethod('xRocket', 'xrocket.png', 'Криптовалюта')">
+                            <img src="xrocket.png" alt="xRocket" style="width: 24px; height: 24px; object-fit: contain;"> 
+                            <div><strong>xRocket</strong><small>Криптовалюта</small></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span class="arrow" id="methodArrow">▼</span>
-        </div>
-        <div class="select-items" id="methodsDropdown">
-            <div onclick="selectMethod('CryptoBot', 'cryptobot.png', 'Криптовалюта')">
-                <img src="cryptobot.png" alt="CryptoBot" style="width: 24px; height: 24px; object-fit: contain;"> 
-                <div><strong>CryptoBot</strong><small>Криптовалюта</small></div>
-            </div>
-            <div onclick="selectMethod('xRocket', 'xrocket.png', 'Криптовалюта')">
-                <img src="xrocket.png" alt="xRocket" style="width: 24px; height: 24px; object-fit: contain;"> 
-                <div><strong>xRocket</strong><small>Криптовалюта</small></div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
             <div class="input-group">
                 <label>СУММА</label>
@@ -260,12 +260,12 @@
 
     <!-- ==================== ПРОФИЛЬ ==================== -->
     <main id="profilePage" class="profile-page hidden">
-        <section class="profile-header-card">
+        <section class="profile-header-card" style="margin-top: 10px;">
             <div class="profile-avatar-wrapper">
                 <div class="profile-avatar-circle" id="profileAvatar">👤</div>
             </div>
-            <h1 id="profileName">WXS чек био 💄 maybi slizzik 🗽</h1>
-            <div class="profile-tag" id="profileUsername">@aep51</div>
+            <h1 id="profileName">Игрок</h1>
+            <div class="profile-tag" id="profileUsername">@username</div>
 
             <div class="profile-level-block">
                 <div class="level-info">
@@ -312,7 +312,7 @@
 
     <!-- ==================== БОНУС ==================== -->
     <main id="bonusPage" class="bonus-page hidden">
-        <div class="page-header">
+        <div class="page-header" style="margin-top: 10px;">
             <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
             <h1>Бонусы</h1>
             <div class="header-space"></div>
