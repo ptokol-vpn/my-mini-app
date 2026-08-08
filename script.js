@@ -1,4 +1,4 @@
-const tg = window.Telegram?.WebApp;
+Const tg = window.Telegram?.WebApp;
 
 if (tg) {
     tg.ready();
@@ -14,7 +14,7 @@ let balanceMode = "deposit";
 
 let selectedMethod = "CryptoBot";
 let selectedMethodSub = "Криптовалюта";
-let selectedMethodIcon = "🤖";
+let selectedMethodIcon = "cryptobot.png";
 
 // Память ставок для каждого цвета
 let colorBets = {
@@ -29,9 +29,9 @@ let colorBets = {
 let activeColor = 'green';
 
 let transactions = [
-    { type: 'deposit', method: 'CryptoBot', icon: '🤖', amount: 50.00, date: 'Сегодня, 14:20', status: 'success' },
-    { type: 'withdraw', method: 'xRocket', icon: '🚀', amount: 20.00, date: 'Вчера, 18:05', status: 'success' },
-    { type: 'deposit', method: 'CryptoBot', icon: '🤖', amount: 95.50, date: '21 Июля', status: 'success' }
+    { type: 'deposit', method: 'CryptoBot', icon: 'cryptobot.png', amount: 50.00, date: 'Сегодня, 14:20', status: 'success' },
+    { type: 'withdraw', method: 'xRocket', icon: 'xrocket.png', amount: 20.00, date: 'Вчера, 18:05', status: 'success' },
+    { type: 'deposit', method: 'CryptoBot', icon: 'cryptobot.png', amount: 95.50, date: '21 Июля', status: 'success' }
 ];
 
 const COLOR_CONFIG = {
@@ -523,6 +523,11 @@ function renderTransactions() {
         const title = isDep ? 'Пополнение' : 'Вывод средств';
         const statusText = tx.status === 'success' ? 'Успешно' : 'В обработке';
 
+        // Проверяем, является ли icon файлом картинки
+        const iconHTML = tx.icon.includes('.')
+            ? `<img src="${tx.icon}" style="width: 16px; height: 16px; object-fit: contain; vertical-align: middle;">`
+            : tx.icon;
+
         return `
             <div class="history-item">
                 <div class="tx-left">
@@ -531,7 +536,7 @@ function renderTransactions() {
                     </div>
                     <div class="tx-details">
                         <span class="tx-title">${title}</span>
-                        <span class="tx-subtitle">${tx.icon} ${tx.method} • ${tx.date}</span>
+                        <span class="tx-subtitle">${iconHTML} ${tx.method} • ${tx.date}</span>
                     </div>
                 </div>
                 <div class="tx-right">
@@ -603,7 +608,15 @@ function selectMethod(method, icon, sub) {
 
     if (selected) selected.textContent = method;
     if (selectedSub) selectedSub.textContent = sub;
-    if (iconElement) iconElement.textContent = icon;
+
+    // Обновление аватарки/иконки метода (картинка или текст)
+    if (iconElement) {
+        if (icon.includes('.')) {
+            iconElement.src = icon;
+        } else {
+            iconElement.textContent = icon;
+        }
+    }
 
     closeMethodsDropdown();
 }
