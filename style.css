@@ -87,7 +87,7 @@ main {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 22px;
+    margin-bottom: 12px;
     padding: 8px 12px;
     border-radius: 30px;
     
@@ -611,14 +611,9 @@ main {
     font-weight: 600;
 }
 
+/* Скрываем блок баланса в профиле по запросу */
 .profile-balance-banner {
-    background: #121212;
-    border: 1px solid #28251e;
-    border-radius: 24px;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: none !important;
 }
 
 .p-bal-left small {
@@ -654,15 +649,17 @@ main {
 ========================================== */
 .balance-page {
     animation: fadeIn 0.25s ease;
+    margin-top: -6px;
 }
 
+.balance-page .page-header,
+.bonus-page .page-header {
+    margin-bottom: 8px;
+}
+
+/* Скрываем карточку с текущим балансом на странице баланса */
 .balance-gold-card {
-    background: linear-gradient(135deg, #423207, #1c1503);
-    border: 1px solid rgba(255, 170, 0, 0.35);
-    border-radius: 24px;
-    padding: 24px;
-    margin-bottom: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    display: none !important;
 }
 
 .bg-label {
@@ -876,6 +873,14 @@ main {
 
 .main-action-btn:active {
     transform: scale(0.97);
+}
+
+/* ==========================================
+   СТРАНИЦА БОНУСОВ (BONUS PAGE)
+========================================== */
+.bonus-page {
+    animation: fadeIn 0.25s ease;
+    margin-top: -6px;
 }
 
 /* ==========================================
@@ -1423,7 +1428,7 @@ main {
     display: grid;
     grid-template-columns: 40px 1fr 40px;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
 }
 
 .page-header h1 {
@@ -1493,6 +1498,7 @@ main {
     .top {
         top: 8px;
         padding: 6px 10px;
+        margin-bottom: 10px;
     }
 
     .hero {
