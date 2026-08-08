@@ -1,66 +1,60 @@
-/* =========================================
-   TELEGRAM MINI APP
-========================================= */
-
 const tg = window.Telegram?.WebApp;
 
 if (tg) {
-    tg.ready();
-    tg.expand();
+tg.ready();
+tg.expand();
 }
 
-
-/* =========================================
-   ДАННЫЕ
-========================================= */
+/* ДАННЫЕ */
 
 let currentBalance = 125.50;
-
 let balanceMode = "deposit";
 
 let selectedMethod = "CryptoBot";
 let selectedMethodIcon = "🤖";
 
-
-/* =========================================
-   TELEGRAM ПОЛЬЗОВАТЕЛЬ
-========================================= */
+/* TELEGRAM USER */
 
 function loadTelegramUser() {
 
-    if (!tg) return;
+if (!tg) return;
 
-    const user = tg.initDataUnsafe?.user;
+const user = tg.initDataUnsafe?.user;
 
-    if (!user) return;
+if (!user) return;
 
+const usernameElement =
+    document.getElementById("username");
 
-    const usernameElement =
-        document.getElementById("username");
+const avatarElement =
+    document.getElementById("avatar");
 
-    const avatarElement =
-        document.getElementById("avatar");
+const profileName =
+    document.getElementById("profileName");
 
-    const profileName =
-        document.getElementById("profileName");
+const profileUsername =
+    document.getElementById("profileUsername");
 
-    const profileUsername =
-        document.getElementById("profileUsername");
-
-    const profileAvatar =
-        document.getElementById("profileAvatar");
-
-
-    const name =
-        user.first_name ||
-        user.username ||
-        "Игрок";
+const profileAvatar =
+    document.getElementById("profileAvatar");
 
 
+const name =
+    user.first_name ||
+    user.username ||
+    "Игрок";
+
+
+if (usernameElement) {
     usernameElement.textContent = name;
+}
 
+if (profileName) {
     profileName.textContent = name;
+}
 
+
+if (profileUsername) {
 
     if (user.username) {
 
@@ -73,476 +67,445 @@ function loadTelegramUser() {
             "Telegram пользователь";
 
     }
+}
 
 
-    if (user.photo_url) {
+if (user.photo_url) {
 
-        const imageHTML = `
-            <img
-                src="${user.photo_url}"
-                alt="avatar">
-        `;
+    const imageHTML = `
+        <img
+            src="${user.photo_url}"
+            alt="avatar">
+    `;
 
+    if (avatarElement) {
         avatarElement.innerHTML = imageHTML;
+    }
 
+    if (profileAvatar) {
         profileAvatar.innerHTML = imageHTML;
     }
 }
 
+}
 
-/* =========================================
-   ОБНОВЛЕНИЕ БАЛАНСА
-========================================= */
+/* БАЛАНС */
 
 function updateBalance() {
 
-    const value =
-        currentBalance.toFixed(2) + " $";
+const value =
+    currentBalance.toFixed(2) + " $";
 
 
-    const topBalance =
-        document.getElementById("topBalance");
+const topBalance =
+    document.getElementById("topBalance");
 
-    const bigBalance =
-        document.getElementById("bigBalance");
+const bigBalance =
+    document.getElementById("bigBalance");
 
-    const profileBalance =
-        document.getElementById("profileBalance");
+const profileBalance =
+    document.getElementById("profileBalance");
 
 
-    if (topBalance) {
-        topBalance.textContent = value;
-    }
-
-    if (bigBalance) {
-        bigBalance.textContent = value;
-    }
-
-    if (profileBalance) {
-        profileBalance.textContent = value;
-    }
+if (topBalance) {
+    topBalance.textContent = value;
 }
 
+if (bigBalance) {
+    bigBalance.textContent = value;
+}
 
-/* =========================================
-   СКРЫТИЕ ВСЕХ СТРАНИЦ
-========================================= */
+if (profileBalance) {
+    profileBalance.textContent = value;
+}
+
+}
+
+/* СКРЫТЬ ВСЕ СТРАНИЦЫ */
 
 function hideAllPages() {
 
-    const pages = [
-        "homePage",
-        "balancePage",
-        "profilePage",
-        "bonusPage"
-    ];
+const pages = [
+    "homePage",
+    "balancePage",
+    "profilePage",
+    "bonusPage"
+];
 
 
-    pages.forEach(id => {
-
-        const page =
-            document.getElementById(id);
-
-        if (page) {
-            page.classList.add("hidden");
-        }
-    });
-}
-
-
-/* =========================================
-   ОТКРЫТЬ СТРАНИЦУ
-========================================= */
-
-function showPage(id) {
-
-    hideAllPages();
+pages.forEach(id => {
 
     const page =
         document.getElementById(id);
 
     if (page) {
-        page.classList.remove("hidden");
+        page.classList.add("hidden");
     }
 
+});
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+}
+
+/* ПОКАЗАТЬ СТРАНИЦУ */
+
+function showPage(id) {
+
+hideAllPages();
+
+
+const page =
+    document.getElementById(id);
+
+
+if (page) {
+    page.classList.remove("hidden");
 }
 
 
-/* =========================================
-   ДОМОЙ
-========================================= */
+window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+});
+
+}
+
+/* ДОМОЙ */
 
 function goHome() {
 
-    showPage("homePage");
+showPage("homePage");
 
-    updateNav("home");
+updateNav("home");
+
 }
 
-
-/* =========================================
-   БАЛАНС
-========================================= */
+/* БАЛАНС */
 
 function openBalance(mode = "deposit") {
 
-    showPage("balancePage");
+showPage("balancePage");
 
-    setBalanceMode(mode);
+setBalanceMode(mode);
 
-    updateNav("balance");
+updateNav("balance");
 
-    updateBalance();
+updateBalance();
+
 }
 
-
-/* =========================================
-   ПРОФИЛЬ
-========================================= */
+/* ПРОФИЛЬ */
 
 function openProfile() {
 
-    showPage("profilePage");
+showPage("profilePage");
 
-    updateNav("profile");
+updateNav("profile");
 
-    updateBalance();
+updateBalance();
 
-    loadTelegramUser();
+loadTelegramUser();
+
 }
 
-
-/* =========================================
-   БОНУСЫ
-========================================= */
+/* БОНУСЫ */
 
 function openBonus() {
 
-    showPage("bonusPage");
+showPage("bonusPage");
 
-    updateNav("bonus");
+updateNav("bonus");
+
 }
 
-
-/* =========================================
-   ИГРЫ
-========================================= */
+/* ИГРЫ */
 
 function openGames() {
 
-    showPage("homePage");
+showPage("homePage");
 
-    updateNav("games");
+updateNav("games");
 
 
-    setTimeout(() => {
+setTimeout(() => {
 
-        const games =
-            document.querySelector(".games-section");
+    const games =
+        document.querySelector(".games-section");
 
-        if (games) {
 
-            games.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+    if (games) {
 
-        }
+        games.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 
-    }, 50);
+    }
+
+}, 50);
+
 }
 
-
-/* =========================================
-   НИЖНЕЕ МЕНЮ
-========================================= */
+/* НИЖНЕЕ МЕНЮ */
 
 function updateNav(active) {
 
-    const navItems =
-        document.querySelectorAll(".nav-item");
+const navItems =
+    document.querySelectorAll(".nav-item");
 
 
-    navItems.forEach(item => {
-
-        item.classList.remove("active");
-
-    });
+navItems.forEach(item => {
+    item.classList.remove("active");
+});
 
 
-    const map = {
+const map = {
 
-        home: "homeNav",
+    home: "homeNav",
+    games: "gamesNav",
+    balance: "balanceNav",
+    bonus: "bonusNav",
+    profile: "profileNav"
 
-        games: "gamesNav",
-
-        balance: "balanceNav",
-
-        bonus: "bonusNav",
-
-        profile: "profileNav"
-
-    };
+};
 
 
-    const activeElement =
-        document.getElementById(map[active]);
+const activeElement =
+    document.getElementById(map[active]);
 
 
-    if (activeElement) {
-        activeElement.classList.add("active");
-    }
+if (activeElement) {
+    activeElement.classList.add("active");
 }
 
+}
 
-/* =========================================
-   ПОПОЛНЕНИЕ / ВЫВОД
-========================================= */
+/* БАЛАНС: ПОПОЛНЕНИЕ / ВЫВОД */
 
 function setBalanceMode(mode) {
 
-    balanceMode = mode;
+balanceMode = mode;
 
 
-    const depositTab =
-        document.getElementById("depositTab");
+const depositTab =
+    document.getElementById("depositTab");
 
-    const withdrawTab =
-        document.getElementById("withdrawTab");
+const withdrawTab =
+    document.getElementById("withdrawTab");
 
-    const title =
-        document.getElementById("formTitle");
+const title =
+    document.getElementById("formTitle");
 
-    const subtitle =
-        document.getElementById("formSubtitle");
+const subtitle =
+    document.getElementById("formSubtitle");
 
-    const action =
-        document.getElementById("balanceAction");
-
-
-    if (!depositTab ||
-        !withdrawTab ||
-        !title ||
-        !subtitle ||
-        !action) {
-
-        return;
-    }
+const action =
+    document.getElementById("balanceAction");
 
 
-    depositTab.classList.remove("active");
-
-    withdrawTab.classList.remove("active");
-
-
-    if (mode === "deposit") {
-
-        depositTab.classList.add("active");
-
-
-        title.textContent =
-            "Пополнение баланса";
-
-        subtitle.textContent =
-            "Выберите удобный способ пополнения";
-
-        action.textContent =
-            "Пополнить";
-
-    }
-
-
-    if (mode === "withdraw") {
-
-        withdrawTab.classList.add("active");
-
-
-        title.textContent =
-            "Вывод средств";
-
-        subtitle.textContent =
-            "Выберите способ вывода средств";
-
-        action.textContent =
-            "Вывести";
-    }
+if (
+    !depositTab ||
+    !withdrawTab ||
+    !title ||
+    !subtitle ||
+    !action
+) {
+    return;
 }
 
 
-/* =========================================
-   МЕТОДЫ ОПЛАТЫ
-========================================= */
+depositTab.classList.remove("active");
+withdrawTab.classList.remove("active");
+
+
+if (mode === "deposit") {
+
+    depositTab.classList.add("active");
+
+    title.textContent =
+        "Пополнение баланса";
+
+    subtitle.textContent =
+        "Выберите удобный способ пополнения";
+
+    action.textContent =
+        "Пополнить";
+}
+
+
+if (mode === "withdraw") {
+
+    withdrawTab.classList.add("active");
+
+    title.textContent =
+        "Вывод средств";
+
+    subtitle.textContent =
+        "Выберите способ вывода средств";
+
+    action.textContent =
+        "Вывести";
+}
+
+}
+
+/* МЕТОДЫ ОПЛАТЫ */
 
 function toggleMethods() {
 
-    const dropdown =
-        document.getElementById("methodsDropdown");
+const dropdown =
+    document.getElementById("methodsDropdown");
 
-    const arrow =
-        document.getElementById("methodArrow");
-
-
-    if (!dropdown) return;
+const arrow =
+    document.getElementById("methodArrow");
 
 
-    dropdown.classList.toggle("open");
+if (!dropdown) return;
 
 
-    if (dropdown.classList.contains("open")) {
+dropdown.classList.toggle("open");
 
+
+if (dropdown.classList.contains("open")) {
+
+    if (arrow) {
         arrow.textContent = "▲";
-
-    } else {
-
-        arrow.textContent = "▼";
-    }
-}
-
-
-function selectMethod(method, icon) {
-
-    selectedMethod = method;
-
-    selectedMethodIcon = icon;
-
-
-    const selected =
-        document.getElementById("selectedMethod");
-
-    const iconElement =
-        document.getElementById(
-            "selectedMethodIcon"
-        );
-
-
-    if (selected) {
-        selected.textContent = method;
     }
 
-
-    if (iconElement) {
-        iconElement.textContent = icon;
-    }
-
-
-    const dropdown =
-        document.getElementById("methodsDropdown");
-
-    const arrow =
-        document.getElementById("methodArrow");
-
-
-    if (dropdown) {
-        dropdown.classList.remove("open");
-    }
+} else {
 
     if (arrow) {
         arrow.textContent = "▼";
     }
 }
 
+}
 
-/* =========================================
-   ДЕМО БАЛАНСА
-========================================= */
+function selectMethod(method, icon) {
+
+selectedMethod = method;
+selectedMethodIcon = icon;
+
+
+const selected =
+    document.getElementById("selectedMethod");
+
+const iconElement =
+    document.getElementById(
+        "selectedMethodIcon"
+    );
+
+
+if (selected) {
+    selected.textContent = method;
+}
+
+if (iconElement) {
+    iconElement.textContent = icon;
+}
+
+
+const dropdown =
+    document.getElementById("methodsDropdown");
+
+const arrow =
+    document.getElementById("methodArrow");
+
+
+if (dropdown) {
+    dropdown.classList.remove("open");
+}
+
+if (arrow) {
+    arrow.textContent = "▼";
+}
+
+}
+
+/* ДЕМО БАЛАНСА */
 
 function demoBalanceAction() {
 
-    const input =
-        document.getElementById("amountInput");
+const input =
+    document.getElementById("amountInput");
 
 
-    if (!input) return;
+if (!input) return;
 
 
-    const amount =
-        parseFloat(input.value);
+const amount =
+    parseFloat(input.value);
 
 
-    if (!amount || amount <= 0) {
+if (!amount || amount <= 0) {
 
-        showMessage(
-            "Введите сумму"
-        );
+    showMessage("Введите сумму");
 
-        return;
-    }
-
-
-    if (balanceMode === "deposit") {
-
-        showMessage(
-            `Демо: пополнение ${amount.toFixed(2)} $ через ${selectedMethod}`
-        );
-
-        return;
-    }
-
-
-    if (amount > currentBalance) {
-
-        showMessage(
-            "Недостаточно средств"
-        );
-
-        return;
-    }
-
-
-    showMessage(
-        `Демо: вывод ${amount.toFixed(2)} $ через ${selectedMethod}`
-    );
+    return;
 }
 
 
-/* =========================================
-   БОНУС
-========================================= */
+if (balanceMode === "deposit") {
+
+    showMessage(
+        `Демо: пополнение ${amount.toFixed(2)} $ через ${selectedMethod}`
+    );
+
+    return;
+}
+
+
+if (amount > currentBalance) {
+
+    showMessage("Недостаточно средств");
+
+    return;
+}
+
+
+showMessage(
+    `Демо: вывод ${amount.toFixed(2)} $ через ${selectedMethod}`
+);
+
+}
+
+/* БОНУС */
 
 function claimBonus() {
 
-    showMessage(
-        "Демо: ежедневный бонус пока не подключён"
-    );
+showMessage(
+    "Демо: ежедневный бонус пока не подключён"
+);
+
 }
 
-
-/* =========================================
-   УВЕДОМЛЕНИЯ
-========================================= */
+/* УВЕДОМЛЕНИЯ */
 
 function showMessage(text) {
 
-    if (tg?.showAlert) {
+if (tg?.showAlert) {
 
-        tg.showAlert(text);
+    tg.showAlert(text);
 
-        return;
-    }
-
-
-    alert(text);
+    return;
 }
 
 
-/* =========================================
-   ЗАПУСК
-========================================= */
+alert(text);
+
+}
+
+/* ЗАПУСК */
 
 document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+"DOMContentLoaded",
+() => {
 
-        loadTelegramUser();
+    loadTelegramUser();
 
-        updateBalance();
+    updateBalance();
 
-        goHome();
+    goHome();
 
-    }
+}
+
 );
