@@ -253,51 +253,49 @@
     <!-- ==================== ПРОФИЛЬ ==================== -->
     <main id="profilePage" class="profile-page hidden">
         <!-- Шапка профиля в стиле Telegram -->
-        <section class="profile-header-card profile-cover" id="profileCover" style="margin-top: 10px;">
-            <!-- Динамический фон-паттерн с эмодзи -->
-            <div class="bg-emoji-pattern" id="bgEmojiPattern"></div>
+        <section class="profile-header-card profile-cover" id="profileCover" style="margin-top: 10px; position: relative; overflow: hidden;">
+            <!-- Динамический полупрозрачный фон-паттерн с эмодзи -->
+            <div class="bg-emoji-pattern" id="bgEmojiPattern" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1;"></div>
 
-            <div class="profile-avatar-wrapper">
-                <div class="profile-avatar-circle" id="profileAvatar">👤</div>
-                <!-- Эмодзи-статус профиля (анимированный) -->
-                <div class="profile-status-badge" id="profileStatusBadge">⭐</div>
-            </div>
-            
-            <h1 id="profileName">Игрок</h1>
-            <div class="profile-tag" id="profileUsername">@username</div>
-
-            <div class="profile-level-block">
-                <div class="level-info">
-                    <span>Уровень 1</span>
-                    <span>52%</span>
+            <div style="position: relative; z-index: 2;">
+                <div class="profile-avatar-wrapper" style="position: relative; display: inline-block;">
+                    <div class="profile-avatar-circle" id="profileAvatar">👤</div>
+                    <!-- Эмодзи-статус профиля -->
+                    <div class="profile-status-badge" id="profileStatusBadge">🔥</div>
                 </div>
-                <div class="level-progress-bar">
-                    <div class="level-progress-fill" style="width: 52%;"></div>
-                </div>
-            </div>
-
-            <!-- Кнопка настройки профиля (фон/эмодзи) -->
-            <button class="pct-btn" onclick="toggleProfileCustomizer()" style="margin-top: 14px; width: 100%; padding: 8px; color: #ffc800; border: 1px solid rgba(255,200,0,0.3);">
-                ⚙️ Настроить профиль
-            </button>
-
-            <!-- Блок кастомизации -->
-            <div id="customizerBox" class="hidden" style="margin-top: 12px; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 16px; text-align: left;">
-                <label style="font-size:11px; color:#aaa; font-weight:700;">Цвет фона шапки:</label>
-                <div style="display:flex; gap:8px; margin: 6px 0 12px;">
-                    <button onclick="setCoverGradient('#1d2733', '#121212')" style="flex:1; height:24px; border-radius:6px; background:#1d2733; border:1px solid #555;"></button>
-                    <button onclick="setCoverGradient('#3a1c40', '#121212')" style="flex:1; height:24px; border-radius:6px; background:#3a1c40; border:1px solid #555;"></button>
-                    <button onclick="setCoverGradient('#1c3a27', '#121212')" style="flex:1; height:24px; border-radius:6px; background:#1c3a27; border:1px solid #555;"></button>
-                    <button onclick="setCoverGradient('#402d1c', '#121212')" style="flex:1; height:24px; border-radius:6px; background:#402d1c; border:1px solid #555;"></button>
-                </div>
-
-                <label style="font-size:11px; color:#aaa; font-weight:700;">Фоновые эмодзи:</label>
-                <input type="text" id="emojiPatternInput" value="💎 ✨ 🚀 👑 🎲" style="width:100%; background:#101010; border:1px solid #333; color:#fff; padding:6px 10px; border-radius:8px; font-size:13px; margin: 6px 0 10px;">
                 
-                <label style="font-size:11px; color:#aaa; font-weight:700;">Эмодзи-статус:</label>
-                <input type="text" id="statusEmojiInput" value="⭐" style="width:100%; background:#101010; border:1px solid #333; color:#fff; padding:6px 10px; border-radius:8px; font-size:13px; margin: 6px 0 10px;">
+                <h1 id="profileName">Игрок</h1>
+                <div class="profile-tag" id="profileUsername">@username</div>
 
-                <button class="main-action-btn" onclick="saveProfileCustomization()" style="padding:10px; font-size:13px; margin-top:4px;">Сохранить</button>
+                <div class="profile-level-block">
+                    <div class="level-info">
+                        <span>Уровень 1</span>
+                        <span>52%</span>
+                    </div>
+                    <div class="level-progress-bar">
+                        <div class="level-progress-fill" style="width: 52%;"></div>
+                    </div>
+                </div>
+
+                <!-- Кнопка настройки профиля -->
+                <button class="pct-btn" onclick="toggleProfileCustomizer()" style="margin-top: 14px; width: 100%; padding: 8px; color: #ffc800; border: 1px solid rgba(255,200,0,0.3); border-radius: 12px; cursor: pointer; font-weight: 700;">
+                    ⚙️ Настроить профиль
+                </button>
+
+                <!-- Блок кастомизации -->
+                <div id="customizerBox" class="hidden" style="margin-top: 12px; background: rgba(0,0,0,0.7); padding: 14px; border-radius: 16px; text-align: left; border: 1px solid #282828;">
+                    <span style="font-size:11px; color:#aaa; font-weight:700;">Цвет фона шапки (8 вариантов):</span>
+                    <!-- Сетка градиентов: 8 цветов, по 4 в ряд -->
+                    <div class="color-picker-grid" id="colorPickerGrid"></div>
+
+                    <span style="font-size:11px; color:#aaa; font-weight:700; margin-top:14px; display:block;">Эмодзи-статус:</span>
+                    <!-- Варианты эмодзи с подсветкой -->
+                    <div class="emoji-picker-row" id="emojiPickerRow"></div>
+
+                    <button class="main-action-btn" onclick="saveProfileCustomization()" style="width:100%; margin-top:14px; padding:10px; font-size:13px;">
+                        Сохранить
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -328,7 +326,7 @@
         <section class="gifts-section" style="background: #121212; border: 1px solid #222222; border-radius: 24px; padding: 18px; margin-top: 14px;">
             <div class="gifts-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h3 style="font-size:18px; font-weight:900;">🎁 Подарки</h3>
-                <button onclick="toggleAddGiftBox()" class="pct-btn" style="padding:6px 12px; color:#ffc800; border:1px solid rgba(255,200,0,0.3);">+ Добавить</button>
+                <button onclick="toggleAddGiftBox()" class="pct-btn" style="padding:6px 12px; color:#ffc800; border:1px solid rgba(255,200,0,0.3); border-radius: 8px; cursor: pointer;">+ Добавить</button>
             </div>
 
             <!-- Форма вставки ссылки на подарок Telegram -->
