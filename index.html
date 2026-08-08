@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -23,14 +23,15 @@
 <div class="app">
 
     <!-- =========================
-         ГЛАВНЫЙ ЭКРАН
+         ГЛАВНАЯ
     ========================== -->
 
     <main id="homePage">
 
         <header class="top">
 
-            <div class="profile-card">
+            <div class="profile-card"
+                 onclick="openProfile()">
 
                 <div class="avatar-frame">
                     <div class="avatar" id="avatar">
@@ -56,19 +57,24 @@
 
             </div>
 
+
             <div class="balance">
 
                 <div class="balance-info">
-                    <small>Баланс</small>
+
+                    <small>
+                        Баланс
+                    </small>
 
                     <span id="topBalance">
-                        0.00 $
+                        125.50 $
                     </span>
+
                 </div>
 
                 <button
                     class="balance-add"
-                    onclick="openBalance()">
+                    onclick="openBalance('deposit')">
                     +
                 </button>
 
@@ -77,7 +83,7 @@
         </header>
 
 
-        <!-- БАННЕР -->
+        <!-- HERO -->
 
         <section class="hero">
 
@@ -102,46 +108,102 @@
                     onclick="openBonus()">
 
                     <span>🎁</span>
+
                     Ежедневный бонус
 
                 </button>
 
             </div>
 
+
             <div class="money-orb">
+
                 <div class="money-ring"></div>
+
                 <span>$</span>
+
             </div>
 
         </section>
 
 
-        <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
+        <!-- QUICK ACTIONS -->
 
         <section class="quick-actions">
 
-            <button class="action" onclick="openBalance('deposit')">
-                <div class="action-icon">💰</div>
-                <b>Пополнить</b>
-                <small>Баланс</small>
+            <button
+                class="action"
+                onclick="openBalance('deposit')">
+
+                <div class="action-icon">
+                    💰
+                </div>
+
+                <b>
+                    Пополнить
+                </b>
+
+                <small>
+                    Баланс
+                </small>
+
             </button>
 
-            <button class="action" onclick="openBalance('withdraw')">
-                <div class="action-icon">💸</div>
-                <b>Вывести</b>
-                <small>Средства</small>
+
+            <button
+                class="action"
+                onclick="openBalance('withdraw')">
+
+                <div class="action-icon">
+                    💸
+                </div>
+
+                <b>
+                    Вывести
+                </b>
+
+                <small>
+                    Средства
+                </small>
+
             </button>
 
-            <button class="action" onclick="alert('VIP пока в разработке')">
-                <div class="action-icon">👑</div>
-                <b>VIP</b>
-                <small>Статус</small>
+
+            <button
+                class="action"
+                onclick="showMessage('VIP пока в разработке')">
+
+                <div class="action-icon">
+                    👑
+                </div>
+
+                <b>
+                    VIP
+                </b>
+
+                <small>
+                    Статус
+                </small>
+
             </button>
 
-            <button class="action" onclick="alert('Задания пока в разработке')">
-                <div class="action-icon">📋</div>
-                <b>Задания</b>
-                <small>Награды</small>
+
+            <button
+                class="action"
+                onclick="showMessage('Задания пока в разработке')">
+
+                <div class="action-icon">
+                    📋
+                </div>
+
+                <b>
+                    Задания
+                </b>
+
+                <small>
+                    Награды
+                </small>
+
             </button>
 
         </section>
@@ -152,64 +214,111 @@
         <section class="games-section">
 
             <div class="section-title">
-                <h2>Игры</h2>
+                <h2>
+                    Игры
+                </h2>
             </div>
+
 
             <div class="games">
 
-                <button class="game">
+                <button
+                    class="game"
+                    onclick="showMessage('Игра «Куб» пока в разработке')">
+
                     <div class="game-image">
+
                         <div class="game-glow"></div>
-                        <span class="game-emoji">🎲</span>
+
+                        <span class="game-emoji">
+                            🎲
+                        </span>
+
                     </div>
 
-                    <div class="game-name">Куб</div>
+                    <div class="game-name">
+                        Куб
+                    </div>
 
                     <div class="game-description">
                         Испытай удачу
                     </div>
+
                 </button>
 
 
-                <button class="game">
+                <button
+                    class="game"
+                    onclick="showMessage('Игра «Мины» пока в разработке')">
+
                     <div class="game-image mines">
+
                         <div class="game-glow"></div>
-                        <span class="game-emoji">💣</span>
+
+                        <span class="game-emoji">
+                            💣
+                        </span>
+
                     </div>
 
-                    <div class="game-name">Мины</div>
+                    <div class="game-name">
+                        Мины
+                    </div>
 
                     <div class="game-description">
                         Найди безопасные клетки
                     </div>
+
                 </button>
 
 
-                <button class="game">
+                <button
+                    class="game"
+                    onclick="showMessage('Игра «Колесо» пока в разработке')">
+
                     <div class="game-image wheel">
+
                         <div class="game-glow"></div>
-                        <span class="game-emoji">🎡</span>
+
+                        <span class="game-emoji">
+                            🎡
+                        </span>
+
                     </div>
 
-                    <div class="game-name">Колесо</div>
+                    <div class="game-name">
+                        Колесо
+                    </div>
 
                     <div class="game-description">
                         Крути и выигрывай
                     </div>
+
                 </button>
 
 
-                <button class="game">
+                <button
+                    class="game"
+                    onclick="showMessage('Игра «Краш» пока в разработке')">
+
                     <div class="game-image crash">
+
                         <div class="game-glow"></div>
-                        <span class="game-emoji">🚀</span>
+
+                        <span class="game-emoji">
+                            🚀
+                        </span>
+
                     </div>
 
-                    <div class="game-name">Краш</div>
+                    <div class="game-name">
+                        Краш
+                    </div>
 
                     <div class="game-description">
                         Забери вовремя
                     </div>
+
                 </button>
 
             </div>
@@ -220,10 +329,12 @@
 
 
     <!-- =========================
-         СТРАНИЦА БАЛАНСА
+         БАЛАНС
     ========================== -->
 
-    <main id="balancePage" class="balance-page hidden">
+    <main
+        id="balancePage"
+        class="balance-page hidden">
 
         <div class="page-header">
 
@@ -233,14 +344,14 @@
                 ‹
             </button>
 
-            <h1>Баланс</h1>
+            <h1>
+                Баланс
+            </h1>
 
             <div class="header-space"></div>
 
         </div>
 
-
-        <!-- ТЕКУЩИЙ БАЛАНС -->
 
         <section class="balance-card">
 
@@ -248,16 +359,16 @@
                 ТЕКУЩИЙ БАЛАНС
             </div>
 
-            <div class="big-balance" id="bigBalance">
-                0.00 $
+            <div
+                class="big-balance"
+                id="bigBalance">
+                125.50 $
             </div>
 
             <div class="balance-card-glow"></div>
 
         </section>
 
-
-        <!-- ПЕРЕКЛЮЧАТЕЛЬ -->
 
         <div class="balance-tabs">
 
@@ -270,6 +381,7 @@
                 Пополнить
 
             </button>
+
 
             <button
                 id="withdrawTab"
@@ -284,24 +396,25 @@
         </div>
 
 
-        <!-- ФОРМА -->
-
         <section class="balance-form">
 
-            <div class="form-title" id="formTitle">
+            <div
+                class="form-title"
+                id="formTitle">
                 Пополнение баланса
             </div>
 
-            <div class="form-subtitle" id="formSubtitle">
+            <div
+                class="form-subtitle"
+                id="formSubtitle">
                 Выберите удобный способ пополнения
             </div>
 
 
-            <!-- МЕТОД -->
-
             <div class="field-label">
                 Метод
             </div>
+
 
             <button
                 class="method-select"
@@ -331,6 +444,7 @@
 
                 </div>
 
+
                 <span
                     class="select-arrow"
                     id="methodArrow">
@@ -339,8 +453,6 @@
 
             </button>
 
-
-            <!-- ВЫПАДАЮЩИЕ МЕТОДЫ -->
 
             <div
                 class="methods-dropdown"
@@ -380,11 +492,10 @@
             </div>
 
 
-            <!-- СУММА -->
-
             <div class="field-label">
                 Сумма
             </div>
+
 
             <div class="amount-input">
 
@@ -401,8 +512,6 @@
             </div>
 
 
-            <!-- КНОПКА -->
-
             <button
                 class="balance-action"
                 id="balanceAction"
@@ -414,8 +523,6 @@
 
         </section>
 
-
-        <!-- ИСТОРИЯ -->
 
         <section class="transactions">
 
@@ -433,7 +540,6 @@
 
 
             <div class="transaction-list">
-
 
                 <div class="transaction">
 
@@ -542,6 +648,232 @@
 
 
     <!-- =========================
+         ПРОФИЛЬ
+    ========================== -->
+
+    <main
+        id="profilePage"
+        class="profile-page hidden">
+
+        <div class="page-header">
+
+            <button
+                class="back-button"
+                onclick="goHome()">
+                ‹
+            </button>
+
+            <h1>
+                Профиль
+            </h1>
+
+            <div class="header-space"></div>
+
+        </div>
+
+
+        <section class="profile-main-card">
+
+            <div class="profile-big-avatar-frame">
+
+                <div
+                    class="profile-big-avatar"
+                    id="profileAvatar">
+                    👤
+                </div>
+
+            </div>
+
+
+            <div
+                class="profile-big-name"
+                id="profileName">
+                Игрок
+            </div>
+
+
+            <div
+                class="profile-username"
+                id="profileUsername">
+                @player
+            </div>
+
+
+            <div class="profile-level">
+
+                <div class="profile-level-top">
+
+                    <span>
+                        Уровень 1
+                    </span>
+
+                    <span>
+                        52%
+                    </span>
+
+                </div>
+
+                <div class="profile-level-bar">
+                    <div></div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="profile-stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <div class="stat-value">
+                    $0.00
+                </div>
+
+                <div class="stat-name">
+                    Оборот
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📈
+                </div>
+
+                <div class="stat-value">
+                    x0.00
+                </div>
+
+                <div class="stat-name">
+                    Макс. коэффициент
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🏆
+                </div>
+
+                <div class="stat-value">
+                    $0.00
+                </div>
+
+                <div class="stat-name">
+                    Общий выигрыш
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🎯
+                </div>
+
+                <div class="stat-value">
+                    0
+                </div>
+
+                <div class="stat-name">
+                    Кол-во ставок
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="profile-balance-card">
+
+            <div>
+
+                <small>
+                    Текущий баланс
+                </small>
+
+                <strong id="profileBalance">
+                    125.50 $
+                </strong>
+
+            </div>
+
+
+            <button
+                onclick="openBalance('deposit')">
+
+                Пополнить
+
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         БОНУС
+    ========================== -->
+
+    <main
+        id="bonusPage"
+        class="bonus-page hidden">
+
+        <div class="page-header">
+
+            <button
+                class="back-button"
+                onclick="goHome()">
+                ‹
+            </button>
+
+            <h1>
+                Бонусы
+            </h1>
+
+            <div class="header-space"></div>
+
+        </div>
+
+
+        <section class="bonus-card">
+
+            <div class="bonus-big-icon">
+                🎁
+            </div>
+
+            <h2>
+                Ежедневный бонус
+            </h2>
+
+            <p>
+                Заходи каждый день и получай награды.
+            </p>
+
+            <button
+                class="bonus-claim"
+                onclick="claimBonus()">
+
+                Получить бонус
+
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
          НИЖНЕЕ МЕНЮ
     ========================== -->
 
@@ -552,7 +884,9 @@
             id="homeNav"
             onclick="goHome()">
 
-            <span class="nav-icon">🏠</span>
+            <span class="nav-icon">
+                🏠
+            </span>
 
             <small>
                 Главная
@@ -563,9 +897,12 @@
 
         <button
             class="nav-item"
-            onclick="alert('Игры пока в разработке')">
+            id="gamesNav"
+            onclick="openGames()">
 
-            <span class="nav-icon">🎮</span>
+            <span class="nav-icon">
+                🎮
+            </span>
 
             <small>
                 Игры
@@ -579,7 +916,9 @@
             id="balanceNav"
             onclick="openBalance()">
 
-            <span class="nav-icon">💰</span>
+            <span class="nav-icon">
+                💰
+            </span>
 
             <small>
                 Баланс
@@ -590,9 +929,12 @@
 
         <button
             class="nav-item"
+            id="bonusNav"
             onclick="openBonus()">
 
-            <span class="nav-icon">🎁</span>
+            <span class="nav-icon">
+                🎁
+            </span>
 
             <small>
                 Бонусы
@@ -603,9 +945,12 @@
 
         <button
             class="nav-item"
-            onclick="alert('Профиль пока в разработке')">
+            id="profileNav"
+            onclick="openProfile()">
 
-            <span class="nav-icon">👤</span>
+            <span class="nav-icon">
+                👤
+            </span>
 
             <small>
                 Профиль
