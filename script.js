@@ -16,7 +16,7 @@ let selectedMethod = "CryptoBot";
 let selectedMethodSub = "Криптовалюта";
 let selectedMethodIcon = "🤖";
 
-// Объект ставок по каждому цвету
+// Память ставок для каждого цвета
 let colorBets = {
     green: 0,
     red: 0,
@@ -25,7 +25,9 @@ let colorBets = {
     gold: 0
 };
 
-// Начальный список транзакций
+// Текущий выбранный цвет в табе
+let activeColor = 'green';
+
 let transactions = [
     { type: 'deposit', method: 'CryptoBot', icon: '🤖', amount: 50.00, date: 'Сегодня, 14:20', status: 'success' },
     { type: 'withdraw', method: 'xRocket', icon: '🚀', amount: 20.00, date: 'Вчера, 18:05', status: 'success' },
@@ -126,48 +128,6 @@ function updateBalance() {
 }
 
 /* =========================
-   ТРАНЗАКЦИИ
-========================= */
-
-function renderTransactions() {
-    const list = document.getElementById("historyList");
-    const count = document.getElementById("txCount");
-    if (!list) return;
-
-    if (count) count.textContent = `${transactions.length} операций`;
-
-    if (transactions.length === 0) {
-        list.innerHTML = `<div style="text-align:center; color:#666; font-size:13px; padding:15px;">История пуста</div>`;
-        return;
-    }
-
-    list.innerHTML = transactions.map(tx => {
-        const isDep = tx.type === 'deposit';
-        const sign = isDep ? '+' : '-';
-        const title = isDep ? 'Пополнение' : 'Вывод средств';
-        const statusText = tx.status === 'success' ? 'Успешно' : 'В обработке';
-
-        return `
-            <div class="history-item">
-                <div class="tx-left">
-                    <div class="tx-icon ${tx.type}">
-                        ${isDep ? '↙' : '↗'}
-                    </div>
-                    <div class="tx-details">
-                        <span class="tx-title">${title}</span>
-                        <span class="tx-subtitle">${tx.icon} ${tx.method} • ${tx.date}</span>
-                    </div>
-                </div>
-                <div class="tx-right">
-                    <span class="tx-amount ${tx.type}">${sign}${tx.amount.toFixed(2)} $</span>
-                    <span class="tx-status ${tx.status}">${statusText}</span>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-/* =========================
    НАВИГАЦИЯ
 ========================= */
 
@@ -192,21 +152,13 @@ function goHome() {
     updateNav("home");
 }
 
-function openGamesMenu() {
-    showPage("homePage");
-    updateNav("games");
-    const gamesSection = document.getElementById("gamesListSection");
-    if (gamesSection) {
-        gamesSection.scrollIntoView({ behavior: "smooth" });
-    }
-}
-
 function openWheel() {
     showPage("wheelPage");
     updateNav("games");
     updateBalance();
     drawWheel();
-    renderColorBetCards();
+    renderColorTabs();
+    selectColorTab(activeColor);
 }
 
 function openBalance(mode = "deposit") {
@@ -294,79 +246,75 @@ function drawWheel() {
 }
 
 /* =========================
-   УПРАВЛЕНИЕ СТАВКАМИ КОЛЕСА
+   ТАБЫ ЦВЕТОВ И СТАВКИ
 ========================= */
 
-function renderColorBetCards() {
-    const container = document.getElementById('colorBetsList');
-    if (!container) return;
+function renderColorTabs() {
+    const row = document.getElementById('colorTabsRow');
+    if (!row) return;
 
-    container.innerHTML = Object.keys(COLOR_CONFIG).map(key => {
+    row.innerHTML = Object.keys(COLOR_CONFIG).map(key => {
         const cfg = COLOR_CONFIG[key];
-        const val = colorBets[key] > 0 ? colorBets[key] : '';
-        const isActive = colorBets[key] > 0;
-
         return `
-            <div class="color-bet-card ${isActive ? 'active' : ''}" id="card-${key}">
-                <div class="card-top">
-                    <div class="card-title">
-                        <span class="color-indicator" style="background: ${cfg.color};"></span>
-                        <span>${cfg.name} (${cfg.label})</span>
-                    </div>
-                    <div class="card-input-wrap">
-                        <input type="number" 
-                               id="input-${key}" 
-                               placeholder="0" 
-                               min="0" 
-                               step="any" 
-                               value="${val}" 
-                               oninput="onColorInput('${key}', this.value)">
-                        <span style="color:#666; font-size:12px; margin-left:4px;">$</span>
-                    </div>
-                </div>
-                <div class="card-percent-btns">
-                    <button class="pct-btn" onclick="applyPercent('${key}', 0.10)">10%</button>
-                    <button class="pct-btn" onclick="applyPercent('${key}', 0.25)">25%</button>
-                    <button class="pct-btn" onclick="applyPercent('${key}', 0.50)">50%</button>
-                    <button class="pct-btn" onclick="applyPercent('${key}', 1.00)">100%</button>
-                </div>
+            <div class="color-tab-btn ${key === activeColor ? 'active' : ''}" 
+                 id="tab-${key}" 
+                 onclick="selectColorTab('${key}')">
+                <span class="tab-indicator" style="background: ${cfg.color};"></span>
+                <span class="tab-name">${cfg.name}</span>
+                <span class="tab-mult">${cfg.label}</span>
             </div>
         `;
     }).join('');
+}
+
+function selectColorTab(color) {
+    if (wheelSpinning) return;
+
+    activeColor = color;
+
+    // Обновляем визуальный выбор таба
+    document.querySelectorAll('.color-tab-btn').forEach(btn => btn.classList.remove('active'));
+    const currentTab = document.getElementById(`tab-${color}`);
+    if (currentTab) currentTab.classList.add('active');
+
+    // Обновляем заголовок инпута
+    const cfg = COLOR_CONFIG[color];
+    const titleBox = document.getElementById('activeColorTitle');
+    if (titleBox) {
+        titleBox.innerHTML = `
+            <span class="color-indicator" style="background: ${cfg.color};"></span>
+            <span>Ставка на ${cfg.name} (${cfg.label})</span>
+        `;
+    }
+
+    // Загружаем ранее сохраненное значение
+    const input = document.getElementById('activeBetInput');
+    if (input) {
+        const savedVal = colorBets[color];
+        input.value = savedVal > 0 ? savedVal : '';
+    }
 
     updateTotalBet();
 }
 
-function onColorInput(color, val) {
+function onActiveColorInput(val) {
     let parsed = parseFloat(val);
     if (isNaN(parsed) || parsed <= 0) {
-        colorBets[color] = 0;
+        colorBets[activeColor] = 0;
     } else {
-        colorBets[color] = parsed;
-    }
-
-    const card = document.getElementById(`card-${color}`);
-    if (card) {
-        if (colorBets[color] > 0) card.classList.add('active');
-        else card.classList.remove('active');
+        colorBets[activeColor] = parsed;
     }
 
     updateTotalBet();
 }
 
-function applyPercent(color, pct) {
+function applyPercentToActive(pct) {
     if (wheelSpinning) return;
     const amount = Math.floor(currentBalance * pct * 100) / 100;
-    colorBets[color] = amount;
+    colorBets[activeColor] = amount;
 
-    const input = document.getElementById(`input-${color}`);
+    const input = document.getElementById('activeBetInput');
     if (input) input.value = amount > 0 ? amount : '';
-
-    const card = document.getElementById(`card-${color}`);
-    if (card) {
-        if (amount > 0) card.classList.add('active');
-        else card.classList.remove('active');
-    }
 
     updateTotalBet();
 }
@@ -382,7 +330,7 @@ function updateTotalBet() {
 }
 
 /* =========================
-   ЛОГИКА ВРАЩЕНИЯ КОЛЕСА
+   ВРАЩЕНИЕ С ПЛАВНЫМ ЗУМОМ
 ========================= */
 
 async function spinWheel() {
@@ -423,7 +371,7 @@ async function spinWheel() {
     const totalSectors = sectors.length;
     const sectorAngle = 360 / totalSectors;
 
-    // Случайное смещение остановки стрелки внутри сектора
+    // Случайное смещение внутри сектора
     const padding = 0.15; 
     const randomOffset = (Math.random() * (1 - 2 * padding) + padding) * sectorAngle;
 
@@ -435,9 +383,10 @@ async function spinWheel() {
 
     wheelSvg.style.transform = `rotate(${wheelRotation}deg)`;
 
+    // Плавный глубокий зум в конце вращения
     setTimeout(() => {
         if (wheelStage) wheelStage.classList.add('zoomed');
-    }, 3200);
+    }, 3600);
 
     setTimeout(() => {
         wheelSpinning = false;
@@ -476,8 +425,46 @@ async function spinWheel() {
 }
 
 /* =========================
-   ПОПОЛНЕНИЕ / ВЫВОД И МЕТОДЫ
+   ПОПОЛНЕНИЕ И ВЫВОД
 ========================= */
+
+function renderTransactions() {
+    const list = document.getElementById("historyList");
+    const count = document.getElementById("txCount");
+    if (!list) return;
+
+    if (count) count.textContent = `${transactions.length} операций`;
+
+    if (transactions.length === 0) {
+        list.innerHTML = `<div style="text-align:center; color:#666; font-size:13px; padding:15px;">История пуста</div>`;
+        return;
+    }
+
+    list.innerHTML = transactions.map(tx => {
+        const isDep = tx.type === 'deposit';
+        const sign = isDep ? '+' : '-';
+        const title = isDep ? 'Пополнение' : 'Вывод средств';
+        const statusText = tx.status === 'success' ? 'Успешно' : 'В обработке';
+
+        return `
+            <div class="history-item">
+                <div class="tx-left">
+                    <div class="tx-icon ${tx.type}">
+                        ${isDep ? '↙' : '↗'}
+                    </div>
+                    <div class="tx-details">
+                        <span class="tx-title">${title}</span>
+                        <span class="tx-subtitle">${tx.icon} ${tx.method} • ${tx.date}</span>
+                    </div>
+                </div>
+                <div class="tx-right">
+                    <span class="tx-amount ${tx.type}">${sign}${tx.amount.toFixed(2)} $</span>
+                    <span class="tx-status ${tx.status}">${statusText}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
 
 function closeMethodsDropdown() {
     const dropdown = document.getElementById("methodsDropdown");
