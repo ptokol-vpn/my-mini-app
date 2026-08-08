@@ -5,6 +5,7 @@ if (tg) {
     tg.expand();
 }
 
+
 /* =========================
    ДАННЫЕ И БАЛАНС
 ========================= */
@@ -15,16 +16,23 @@ let balanceMode = "deposit";
 let selectedMethod = "CryptoBot";
 let selectedMethodIcon = "🤖";
 
-let selectedColors = new Set(['green']); 
+let selectedColor = 'green'; // Выбранный цвет по умолчанию
 
+
+/* =========================
+   КОЛЕСО НА 32 СЕКЦИИ (DREAM BONANZA MATH)
+========================= */
+
+// Конфигурация типов секторов
 const COLOR_CONFIG = {
-    green:  { label: '1x',  mult: 1,  color: '#2ecc71', name: 'Зеленый' },
-    red:    { label: '2x',  mult: 2,  color: '#e74c3c', name: 'Красный' },
-    blue:   { label: '3x',  mult: 3,  color: '#3498db', name: 'Синий' },
-    yellow: { label: '5x',  mult: 5,  color: '#f1c40f', name: 'Желтый' },
-    gold:   { label: '50x', mult: 50, color: '#ffd700', name: 'Золото' }
+    green:  { label: '1x',  mult: 1,  color: '#2ecc71', name: 'Зеленый', weight: 52 },
+    red:    { label: '2x',  mult: 2,  color: '#e74c3c', name: 'Красный', weight: 28 },
+    blue:   { label: '3x',  mult: 3,  color: '#3498db', name: 'Синий',   weight: 12 },
+    yellow: { label: '5x',  mult: 5,  color: '#f1c40f', name: 'Желтый',  weight: 6 },
+    gold:   { label: '50x', mult: 50, color: '#ffd700', name: 'Золото',  weight: 2 }
 };
 
+// Генерация 32 секторов с динамическим распределением
 const sectors = [
     { type: 'gold',   ...COLOR_CONFIG.gold },
     { type: 'green',  ...COLOR_CONFIG.green },
@@ -63,12 +71,14 @@ const sectors = [
 let wheelRotation = 0;
 let wheelSpinning = false;
 
+
 /* =========================
-   TELEGRAM USER & БАЛАНС
+   TELEGRAM USER
 ========================= */
 
 function loadTelegramUser() {
     if (!tg) return;
+
     const user = tg.initDataUnsafe?.user;
     if (!user) return;
 
@@ -94,6 +104,11 @@ function loadTelegramUser() {
     }
 }
 
+
+/* =========================
+   ОБНОВЛЕНИЕ БАЛАНСА
+========================= */
+
 function updateBalance() {
     const value = currentBalance.toFixed(2) + " $";
 
@@ -106,12 +121,11 @@ function updateBalance() {
     if (bigBalance) bigBalance.textContent = value;
     if (profileBalance) profileBalance.textContent = value;
     if (betBalanceText) betBalanceText.textContent = `Баланс: ${value}`;
-    
-    updateTotalBet();
 }
 
+
 /* =========================
-   НАВИГАЦИЯ
+   СТРАНИЦЫ И НАВИГАЦИЯ
 ========================= */
 
 function hideAllPages() {
@@ -126,6 +140,7 @@ function showPage(id) {
     hideAllPages();
     const page = document.getElementById(id);
     if (page) page.classList.remove("hidden");
+
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -138,6 +153,15 @@ function openWheel() {
     showPage("wheelPage");
     updateNav("games");
     updateBalance();
+}
+
+function openGames() {
+    showPage("homePage");
+    updateNav("games");
+    setTimeout(() => {
+        const games = document.querySelector(".games-section");
+        if (games) games.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
 }
 
 function openBalance(mode = "deposit") {
@@ -163,10 +187,18 @@ function updateNav(active) {
     const navItems = document.querySelectorAll(".nav-item");
     navItems.forEach(item => item.classList.remove("active"));
 
-    const map = { home: "homeNav", games: "gamesNav", balance: "balanceNav", bonus: "bonusNav", profile: "profileNav" };
+    const map = {
+        home: "homeNav",
+        games: "gamesNav",
+        balance: "balanceNav",
+        bonus: "bonusNav",
+        profile: "profileNav"
+    };
+
     const activeElement = document.getElementById(map[active]);
     if (activeElement) activeElement.classList.add("active");
 }
+
 
 /* =========================
    ОТРИСОВКА SVG (32 СЕКЦИИ)
@@ -175,6 +207,7 @@ function updateNav(active) {
 function drawWheel() {
     const wheelSvg = document.getElementById('wheelSvg');
     const rewardList = document.getElementById('rewardList');
+
     if (!wheelSvg) return;
 
     const total = sectors.length;
@@ -223,79 +256,75 @@ function drawWheel() {
     }
 }
 
+
 /* =========================
-   МУЛЬТИ-СТАВКИ
+   УПРАВЛЕНИЕ СТАВКАМИ
 ========================= */
 
-function toggleBetColor(color) {
+function selectBetColor(color) {
     if (wheelSpinning) return;
-
-    if (selectedColors.has(color)) {
-        if (selectedColors.size > 1) {
-            selectedColors.delete(color);
-        }
-    } else {
-        selectedColors.add(color);
-    }
+    selectedColor = color;
 
     document.querySelectorAll('.color-btn').forEach(btn => {
-        const c = btn.getAttribute('data-color');
-        btn.classList.toggle('active', selectedColors.has(c));
+        btn.classList.toggle('active', btn.getAttribute('data-color') === color);
     });
-
-    updateTotalBet();
-}
-
-function updateTotalBet() {
-    const betInput = document.getElementById('betInput');
-    const totalInfo = document.getElementById('totalBetInfo');
-    if (!betInput || !totalInfo) return;
-
-    const baseBet = parseFloat(betInput.value) || 0;
-    const totalBet = baseBet * selectedColors.size;
-    totalInfo.textContent = `Общая ставка (${selectedColors.size} цв.): ${totalBet.toFixed(2)} $`;
 }
 
 function adjustBet(type) {
     if (wheelSpinning) return;
+
     const input = document.getElementById('betInput');
     if (!input) return;
 
     let currentBet = parseFloat(input.value) || 0;
 
     switch(type) {
-        case 'min': currentBet = 1; break;
-        case 'half': currentBet = Math.max(1, Math.floor(currentBet / 2)); break;
-        case 'x2': currentBet *= 2; break;
-        case 'max': currentBet = Math.floor(currentBalance / selectedColors.size); break;
+        case 'min':
+            currentBet = 1;
+            break;
+        case 'half':
+            currentBet = Math.max(1, Math.floor(currentBet / 2));
+            break;
+        case 'x2':
+            currentBet = currentBet * 2;
+            break;
+        case 'max':
+            currentBet = Math.floor(currentBalance);
+            break;
     }
 
-    if (currentBet * selectedColors.size > currentBalance) {
-        currentBet = Math.floor(currentBalance / selectedColors.size);
-    }
+    if (currentBet > currentBalance) currentBet = currentBalance;
     if (currentBet < 1) currentBet = 1;
 
     input.value = currentBet;
-    updateTotalBet();
 }
+
 
 /* =========================
-   СЕРВЕРНОЕ ВРАЩЕНИЕ КОЛЕСА
+   ВРАЩЕНИЕ И ПРИБЛИЖЕНИЕ
 ========================= */
 
-async function fetchServerSpinResult(bets) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            const randomIndex = Math.floor(Math.random() * sectors.length);
-            resolve({
-                sectorIndex: randomIndex,
-                sector: sectors[randomIndex]
-            });
-        }, 150);
-    });
+function getRandomSectorIndex() {
+    const totalWeight = Object.values(COLOR_CONFIG).reduce((sum, cfg) => sum + cfg.weight, 0);
+    let randomNum = Math.random() * totalWeight;
+
+    let chosenType = 'green';
+    for (const [type, cfg] of Object.entries(COLOR_CONFIG)) {
+        if (randomNum < cfg.weight) {
+            chosenType = type;
+            break;
+        }
+        randomNum -= cfg.weight;
+    }
+
+    const matchingIndices = sectors
+        .map((s, index) => s.type === chosenType ? index : -1)
+        .filter(index => index !== -1);
+
+    return matchingIndices[Math.floor(Math.random() * matchingIndices.length)];
 }
 
-async function spinWheel() {
+function spinWheel() {
     if (wheelSpinning) return;
 
     const betInput = document.getElementById('betInput');
@@ -307,102 +336,88 @@ async function spinWheel() {
 
     if (!betInput || !button || !wheelSvg) return;
 
-    const baseBet = parseFloat(betInput.value);
-    const totalBet = baseBet * selectedColors.size;
+    const betAmount = parseFloat(betInput.value);
 
-    if (isNaN(baseBet) || baseBet < 1) {
+    if (isNaN(betAmount) || betAmount < 1) {
         showMessage("Минимальная ставка: 1 $");
         return;
     }
 
-    if (totalBet > currentBalance) {
+    if (betAmount > currentBalance) {
         showMessage("Недостаточно средств на балансе!");
         return;
     }
 
-    const betsArray = Array.from(selectedColors).map(color => ({
-        color: color,
-        amount: baseBet
-    }));
-
-    button.disabled = true;
-
-    currentBalance -= totalBet;
+    // Списание ставки
+    currentBalance -= betAmount;
     updateBalance();
 
     wheelSpinning = true;
-    button.innerHTML = '<span class="spin-icon">↻</span> Ожидание сервера...';
+    button.disabled = true;
+    button.innerHTML = '<span class="spin-icon">↻</span> Вращение...';
 
     if (result) result.classList.remove('show');
     if (resultValue) resultValue.textContent = '?';
 
-    try {
-        const serverData = await fetchServerSpinResult(betsArray);
-        const rewardIndex = serverData.sectorIndex;
+    // Случайный сектор
+    const rewardIndex = getRandomSectorIndex();
+    const totalSectors = sectors.length;
+    const sectorAngle = 360 / totalSectors;
 
-        button.innerHTML = '<span class="spin-icon">↻</span> Вращение...';
+    const targetCenter = (rewardIndex * sectorAngle) + (sectorAngle / 2);
+    const stopAngle = 360 - targetCenter;
 
-        const totalSectors = sectors.length;
-        const sectorAngle = 360 / totalSectors;
+    const fullSpins = 6;
+    wheelRotation += fullSpins * 360 + (stopAngle - (wheelRotation % 360));
 
-        const targetCenter = (rewardIndex * sectorAngle) + (sectorAngle / 2);
-        const stopAngle = 360 - targetCenter;
+    wheelSvg.style.transform = `rotate(${wheelRotation}deg)`;
 
-        const fullSpins = 6;
-        wheelRotation += fullSpins * 360 + (stopAngle - (wheelRotation % 360));
+    // ЭФФЕКТ ПРИБЛИЖЕНИЯ КАМЕРЫ (за 1.8 сек до конца)
+    setTimeout(() => {
+        if (wheelStage) wheelStage.classList.add('zoomed');
+    }, 3200);
 
-        wheelSvg.style.transform = `rotate(${wheelRotation}deg)`;
-
-        setTimeout(() => {
-            if (wheelStage) wheelStage.classList.add('zoomed');
-        }, 3200);
-
-        setTimeout(() => {
-            wheelSpinning = false;
-            button.disabled = false;
-            button.innerHTML = '<span class="spin-icon">↻</span> Сделать ставку';
-
-            if (wheelStage) wheelStage.classList.remove('zoomed');
-
-            const wonSector = sectors[rewardIndex];
-            
-            let totalWin = 0;
-            if (selectedColors.has(wonSector.type)) {
-                totalWin = baseBet * wonSector.mult;
-                currentBalance += totalWin;
-                updateBalance();
-            }
-
-            if (resultValue) {
-                if (totalWin > 0) {
-                    resultValue.textContent = `Победа +${totalWin.toFixed(2)} $ (${wonSector.label})`;
-                    resultValue.style.color = '#2ecc71';
-                } else {
-                    resultValue.textContent = `Выпал ${wonSector.name} (${wonSector.label})`;
-                    resultValue.style.color = '#e74c3c';
-                }
-            }
-
-            if (result) result.classList.add('show');
-
-            if (tg?.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred(totalWin > 0 ? "success" : "error");
-            }
-
-        }, 5000);
-
-    } catch (err) {
-        currentBalance += totalBet;
-        updateBalance();
+    // ОКОНЧАНИЕ ВРАЩЕНИЯ (Через 5 секунд)
+    setTimeout(() => {
         wheelSpinning = false;
         button.disabled = false;
-        button.innerHTML = '<span class="spin-icon">↻</span> Сделать ставку';
-        showMessage("Ошибка связи с сервером!");
-    }
+        button.innerHTML = '<span class="spin-icon">↻</span> Крутить колесо';
+
+        // Возвращаем камеру назад
+        if (wheelStage) wheelStage.classList.remove('zoomed');
+
+        const wonSector = sectors[rewardIndex];
+        const isWin = wonSector.type === selectedColor;
+
+        let winAmount = 0;
+        if (isWin) {
+            winAmount = betAmount * wonSector.mult;
+            currentBalance += winAmount;
+            updateBalance();
+        }
+
+        if (resultValue) {
+            if (isWin) {
+                resultValue.textContent = `Победа +${winAmount.toFixed(2)} $ (${wonSector.label})`;
+                resultValue.style.color = '#2ecc71';
+            } else {
+                resultValue.textContent = `Выпал ${wonSector.name} (${wonSector.label})`;
+                resultValue.style.color = '#e74c3c';
+            }
+        }
+
+        if (result) result.classList.add('show');
+
+        if (tg?.HapticFeedback) {
+            tg.HapticFeedback.notificationOccurred(isWin ? "success" : "error");
+        }
+
+    }, 5000);
 }
 
+
 /* =========================
-   ПОПОЛНЕНИЕ / ВЫВОД И МЕТОДЫ
+   ПОПОЛНЕНИЕ / ВЫВОД
 ========================= */
 
 function setBalanceMode(mode) {
@@ -489,6 +504,11 @@ function demoBalanceAction() {
     showMessage(`Демо: отправлено на вывод ${amount.toFixed(2)} $ через ${selectedMethod}`);
 }
 
+
+/* =========================
+   БОНУС И УВЕДОМЛЕНИЯ
+========================= */
+
 function claimBonus() {
     showMessage("Демо: ежедневный бонус пока не подключён");
 }
@@ -500,6 +520,7 @@ function showMessage(text) {
     }
     alert(text);
 }
+
 
 /* =========================
    ЗАПУСК
