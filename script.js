@@ -16,7 +16,20 @@ let selectedMethod = "CryptoBot";
 let selectedMethodSub = "Криптовалюта";
 let selectedMethodIcon = "cryptobot.png";
 
-// Память ставок для каждого цвета
+// --- НОВОЕ: Данные для кастомизации и подарков ---
+let userGifts = JSON.parse(localStorage.getItem('wxs_gifts')) || [
+    { name: "Змея", number: "#167,259", icon: "🐍" },
+    { name: "Сердце", number: "#6,969", icon: "💖" }
+];
+
+let profileDesign = JSON.parse(localStorage.getItem('wxs_profile')) || {
+    start: '#1d2733',
+    end: '#121212',
+    pattern: '💎 ✨ 🚀 👑 🎲',
+    status: '⭐'
+};
+// ------------------------------------------------
+
 let colorBets = {
     green: 0,
     red: 0,
@@ -25,7 +38,6 @@ let colorBets = {
     gold: 0
 };
 
-// Текущий выбранный цвет в табе
 let activeColor = 'green';
 
 let transactions = [
@@ -172,7 +184,7 @@ function openWheel() {
     showPage("wheelPage");
     updateNav("games");
     updateBalance();
-    loadTelegramUser(); // Обновление данных юзера при входе в игру
+    loadTelegramUser(); 
     drawWheel();
     renderColorTabs();
     selectColorTab(activeColor);
@@ -191,6 +203,9 @@ function openProfile() {
     updateNav("profile");
     updateBalance();
     loadTelegramUser();
+    // Новые вызовы для профиля:
+    applyDesign();
+    renderGifts();
 }
 
 function openBonus() {
@@ -339,7 +354,6 @@ function onActiveColorInput(val) {
     updateTotalBet();
 }
 
-// Минимальная ставка 0.10 $
 function applyMinToActive() {
     if (wheelSpinning) return;
     colorBets[activeColor] = 0.10;
@@ -353,7 +367,6 @@ function applyMinToActive() {
     updateTotalBet();
 }
 
-// Процентная ставка (от 10% до MAX)
 function applyPercentToActive(pct) {
     if (wheelSpinning) return;
 
@@ -380,7 +393,6 @@ function applyPercentToActive(pct) {
     updateTotalBet();
 }
 
-// Сброс ставки для активного цвета
 function resetActiveBet() {
     if (wheelSpinning) return;
     colorBets[activeColor] = 0;
@@ -411,7 +423,7 @@ function updateTotalBet() {
 }
 
 /* =========================
-   ВРАЩЕНИЕ С ПЛАВНЫМ ЗУМОМ
+   ВРАЩЕНИЕ
 ========================= */
 
 async function spinWheel() {
@@ -525,7 +537,6 @@ function renderTransactions() {
         const title = isDep ? 'Пополнение' : 'Вывод средств';
         const statusText = tx.status === 'success' ? 'Успешно' : 'В обработке';
 
-        // Проверяем, является ли icon файлом картинки
         const iconHTML = tx.icon.includes('.')
             ? `<img src="${tx.icon}" style="width: 16px; height: 16px; object-fit: contain; vertical-align: middle;">`
             : tx.icon;
@@ -611,7 +622,6 @@ function selectMethod(method, icon, sub) {
     if (selected) selected.textContent = method;
     if (selectedSub) selectedSub.textContent = sub;
 
-    // Обновление аватарки/иконки метода (картинка или текст)
     if (iconElement) {
         if (icon.includes('.')) {
             iconElement.src = icon;
@@ -686,6 +696,78 @@ function showMessage(text) {
 }
 
 /* =========================
+   НОВЫЙ ФУНКЦИОНАЛ: ПРОФИЛЬ И ПОДАРКИ
+========================= */
+
+function applyDesign() {
+    const cover = document.getElementById('profileCover');
+    const pattern = document.getElementById('bgEmojiPattern');
+    const badge = document.getElementById('profileStatusBadge');
+
+    if (cover) cover.style.background = `linear-gradient(180deg, ${profileDesign.start} 0%, ${profileDesign.end} 100%)`;
+    if (pattern) pattern.textContent = profileDesign.pattern;
+    if (badge) badge.textContent = profileDesign.status;
+}
+
+function toggleProfileCustomizer() {
+    const box = document.getElementById('customizerBox');
+    if (box) box.classList.toggle('hidden');
+}
+
+function saveProfileCustomization() {
+    const patternInput = document.getElementById('emojiPatternInput');
+    const statusInput = document.getElementById('statusEmojiInput');
+    
+    if (patternInput) profileDesign.pattern = patternInput.value;
+    if (statusInput) profileDesign.status = statusInput.value;
+    
+    localStorage.setItem('wxs_profile', JSON.stringify(profileDesign));
+    applyDesign();
+    toggleProfileCustomizer();
+    showMessage("Профиль обновлен!");
+}
+
+function renderGifts() {
+    const grid = document.getElementById("giftsGrid");
+    if (!grid) return;
+
+    grid.innerHTML = userGifts.map(g => `
+        <div class="gift-card" style="background:#1a1a1a; border:1px solid #282828; border-radius:16px; padding:10px; text-align:center; position:relative;">
+            <span class="gift-number" style="position:absolute; top:6px; right:6px; font-size:9px; color:#888;">${g.number}</span>
+            <div style="font-size: 32px; margin: 10px 0;">${g.icon}</div>
+            <small style="font-size:10px; color:#aaa; font-weight:700;">${g.name}</small>
+        </div>
+    `).join('');
+}
+
+function toggleAddGiftBox() {
+    const box = document.getElementById('addGiftBox');
+    if (box) box.classList.toggle('hidden');
+}
+
+function confirmAddGift() {
+    const input = document.getElementById('giftLinkInput');
+    if (!input) return;
+    const url = input.value.trim();
+    if (!url) return;
+
+    const numberMatch = url.match(/(\d+)$/);
+    const num = numberMatch ? "#" + parseInt(numberMatch[0]).toLocaleString() : "#" + Math.floor(Math.random() * 99999);
+
+    userGifts.unshift({
+        name: "NFT Подарок",
+        number: num,
+        icon: "🎁"
+    });
+
+    localStorage.setItem('wxs_gifts', JSON.stringify(userGifts));
+    input.value = "";
+    toggleAddGiftBox();
+    renderGifts();
+    showMessage("Подарок добавлен!");
+}
+
+/* =========================
    ЗАПУСК
 ========================= */
 
@@ -694,4 +776,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBalance();
     renderTransactions();
     goHome();
+    // Инициализация нового функционала:
+    applyDesign();
+    renderGifts();
 });
