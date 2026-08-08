@@ -19,7 +19,7 @@ body {
     background:
         radial-gradient(
             circle at 50% 0%,
-            rgba(255, 160, 0, 0.12),
+            rgba(255, 160, 0, .12),
             transparent 35%
         ),
         #090909;
@@ -102,8 +102,8 @@ a {
     background:
         linear-gradient(
             135deg,
-            rgba(35, 35, 35, .96),
-            rgba(17, 17, 17, .96)
+            rgba(35,35,35,.96),
+            rgba(17,17,17,.96)
         );
 
     border: 1px solid #303030;
@@ -160,7 +160,8 @@ a {
     font-size: 26px;
 }
 
-.avatar img {
+.avatar img,
+.profile-big-avatar img {
     width: 100%;
     height: 100%;
 
@@ -706,14 +707,17 @@ a {
 
 
 /* =========================================
-   СТРАНИЦА БАЛАНСА
+   ОБЩАЯ СТРАНИЦА
 ========================================= */
 
-.balance-page {
+.balance-page,
+.profile-page,
+.bonus-page {
     animation: pageIn .25s ease;
 }
 
 @keyframes pageIn {
+
     from {
         opacity: 0;
         transform: translateY(8px);
@@ -770,7 +774,7 @@ a {
 
 
 /* =========================================
-   КАРТОЧКА БАЛАНСА
+   БАЛАНС
 ========================================= */
 
 .balance-card {
@@ -847,7 +851,7 @@ a {
 
 
 /* =========================================
-   ВКЛАДКИ
+   ВКЛАДКИ БАЛАНСА
 ========================================= */
 
 .balance-tabs {
@@ -955,7 +959,7 @@ a {
 
 
 /* =========================================
-   ВЫБОР МЕТОДА
+   МЕТОД
 ========================================= */
 
 .method-select {
@@ -1049,6 +1053,7 @@ a {
 }
 
 @keyframes dropdownIn {
+
     from {
         opacity: 0;
         transform: translateY(-5px);
@@ -1140,7 +1145,6 @@ a {
 
 .amount-input input {
     width: 100%;
-
     height: 100%;
 
     outline: none;
@@ -1167,7 +1171,7 @@ a {
 
 
 /* =========================================
-   ОСНОВНАЯ КНОПКА
+   КНОПКА БАЛАНСА
 ========================================= */
 
 .balance-action {
@@ -1273,15 +1277,13 @@ a {
 .transaction-icon.deposit {
     color: #ffc400;
 
-    background:
-        rgba(255,190,0,.1);
+    background: rgba(255,190,0,.1);
 }
 
 .transaction-icon.withdraw {
     color: #ff8b45;
 
-    background:
-        rgba(255,100,40,.1);
+    background: rgba(255,100,40,.1);
 }
 
 .transaction-info {
@@ -1324,6 +1326,358 @@ a {
 
 .transaction-amount.negative {
     color: #ff7250;
+}
+
+
+/* =========================================
+   ПРОФИЛЬ
+========================================= */
+
+.profile-main-card {
+    position: relative;
+
+    padding: 28px 20px 24px;
+
+    text-align: center;
+
+    border-radius: 30px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255,180,0,.18),
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #202020,
+            #131313
+        );
+
+    border: 1px solid #303030;
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.25);
+}
+
+.profile-big-avatar-frame {
+    width: 104px;
+    height: 104px;
+
+    margin: 0 auto;
+
+    padding: 4px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff36b,
+            #ffb300,
+            #ff7800,
+            #ffd52e
+        );
+
+    box-shadow:
+        0 0 28px rgba(255,170,0,.35);
+}
+
+.profile-big-avatar {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 25%,
+            #454545,
+            #161616 70%
+        );
+
+    border: 3px solid #111;
+
+    font-size: 44px;
+}
+
+.profile-big-name {
+    margin-top: 14px;
+
+    font-size: 25px;
+    font-weight: 950;
+}
+
+.profile-username {
+    margin-top: 4px;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+.profile-level {
+    margin: 22px auto 0;
+
+    max-width: 420px;
+
+    text-align: left;
+}
+
+.profile-level-top {
+    display: flex;
+    justify-content: space-between;
+
+    color: #858585;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-level-bar {
+    width: 100%;
+    height: 6px;
+
+    margin-top: 7px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #303030;
+}
+
+.profile-level-bar div {
+    width: 52%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff8c00,
+            #ffd21c
+        );
+
+    box-shadow:
+        0 0 10px rgba(255,174,0,.7);
+}
+
+
+/* =========================================
+   СТАТИСТИКА ПРОФИЛЯ
+========================================= */
+
+.profile-stats {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+    margin-top: 17px;
+}
+
+.stat-card {
+    min-height: 135px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px;
+
+    text-align: center;
+
+    border-radius: 23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1c1c1e,
+            #131313
+        );
+
+    border: 1px solid #2d2d2d;
+}
+
+.stat-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 22px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,182,0,.2),
+            rgba(255,153,0,.04)
+        );
+}
+
+.stat-value {
+    margin-top: 9px;
+
+    font-size: 19px;
+    font-weight: 950;
+}
+
+.stat-name {
+    margin-top: 4px;
+
+    color: #777;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   БАЛАНС В ПРОФИЛЕ
+========================================= */
+
+.profile-balance-card {
+    margin-top: 17px;
+
+    padding: 19px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border-radius: 23px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #252019,
+            #151515
+        );
+
+    border: 1px solid rgba(255,180,0,.25);
+}
+
+.profile-balance-card small {
+    display: block;
+
+    color: #777;
+
+    font-size: 10px;
+}
+
+.profile-balance-card strong {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 22px;
+    font-weight: 950;
+}
+
+.profile-balance-card button {
+    padding: 12px 17px;
+
+    border-radius: 13px;
+
+    color: #171717;
+
+    font-size: 12px;
+    font-weight: 900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffd928,
+            #ff8b00
+        );
+}
+
+
+/* =========================================
+   БОНУС
+========================================= */
+
+.bonus-card {
+    padding: 35px 25px;
+
+    text-align: center;
+
+    border-radius: 30px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255,190,0,.2),
+            transparent 50%
+        ),
+        linear-gradient(
+            145deg,
+            #202020,
+            #131313
+        );
+
+    border: 1px solid #303030;
+}
+
+.bonus-big-icon {
+    font-size: 75px;
+
+    animation:
+        bonusFloat 2.5s ease-in-out infinite;
+}
+
+.bonus-card h2 {
+    margin: 15px 0 7px;
+
+    font-size: 25px;
+}
+
+.bonus-card p {
+    margin: 0 auto 22px;
+
+    max-width: 300px;
+
+    color: #777;
+
+    line-height: 1.5;
+}
+
+.bonus-claim {
+    padding: 15px 24px;
+
+    border-radius: 16px;
+
+    color: #171717;
+
+    font-size: 15px;
+    font-weight: 900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffd928,
+            #ff8b00
+        );
+
+    box-shadow:
+        0 8px 25px rgba(255,145,0,.25);
 }
 
 
@@ -1380,6 +1734,8 @@ a {
     color: #777;
 
     background: transparent;
+
+    transition: .15s;
 }
 
 .nav-item:active {
@@ -1437,6 +1793,17 @@ a {
     50% {
         transform: scale(1.1);
         opacity: 1;
+    }
+}
+
+@keyframes bonusFloat {
+
+    0%,100% {
+        transform: translateY(0) rotate(-2deg);
+    }
+
+    50% {
+        transform: translateY(-8px) rotate(2deg);
     }
 }
 
@@ -1623,6 +1990,27 @@ a {
     .balance-form {
         padding: 17px;
     }
+
+    .profile-big-avatar-frame {
+        width: 92px;
+        height: 92px;
+    }
+
+    .profile-big-name {
+        font-size: 22px;
+    }
+
+    .stat-card {
+        min-height: 125px;
+    }
+
+    .stat-value {
+        font-size: 17px;
+    }
+
+    .profile-balance-card {
+        padding: 15px;
+    }
 }
 
 
@@ -1695,4 +2083,27 @@ a {
     .transaction-amount {
         font-size: 12px;
     }
-}
+
+    .profile-stats {
+        gap: 8px;
+    }
+
+    .stat-card {
+        min-height: 115px;
+        padding: 10px;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 19px;
+    }
+
+    .stat-value {
+        font-size: 15px;
+    }
+
+    .stat-name {
+        font-size: 9px;
+    }
+   }
