@@ -280,7 +280,7 @@
         <section class="wheel-card">
 
             <div class="wheel-label">
-                КОЛЕСО НАГРАД
+                DREAM BONANZA
             </div>
 
             <h2>
@@ -288,7 +288,7 @@
             </h2>
 
             <p class="wheel-subtitle">
-                Делай ставку, крути колесо и забирай множитель!
+                Выбери цвет, делай ставку и забирай крупный занос!
             </p>
 
 
@@ -338,13 +338,43 @@
             </div>
 
 
-            <!-- ПАНЕЛЬ СТАВКИ -->
+            <!-- ПАНЕЛЬ СТАВКИ С ВЫБОРОМ ЦВЕТА -->
 
             <div class="bet-controls">
                 <div class="bet-label">
-                    <span>Сумма ставки</span>
+                    <span>Выберите цвет ставки</span>
                     <span id="betBalanceText">Баланс: 1000.00 $</span>
                 </div>
+
+                <!-- ВЫБОР ЦВЕТА (DREAM BONANZA) -->
+                <div class="color-selector">
+                    <button class="color-btn active" data-color="green" onclick="selectBetColor('green')">
+                        <div class="color-box"></div>
+                        <span>1x</span>
+                        <small>Зеленый</small>
+                    </button>
+                    <button class="color-btn" data-color="red" onclick="selectBetColor('red')">
+                        <div class="color-box"></div>
+                        <span>2x</span>
+                        <small>Красный</small>
+                    </button>
+                    <button class="color-btn" data-color="blue" onclick="selectBetColor('blue')">
+                        <div class="color-box"></div>
+                        <span>3x</span>
+                        <small>Синий</small>
+                    </button>
+                    <button class="color-btn" data-color="yellow" onclick="selectBetColor('yellow')">
+                        <div class="color-box"></div>
+                        <span>5x</span>
+                        <small>Желтый</small>
+                    </button>
+                    <button class="color-btn" data-color="gold" onclick="selectBetColor('gold')">
+                        <div class="color-box"></div>
+                        <span>50x</span>
+                        <small>Золото</small>
+                    </button>
+                </div>
+
                 <div class="bet-input-wrapper">
                     <input type="number" id="betInput" value="10" min="1" step="1">
                     <div class="bet-quick-btns">
@@ -396,23 +426,23 @@
     <!-- НИЖНЕЕ МЕНЮ -->
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="goHome()">
+        <button class="nav-item active" id="homeNav" onclick="goHome()">
             <span class="nav-icon">🏠</span>
             <small>Главная</small>
         </button>
-        <button class="nav-item" onclick="openWheel()">
+        <button class="nav-item" id="gamesNav" onclick="openWheel()">
             <span class="nav-icon">🎡</span>
             <small>Колесо</small>
         </button>
-        <button class="nav-item" onclick="openBalance('deposit')">
+        <button class="nav-item" id="balanceNav" onclick="openBalance('deposit')">
             <span class="nav-icon">💳</span>
             <small>Баланс</small>
         </button>
-        <button class="nav-item" onclick="openBonus()">
+        <button class="nav-item" id="bonusNav" onclick="openBonus()">
             <span class="nav-icon">🎁</span>
             <small>Бонус</small>
         </button>
-        <button class="nav-item" onclick="openProfile()">
+        <button class="nav-item" id="profileNav" onclick="openProfile()">
             <span class="nav-icon">👤</span>
             <small>Профиль</small>
         </button>
