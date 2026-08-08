@@ -934,91 +934,6 @@ a {
 }
 
 
-/* САМО КОЛЕСО */
-
-.wheel {
-    position: relative;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    border-radius: 50%;
-
-    border: 4px solid #171717;
-
-    background:
-        conic-gradient(
-            from -30deg,
-
-            #ffb900 0deg 60deg,
-            #ff7b00 60deg 120deg,
-            #ffd51c 120deg 180deg,
-            #e85b00 180deg 240deg,
-            #ffca12 240deg 300deg,
-            #ff8a00 300deg 360deg
-        );
-
-    box-shadow:
-        inset 0 0 20px rgba(0,0,0,.55);
-
-    transform: rotate(0deg);
-
-    will-change: transform;
-}
-
-
-/* ЛИНИИ СЕКТОРОВ */
-
-.wheel::before {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    border-radius: 50%;
-
-    background:
-        repeating-conic-gradient(
-            from -30deg,
-            rgba(255,255,255,.75) 0deg 1deg,
-            transparent 1deg 60deg
-        );
-}
-
-
-/* ТЕКСТ СЕКТОРОВ */
-
-.wheel::after {
-    content:
-        "⭐     🔥     ⚡     🎁     💎     ✨";
-
-    position: absolute;
-
-    inset: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #fff;
-
-    font-size: clamp(19px,5vw,27px);
-
-    letter-spacing: 6px;
-
-    text-shadow:
-        0 2px 5px rgba(0,0,0,.7);
-
-    transform: rotate(30deg);
-
-    word-spacing: 15px;
-
-    pointer-events: none;
-}
-
-
 /* ЦЕНТР */
 
 .wheel-center {
@@ -1230,754 +1145,6 @@ a {
 
 
 /* =========================
-   БАЛАНС
-========================= */
-
-.balance-card {
-    position: relative;
-
-    overflow: hidden;
-
-    padding: 27px 25px;
-
-    border-radius: 28px;
-
-    background:
-        radial-gradient(
-            circle at 80% 20%,
-            rgba(255,190,0,.25),
-            transparent 45%
-        ),
-        linear-gradient(
-            135deg,
-            #242019,
-            #151515
-        );
-
-    border: 1px solid rgba(255,180,0,.35);
-}
-
-.balance-card-label {
-    position: relative;
-    z-index: 2;
-
-    color: #8b8b8b;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-}
-
-.big-balance {
-    position: relative;
-    z-index: 2;
-
-    margin-top: 7px;
-
-    font-size: 42px;
-    font-weight: 950;
-}
-
-.balance-card-glow {
-    position: absolute;
-
-    width: 140px;
-    height: 140px;
-
-    right: -45px;
-    top: -45px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,190,0,.28),
-            transparent 70%
-        );
-
-    filter: blur(5px);
-}
-
-.balance-tabs {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 9px;
-
-    margin-top: 17px;
-
-    padding: 5px;
-
-    border-radius: 19px;
-
-    background: #151515;
-
-    border: 1px solid #292929;
-}
-
-.balance-tab {
-    height: 52px;
-
-    border-radius: 15px;
-
-    color: #777;
-
-    font-size: 15px;
-    font-weight: 850;
-
-    background: transparent;
-}
-
-.balance-tab.active {
-    color: #171717;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffd928,
-            #ff8b00
-        );
-}
-
-.balance-form {
-    position: relative;
-
-    margin-top: 20px;
-
-    padding: 21px;
-
-    border-radius: 25px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #1c1c1e,
-            #131313
-        );
-
-    border: 1px solid #2d2d2d;
-}
-
-.form-title {
-    font-size: 20px;
-    font-weight: 900;
-}
-
-.form-subtitle {
-    margin-top: 4px;
-
-    color: #777;
-    font-size: 12px;
-}
-
-.field-label {
-    margin-top: 19px;
-    margin-bottom: 8px;
-
-    color: #8d8d8d;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.method-select {
-    width: 100%;
-
-    min-height: 64px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 8px 13px;
-
-    border-radius: 17px;
-
-    color: #fff;
-
-    background: #111;
-
-    border: 1px solid #303030;
-}
-
-.method-left {
-    display: flex;
-    align-items: center;
-
-    gap: 11px;
-}
-
-.method-icon,
-.method-option-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 13px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,185,0,.2),
-            rgba(255,150,0,.04)
-        );
-}
-
-.method-icon {
-    width: 44px;
-    height: 44px;
-
-    font-size: 22px;
-}
-
-.method-name {
-    text-align: left;
-
-    font-size: 15px;
-    font-weight: 850;
-}
-
-.method-desc {
-    margin-top: 2px;
-
-    color: #686868;
-    font-size: 11px;
-}
-
-.select-arrow {
-    color: #777;
-    font-size: 12px;
-}
-
-.methods-dropdown {
-    display: none;
-
-    margin-top: 7px;
-
-    overflow: hidden;
-
-    border-radius: 17px;
-
-    background: #111;
-
-    border: 1px solid #303030;
-}
-
-.methods-dropdown.open {
-    display: block;
-}
-
-.method-option {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    gap: 11px;
-
-    padding: 11px 13px;
-
-    color: #fff;
-
-    text-align: left;
-
-    background: transparent;
-}
-
-.method-option + .method-option {
-    border-top: 1px solid #252525;
-}
-
-.method-option-icon {
-    width: 42px;
-    height: 42px;
-
-    font-size: 21px;
-}
-
-.method-option b,
-.method-option small {
-    display: block;
-}
-
-.method-option b {
-    font-size: 14px;
-}
-
-.method-option small {
-    margin-top: 2px;
-
-    color: #666;
-    font-size: 11px;
-}
-
-.amount-input {
-    width: 100%;
-
-    height: 60px;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 16px;
-
-    border-radius: 17px;
-
-    background: #111;
-
-    border: 1px solid #303030;
-}
-
-.amount-input input {
-    width: 100%;
-    height: 100%;
-
-    outline: none;
-    border: 0;
-
-    color: #fff;
-    background: transparent;
-
-    font-size: 18px;
-    font-weight: 800;
-}
-
-.amount-input input::placeholder {
-    color: #555;
-}
-
-.amount-input span {
-    color: #777;
-
-    font-size: 17px;
-    font-weight: 800;
-}
-
-.balance-action {
-    width: 100%;
-
-    height: 58px;
-
-    margin-top: 17px;
-
-    border-radius: 17px;
-
-    color: #171717;
-
-    font-size: 16px;
-    font-weight: 950;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffd928,
-            #ff8b00
-        );
-}
-
-.transactions {
-    margin-top: 30px;
-}
-
-.transactions-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 13px;
-}
-
-.transactions-header h2 {
-    margin: 0;
-
-    font-size: 21px;
-}
-
-.transactions-header span {
-    color: #777;
-    font-size: 12px;
-}
-
-.transaction-list {
-    overflow: hidden;
-
-    border-radius: 22px;
-
-    background: #151515;
-
-    border: 1px solid #292929;
-}
-
-.transaction {
-    min-height: 74px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 11px;
-
-    padding: 10px 13px;
-}
-
-.transaction + .transaction {
-    border-top: 1px solid #252525;
-}
-
-.transaction-icon {
-    width: 42px;
-    height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 13px;
-
-    font-size: 22px;
-}
-
-.transaction-icon.deposit {
-    color: #ffc400;
-    background: rgba(255,190,0,.1);
-}
-
-.transaction-icon.withdraw {
-    color: #ff8b45;
-    background: rgba(255,100,40,.1);
-}
-
-.transaction-info {
-    min-width: 0;
-    flex: 1;
-}
-
-.transaction-info b {
-    display: block;
-    font-size: 14px;
-}
-
-.transaction-info small {
-    display: block;
-
-    margin-top: 3px;
-
-    overflow: hidden;
-
-    color: #666;
-
-    font-size: 10px;
-
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.transaction-amount {
-    font-size: 14px;
-    font-weight: 900;
-    white-space: nowrap;
-}
-
-.transaction-amount.positive {
-    color: #ffc400;
-}
-
-.transaction-amount.negative {
-    color: #ff7250;
-}
-
-
-/* =========================
-   ПРОФИЛЬ
-========================= */
-
-.profile-main-card {
-    position: relative;
-
-    padding: 28px 20px 24px;
-
-    text-align: center;
-
-    border-radius: 30px;
-
-    background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(255,180,0,.18),
-            transparent 45%
-        ),
-        linear-gradient(
-            145deg,
-            #202020,
-            #131313
-        );
-
-    border: 1px solid #303030;
-}
-
-.profile-big-avatar-frame {
-    width: 104px;
-    height: 104px;
-
-    margin: 0 auto;
-    padding: 4px;
-
-    border-radius: 50%;
-}
-
-.profile-big-avatar {
-    border: 3px solid #111;
-
-    font-size: 44px;
-}
-
-.profile-big-name {
-    margin-top: 14px;
-
-    font-size: 25px;
-    font-weight: 950;
-}
-
-.profile-username {
-    margin-top: 4px;
-
-    color: #777;
-    font-size: 13px;
-}
-
-.profile-level {
-    margin: 22px auto 0;
-
-    max-width: 420px;
-
-    text-align: left;
-}
-
-.profile-level-top {
-    display: flex;
-    justify-content: space-between;
-
-    color: #858585;
-
-    font-size: 11px;
-}
-
-.profile-level-bar {
-    width: 100%;
-    height: 6px;
-
-    margin-top: 7px;
-
-    overflow: hidden;
-    border-radius: 10px;
-
-    background: #303030;
-}
-
-.profile-level-bar div {
-    width: 52%;
-    height: 100%;
-
-    border-radius: inherit;
-
-    background:
-        linear-gradient(
-            90deg,
-            #ff8c00,
-            #ffd21c
-        );
-}
-
-.profile-stats {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 12px;
-
-    margin-top: 17px;
-}
-
-.stat-card {
-    min-height: 135px;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 15px;
-
-    text-align: center;
-
-    border-radius: 23px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #1c1c1e,
-            #131313
-        );
-
-    border: 1px solid #2d2d2d;
-}
-
-.stat-icon {
-    width: 46px;
-    height: 46px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 14px;
-
-    font-size: 22px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,182,0,.2),
-            rgba(255,153,0,.04)
-        );
-}
-
-.stat-value {
-    margin-top: 9px;
-
-    font-size: 19px;
-    font-weight: 950;
-}
-
-.stat-name {
-    margin-top: 4px;
-
-    color: #777;
-
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.profile-balance-card {
-    margin-top: 17px;
-
-    padding: 19px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
-
-    border-radius: 23px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #252019,
-            #151515
-        );
-
-    border: 1px solid rgba(255,180,0,.25);
-}
-
-.profile-balance-card small {
-    display: block;
-
-    color: #777;
-    font-size: 10px;
-}
-
-.profile-balance-card strong {
-    display: block;
-
-    margin-top: 4px;
-
-    font-size: 22px;
-}
-
-.profile-balance-card button,
-.bonus-claim {
-    padding: 12px 17px;
-
-    border-radius: 13px;
-
-    color: #171717;
-
-    font-weight: 900;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffd928,
-            #ff8b00
-        );
-}
-
-
-/* =========================
-   БОНУС
-========================= */
-
-.bonus-card {
-    padding: 35px 25px;
-
-    text-align: center;
-
-    border-radius: 30px;
-
-    background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(255,190,0,.2),
-            transparent 50%
-        ),
-        linear-gradient(
-            145deg,
-            #202020,
-            #131313
-        );
-
-    border: 1px solid #303030;
-}
-
-.bonus-big-icon {
-    font-size: 75px;
-
-    animation:
-        bonusFloat 2.5s ease-in-out infinite;
-}
-
-.bonus-card h2 {
-    margin: 15px 0 7px;
-    font-size: 25px;
-}
-
-.bonus-card p {
-    margin: 0 auto 22px;
-
-    max-width: 300px;
-
-    color: #777;
-    line-height: 1.5;
-}
-
-.bonus-claim {
-    padding: 15px 24px;
-
-    border-radius: 16px;
-
-    font-size: 15px;
-}
-
-
-/* =========================
    НИЖНЕЕ МЕНЮ
 ========================= */
 
@@ -2060,6 +1227,100 @@ a {
 
 
 /* =========================
+   SVG И БЛОК СТАВОК (КОЛЕСО)
+========================= */
+
+.wheel-svg {
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+    transition: transform 4.5s cubic-bezier(0.15, 0.88, 0.15, 1);
+    border-radius: 50%;
+}
+
+.wheel-sector {
+    stroke: #171717;
+    stroke-width: 2px;
+}
+
+.wheel-sector-text {
+    font-weight: 900;
+    font-size: 14px;
+    fill: #ffffff;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.85);
+}
+
+.bet-controls {
+    margin-top: 18px;
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 22px;
+    background: #121212;
+    border: 1px solid #2d2d2d;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.bet-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #888;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.bet-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #090909;
+    padding: 6px 6px 6px 14px;
+    border-radius: 16px;
+    border: 1px solid #282828;
+}
+
+.bet-input-wrapper input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.bet-quick-btns {
+    display: flex;
+    gap: 5px;
+}
+
+.bet-btn {
+    padding: 8px 11px;
+    border-radius: 10px;
+    background: #202020;
+    border: 1px solid #333;
+    color: #bbb;
+    font-size: 12px;
+    font-weight: 850;
+    transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+
+.bet-btn:active {
+    transform: scale(0.92);
+    background: #ffb400;
+    color: #111;
+}
+
+
+/* =========================
    АНИМАЦИИ
 ========================= */
 
@@ -2089,20 +1350,9 @@ a {
     }
 }
 
-@keyframes bonusFloat {
-
-    0%,100% {
-        transform: translateY(0) rotate(-2deg);
-    }
-
-    50% {
-        transform: translateY(-8px) rotate(2deg);
-    }
-}
-
 
 /* =========================
-   ТЕЛЕФОН
+   АДАПТИВ
 ========================= */
 
 @media (max-width: 520px) {
@@ -2114,87 +1364,14 @@ a {
             100px;
     }
 
-    .avatar-frame {
-        width: 54px;
-        height: 54px;
-    }
-
-    .profile-card {
-        gap: 9px;
-        padding-right: 9px;
-    }
-
-    .profile-info {
-        width: 105px;
-    }
-
-    .username {
-        max-width: 105px;
-        font-size: 15px;
-    }
-
-    .balance {
-        padding-left: 10px;
-        gap: 6px;
-    }
-
-    .balance span {
-        font-size: 14px;
-    }
-
-    .balance-add {
-        width: 40px;
-        height: 40px;
-        font-size: 25px;
-    }
-
     .hero {
         min-height: 340px;
-
-        padding:
-            30px
-            28px;
-
+        padding: 30px 28px;
         border-radius: 34px;
-    }
-
-    .hero-content {
-        max-width: 100%;
-    }
-
-    .hero-small {
-        font-size: 13px;
-        letter-spacing: 2.2px;
     }
 
     .hero h1 {
         font-size: 43px;
-    }
-
-    .hero p {
-        font-size: 17px;
-
-        margin:
-            20px
-            0
-            22px;
-    }
-
-    .bonus-button {
-        padding: 14px 18px;
-        font-size: 15px;
-    }
-
-    .money-orb {
-        width: 130px;
-        height: 130px;
-
-        right: -15px;
-        opacity: .55;
-    }
-
-    .money-orb span {
-        font-size: 82px;
     }
 
     .quick-actions {
@@ -2207,111 +1384,16 @@ a {
         border-radius: 21px;
     }
 
-    .action-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 26px;
-    }
-
-    .action b {
-        font-size: 13px;
-    }
-
-    .action small {
-        font-size: 10px;
-    }
-
-    .games-section {
-        margin-top: 32px;
-    }
-
-    .section-title h2 {
-        font-size: 31px;
-    }
-
-    .games {
-        gap: 12px;
-    }
-
-    .game {
-        border-radius: 21px;
-    }
-
     .game-image {
         height: 135px;
     }
 
-    .game-emoji {
-        font-size: 65px;
-    }
-
-    .game-name {
-        padding:
-            11px
-            12px
-            0;
-
-        font-size: 17px;
-    }
-
-    .game-description {
-        padding:
-            4px
-            12px
-            13px;
-
-        font-size: 11px;
-    }
-
-    .bottom-nav {
-        height: 76px;
-    }
-
-    .nav-icon {
-        font-size: 23px;
-    }
-
-    .nav-item small {
-        font-size: 10px;
-    }
-
-    .big-balance {
-        font-size: 36px;
-    }
-
-    .balance-form {
-        padding: 17px;
-    }
-
-    .profile-big-avatar-frame {
-        width: 92px;
-        height: 92px;
-    }
-
-    .profile-big-name {
-        font-size: 22px;
-    }
-
-    .stat-card {
-        min-height: 125px;
-    }
-
-    .stat-value {
-        font-size: 17px;
-    }
-
-    /* КОЛЕСО */
-
     .wheel-card {
-        padding:
-            22px
-            12px
-            20px;
+        padding: 22px 12px 20px;
     }
 
     .wheel-stage {
         width: min(84vw, 350px);
-
         margin-top: 25px;
     }
 
@@ -2330,23 +1412,16 @@ a {
         border-top-width: 30px;
     }
 
-    .reward-list {
-        gap: 7px;
+    .bet-quick-btns {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
     }
 
-    .reward-item {
-        padding: 9px;
-    }
-
-    .reward-item b {
-        font-size: 11px;
+    .bet-btn {
+        padding: 8px 0;
+        text-align: center;
     }
 }
-
-
-/* =========================
-   МАЛЕНЬКИЕ ТЕЛЕФОНЫ
-========================= */
 
 @media (max-width: 380px) {
 
@@ -2355,88 +1430,8 @@ a {
         padding-right: 14px;
     }
 
-    .profile-info {
-        width: 85px;
-    }
-
-    .username {
-        max-width: 85px;
-    }
-
-    .balance-info {
-        display: none;
-    }
-
-    .hero {
-        padding:
-            27px
-            23px;
-    }
-
     .hero h1 {
         font-size: 38px;
-    }
-
-    .quick-actions {
-        gap: 6px;
-    }
-
-    .action {
-        min-height: 120px;
-    }
-
-    .action-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 23px;
-    }
-
-    .action b {
-        font-size: 11px;
-    }
-
-    .action small {
-        display: none;
-    }
-
-    .game-image {
-        height: 120px;
-    }
-
-    .game-emoji {
-        font-size: 56px;
-    }
-
-    .transaction {
-        padding-left: 9px;
-        padding-right: 9px;
-    }
-
-    .transaction-amount {
-        font-size: 12px;
-    }
-
-    .profile-stats {
-        gap: 8px;
-    }
-
-    .stat-card {
-        min-height: 115px;
-        padding: 10px;
-    }
-
-    .stat-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 19px;
-    }
-
-    .stat-value {
-        font-size: 15px;
-    }
-
-    .stat-name {
-        font-size: 9px;
     }
 
     .wheel-stage {
@@ -2448,9 +1443,6 @@ a {
     }
 }
 
-
-/* Убираем случайные псевдоэлементы */
-
 body::before,
 body::after,
 .app::before,
@@ -2459,4 +1451,4 @@ main::before,
 main::after {
     content: none !important;
     display: none !important;
-  }
+}
