@@ -1824,3 +1824,41 @@ main {
         font-size: 17px;
     }
 }
+
+/* Вставьте в самый конец файла style.css */
+
+.sum-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 6px 12px;
+    box-sizing: border-box;
+}
+
+.sum-input-wrap input {
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px 8px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 160px;
+    box-sizing: border-box;
+}
+
+.sum-input-wrap .currency-symbol {
+    color: #666666;
+    font-size: 18px;
+    font-weight: 700;
+    margin-left: 8px;
+    user-select: none;
+}
