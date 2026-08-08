@@ -121,6 +121,7 @@ function hideAllPages() {
         const page = document.getElementById(id);
         if (page) page.classList.add("hidden");
     });
+    closeMethodsDropdown();
 }
 
 function showPage(id) {
@@ -387,8 +388,16 @@ async function spinWheel() {
    ПОПОЛНЕНИЕ / ВЫВОД И МЕТОДЫ
 ========================= */
 
+function closeMethodsDropdown() {
+    const dropdown = document.getElementById("methodsDropdown");
+    const arrow = document.getElementById("methodArrow");
+    if (dropdown) dropdown.classList.remove("open");
+    if (arrow) arrow.textContent = "▼";
+}
+
 function setBalanceMode(mode) {
     balanceMode = mode;
+    closeMethodsDropdown();
 
     const depositTab = document.getElementById("depositTab");
     const withdrawTab = document.getElementById("withdrawTab");
@@ -436,14 +445,12 @@ function selectMethod(method, icon, sub) {
     const selected = document.getElementById("selectedMethod");
     const selectedSub = document.getElementById("selectedMethodSub");
     const iconElement = document.getElementById("selectedMethodIcon");
-    const dropdown = document.getElementById("methodsDropdown");
-    const arrow = document.getElementById("methodArrow");
 
     if (selected) selected.textContent = method;
     if (selectedSub) selectedSub.textContent = sub;
     if (iconElement) iconElement.textContent = icon;
-    if (dropdown) dropdown.classList.remove("open");
-    if (arrow) arrow.textContent = "▼";
+
+    closeMethodsDropdown();
 }
 
 function demoBalanceAction() {
