@@ -841,53 +841,45 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    transform-origin: top center;
+}
+
+.wheel-stage.zoomed {
+    transform: scale(1.32) translateY(18px);
 }
 
 
-/* НЕПОДВИЖНАЯ СТРЕЛКА */
+/* ТОЧНОЕ ЦЕНТРИРОВАНИЕ СТРЕЛКИ */
 
 .wheel-pointer {
     position: absolute;
-
-    z-index: 20;
-
+    z-index: 30;
     left: 50%;
-    top: -3px;
-
-    width: 0;
-    height: 0;
-
-    transform: translateX(-50%);
-
-    filter:
-        drop-shadow(0 4px 7px rgba(0,0,0,.65));
+    top: 0;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
 }
 
 .pointer-tip {
     width: 0;
     height: 0;
-
-    border-left: 17px solid transparent;
-    border-right: 17px solid transparent;
-    border-top: 34px solid #ffd21c;
-
-    filter:
-        drop-shadow(0 0 7px rgba(255,180,0,.6));
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 28px solid #ffd21c;
+    position: relative;
 }
 
 .pointer-tip::after {
     content: "";
-
     position: absolute;
-
-    left: -8px;
-    top: -31px;
-
-    width: 16px;
-    height: 10px;
-
+    left: -6px;
+    top: -26px;
+    width: 12px;
+    height: 6px;
     border-radius: 50%;
-
     background: #fff36b;
 }
 
@@ -934,37 +926,51 @@ a {
 }
 
 
-/* ТОЧНОЕ ЦЕНТРИРОВАНИЕ СТРЕЛКИ */
-.wheel-pointer {
+/* ЦЕНТР */
+
+.wheel-center {
     position: absolute;
-    z-index: 30;
+
+    z-index: 10;
+
     left: 50%;
-    top: 0;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
-}
+    top: 50%;
 
-.pointer-tip {
-    width: 0;
-    height: 0;
-    border-left: 14px solid transparent;
-    border-right: 14px solid transparent;
-    border-top: 28px solid #ffd21c;
-    position: relative;
-}
+    width: 74px;
+    height: 74px;
 
-.pointer-tip::after {
-    content: "";
-    position: absolute;
-    left: -6px;
-    top: -26px;
-    width: 12px;
-    height: 6px;
+    transform: translate(-50%,-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border-radius: 50%;
-    background: #fff36b;
+
+    background:
+        radial-gradient(
+            circle at 35% 25%,
+            #3b3b3b,
+            #111 70%
+        );
+
+    border: 5px solid #ffd21c;
+
+    box-shadow:
+        0 0 18px rgba(255,190,0,.55),
+        0 5px 15px rgba(0,0,0,.6);
+
+    pointer-events: none;
 }
 
+.wheel-center span {
+    color: #ffd21c;
+
+    font-size: 14px;
+    font-weight: 950;
+
+    letter-spacing: 1px;
+}
 
 
 /* РЕЗУЛЬТАТ */
@@ -1011,7 +1017,7 @@ a {
 
     color: #ffc400;
 
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 950;
 }
 
@@ -1213,30 +1219,29 @@ a {
 
 
 /* =========================
-   SVG И БЛОК СТАВОК (КОЛЕСО)
+   SVG И ПАНЕЛЬ СТАВОК (DREAM BONANZA)
 ========================= */
 
 .wheel-svg {
     width: 100%;
     height: 100%;
     transform-origin: center;
-    transition: transform 4.5s cubic-bezier(0.15, 0.88, 0.15, 1);
+    transition: transform 5s cubic-bezier(0.15, 0.88, 0.15, 1);
     border-radius: 50%;
 }
 
 .wheel-sector {
     stroke: #171717;
-    stroke-width: 2px;
+    stroke-width: 1.5px;
 }
 
 .wheel-sector-text {
     font-weight: 900;
-    font-size: 14px;
     fill: #ffffff;
     text-anchor: middle;
     dominant-baseline: middle;
     pointer-events: none;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.85);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
 }
 
 .bet-controls {
@@ -1261,6 +1266,61 @@ a {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.8px;
+}
+
+/* ВЫБОР ЦВЕТА */
+.color-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.color-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    background: #1a1a1a;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+}
+
+.color-btn:active {
+    transform: scale(0.92);
+}
+
+.color-btn.active {
+    border-color: #fff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+.color-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    margin-bottom: 4px;
+}
+
+.color-btn[data-color="green"] .color-box { background: #2ecc71; }
+.color-btn[data-color="red"] .color-box { background: #e74c3c; }
+.color-btn[data-color="blue"] .color-box { background: #3498db; }
+.color-btn[data-color="yellow"] .color-box { background: #f1c40f; }
+.color-btn[data-color="gold"] .color-box { background: #ffd700; box-shadow: 0 0 8px #ffd700; }
+
+.color-btn span {
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.color-btn small {
+    font-size: 9px;
+    opacity: 0.7;
 }
 
 .bet-input-wrapper {
@@ -1393,9 +1453,17 @@ a {
     }
 
     .pointer-tip {
-        border-left-width: 15px;
-        border-right-width: 15px;
-        border-top-width: 30px;
+        border-left-width: 13px;
+        border-right-width: 13px;
+        border-top-width: 26px;
+    }
+
+    .color-selector {
+        gap: 4px;
+    }
+
+    .color-btn {
+        padding: 6px 2px;
     }
 
     .bet-quick-btns {
