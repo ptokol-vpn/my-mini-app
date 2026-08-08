@@ -216,14 +216,15 @@
                         <span class="arrow" id="methodArrow">▼</span>
                     </div>
                     <div class="select-items" id="methodsDropdown">
-    <div onclick="selectMethod('CryptoBot', '🤖', 'Криптовалюта')">
-        <span>🤖</span> <div><strong>CryptoBot</strong><small>Криптовалюта</small></div>
-    </div>
-    <div onclick="selectMethod('xRocket', '🚀', 'Криптовалюта')">
-        <span>🚀</span> <div><strong>xRocket</strong><small>Криптовалюта</small></div>
-    </div>
-</div>
-
+                        <div onclick="selectMethod('CryptoBot', '🤖', 'Криптовалюта')">
+                            <span>🤖</span> <div><strong>CryptoBot</strong><small>Криптовалюта</small></div>
+                        </div>
+                        <div onclick="selectMethod('xRocket', '🚀', 'Криптовалюта')">
+                            <span>🚀</span> <div><strong>xRocket</strong><small>Криптовалюта</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="input-group">
                 <label>СУММА</label>
@@ -236,6 +237,17 @@
             <button class="main-action-btn" id="balanceAction" onclick="demoBalanceAction()">
                 Пополнить
             </button>
+        </section>
+
+        <!-- БЛОК ПОСЛЕДНИХ ТРАНЗАКЦИЙ -->
+        <section class="history-box">
+            <div class="history-header">
+                <h2>Последние транзакции</h2>
+                <small id="txCount">3 операции</small>
+            </div>
+            <div class="history-list" id="historyList">
+                <!-- Заполняется динамически скриптом -->
+            </div>
         </section>
     </main>
 
