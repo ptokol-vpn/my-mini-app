@@ -485,6 +485,216 @@ main {
 }
 
 /* ==========================================
+   ИГРА МИНЫ (MINES GAME SECTION)
+========================================== */
+.mines-page {
+    animation: fadeIn 0.25s ease;
+    margin-top: -6px;
+}
+
+.mines-card {
+    background: #121212;
+    border-radius: 28px;
+    padding: 20px 16px;
+    border: 1px solid #222222;
+    text-align: center;
+}
+
+/* Лента коэффициентов сверху */
+.mines-coef-bar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    scrollbar-width: none;
+}
+
+.mines-coef-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.coef-item {
+    flex: 0 0 auto;
+    background: #1a1a1a;
+    border: 1px solid #282828;
+    border-radius: 12px;
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.coef-item.active {
+    background: #281d09;
+    border-color: #ffc800;
+    box-shadow: 0 0 10px rgba(255, 200, 0, 0.2);
+}
+
+.coef-item .step-num {
+    font-size: 9px;
+    color: #666666;
+    font-weight: 700;
+}
+
+.coef-item .mult-val {
+    font-size: 12px;
+    color: #ffffff;
+    font-weight: 900;
+}
+
+.coef-item.active .mult-val {
+    color: #ffc800;
+}
+
+/* Поле 5х5 */
+.mines-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.mine-tile {
+    aspect-ratio: 1;
+    background: #1a1a1a;
+    border: 1px solid #282828;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.05);
+}
+
+.mine-tile:active:not(.disabled) {
+    transform: scale(0.92);
+}
+
+.mine-tile.revealed-gem {
+    background: radial-gradient(circle, #1a3c27, #0d2115);
+    border-color: #2ecc71;
+    box-shadow: 0 0 12px rgba(46, 204, 113, 0.3);
+    animation: tilePop 0.25s ease;
+}
+
+.mine-tile.revealed-bomb {
+    background: radial-gradient(circle, #4a1515, #240a0a);
+    border-color: #e74c3c;
+    box-shadow: 0 0 12px rgba(231, 76, 60, 0.4);
+    animation: tilePop 0.25s ease;
+}
+
+.mine-tile.disabled {
+    pointer-events: none;
+}
+
+/* Панель управления */
+.mines-controls {
+    background: #090909;
+    border: 1px solid #222222;
+    border-radius: 20px;
+    padding: 16px;
+    text-align: left;
+}
+
+.ctrl-box {
+    margin-bottom: 14px;
+}
+
+.ctrl-box label {
+    display: block;
+    font-size: 10px;
+    color: #666666;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+}
+
+.ctrl-box input[type="number"] {
+    width: 100%;
+    background: #141414;
+    border: 1px solid #252525;
+    border-radius: 12px;
+    padding: 10px 12px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.ctrl-btns-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.mines-count-selector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.mines-count-btn {
+    background: #141414;
+    border: 1px solid #252525;
+    border-radius: 12px;
+    padding: 8px 0;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+.mines-count-btn.active {
+    background: #281d09;
+    border-color: #ffc800;
+    color: #ffc800;
+}
+
+.mines-actions {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.mines-main-btn {
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    color: #000000;
+    font-size: 16px;
+    font-weight: 950;
+    padding: 14px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    transition: transform 0.15s ease;
+}
+
+.mines-main-btn:active {
+    transform: scale(0.96);
+}
+
+.mines-auto-btn {
+    background: #1f1f1f;
+    border: 1px solid #333;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 14px 6px;
+    border-radius: 14px;
+    transition: all 0.15s ease;
+}
+
+.mines-auto-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ==========================================
    СТРАНИЦА ПРОФИЛЯ (PROFILE PAGE)
 ========================================== */
 .profile-page {
@@ -611,7 +821,6 @@ main {
     font-weight: 600;
 }
 
-/* Скрываем блок баланса в профиле по запросу */
 .profile-balance-banner {
     display: none !important;
 }
@@ -657,7 +866,6 @@ main {
     margin-bottom: 8px;
 }
 
-/* Скрываем карточку с текущим балансом на странице баланса */
 .balance-gold-card {
     display: none !important;
 }
@@ -929,7 +1137,6 @@ main {
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
 }
 
-/* ОБЪЕМНАЯ ЗОЛОТАЯ РАМКА С ЭФФЕКТОМ ВРАЩЕНИЯ БЛИКОВ */
 .wheel-gold-frame {
     width: 100%;
     height: 100%;
@@ -1050,7 +1257,6 @@ main {
     margin-bottom: 12px;
 }
 
-/* ВЫБОР ЦВЕТА В 1 СТРОКУ */
 .color-tabs-row {
     display: flex;
     gap: 6px;
@@ -1096,7 +1302,6 @@ main {
     font-weight: 700;
 }
 
-/* КАРТОЧКА ВВОДА СТАВКИ */
 .active-bet-box {
     background: #141414;
     border: 1px solid #252525;
@@ -1465,6 +1670,69 @@ main {
 }
 
 /* ==========================================
+   КАСТОМИЗАЦИЯ ПРОФИЛЯ
+========================================== */
+#bgEmojiPattern {
+    opacity: 0.18;
+    font-size: 24px;
+    letter-spacing: 12px;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    filter: blur(0.3px);
+}
+
+.color-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.color-option {
+    height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.color-option.active {
+    border-color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.emoji-picker-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    justify-content: space-between;
+}
+
+.emoji-option {
+    flex: 1;
+    height: 42px;
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.emoji-option.active {
+    border-color: #f39c12;
+    background: #2a2215;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
+    transform: scale(1.05);
+}
+
+/* ==========================================
    АНИМАЦИИ (KEYFRAMES)
 ========================================== */
 @keyframes fadeIn {
@@ -1485,6 +1753,12 @@ main {
 @keyframes goldRotateGlow {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+@keyframes tilePop {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 /* ==========================================
@@ -1531,66 +1805,4 @@ main {
     .stat-val {
         font-size: 17px;
     }
-}
-/* Фоновые эмодзи в шапке как в Telegram */
-#bgEmojiPattern {
-    opacity: 0.18; /* Полупрозрачность */
-    font-size: 24px;
-    letter-spacing: 12px;
-    user-select: none;
-    pointer-events: none;
-    white-space: nowrap;
-    overflow: hidden;
-    filter: blur(0.3px);
-}
-
-/* Сетка выбора цветов (8 цветов, по 4 в ряд) */
-.color-picker-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-top: 8px;
-}
-
-.color-option {
-    height: 38px;
-    border-radius: 10px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.2s ease;
-}
-
-.color-option.active {
-    border-color: #ffffff;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-    transform: scale(1.05);
-}
-
-/* Выбор эмодзи-статуса */
-.emoji-picker-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    justify-content: space-between;
-}
-
-.emoji-option {
-    flex: 1;
-    height: 42px;
-    background: #1e1e1e;
-    border: 1px solid #333;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.emoji-option.active {
-    border-color: #f39c12;
-    background: #2a2215;
-    box-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
-    transform: scale(1.05);
 }
