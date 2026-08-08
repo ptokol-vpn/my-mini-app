@@ -16,28 +16,33 @@ let selectedMethod = "CryptoBot";
 let selectedMethodSub = "Криптовалюта";
 let selectedMethodIcon = "cryptobot.png";
 
-// --- НОВОЕ: Данные для кастомизации и подарков ---
+// Конфигурация кастомизации
+const COLOR_PALETTE = [
+    { id: 'slate', start: '#2c3e50', end: '#1a252f' },
+    { id: 'purple', start: '#8e44ad', end: '#2c3e50' },
+    { id: 'green', start: '#27ae60', end: '#114b27' },
+    { id: 'brown', start: '#d35400', end: '#2c1e13' },
+    { id: 'dark', start: '#1f1f1f', end: '#0a0a0a' },
+    { id: 'crimson', start: '#c0392b', end: '#3d0c07' },
+    { id: 'ocean', start: '#2980b9', end: '#0f3047' },
+    { id: 'gold', start: '#f39c12', end: '#4a3004' }
+];
+
+const EMOJI_LIST = ['❤️', '🛡', '💀', '🔥', '🩸', '✌️'];
+
 let userGifts = JSON.parse(localStorage.getItem('wxs_gifts')) || [
     { name: "Змея", number: "#167,259", icon: "🐍" },
     { name: "Сердце", number: "#6,969", icon: "💖" }
 ];
 
 let profileDesign = JSON.parse(localStorage.getItem('wxs_profile')) || {
-    start: '#1d2733',
-    end: '#121212',
-    pattern: '💎 ✨ 🚀 👑 🎲',
-    status: '⭐'
-};
-// ------------------------------------------------
-
-let colorBets = {
-    green: 0,
-    red: 0,
-    blue: 0,
-    yellow: 0,
-    gold: 0
+    colorId: 'slate',
+    start: '#2c3e50',
+    end: '#1a252f',
+    status: '🔥'
 };
 
+let colorBets = { green: 0, red: 0, blue: 0, yellow: 0, gold: 0 };
 let activeColor = 'green';
 
 let transactions = [
@@ -203,9 +208,9 @@ function openProfile() {
     updateNav("profile");
     updateBalance();
     loadTelegramUser();
-    // Новые вызовы для профиля:
     applyDesign();
     renderGifts();
+    renderCustomizerControls();
 }
 
 function openBonus() {
@@ -696,7 +701,7 @@ function showMessage(text) {
 }
 
 /* =========================
-   НОВЫЙ ФУНКЦИОНАЛ: ПРОФИЛЬ И ПОДАРКИ
+   ПРОФИЛЬ, ЭМОДЗИ И ЦВЕТА
 ========================= */
 
 function applyDesign() {
@@ -705,8 +710,45 @@ function applyDesign() {
     const badge = document.getElementById('profileStatusBadge');
 
     if (cover) cover.style.background = `linear-gradient(180deg, ${profileDesign.start} 0%, ${profileDesign.end} 100%)`;
-    if (pattern) pattern.textContent = profileDesign.pattern;
+    if (pattern) pattern.textContent = Array(6).fill(profileDesign.status).join(' ');
     if (badge) badge.textContent = profileDesign.status;
+}
+
+function renderCustomizerControls() {
+    const colorGrid = document.getElementById('colorPickerGrid');
+    const emojiRow = document.getElementById('emojiPickerRow');
+
+    if (colorGrid) {
+        colorGrid.innerHTML = COLOR_PALETTE.map(item => `
+            <div class="color-option ${item.id === profileDesign.colorId ? 'active' : ''}" 
+                 style="background: linear-gradient(135deg, ${item.start}, ${item.end});"
+                 onclick="selectGradient('${item.id}', '${item.start}', '${item.end}')">
+            </div>
+        `).join('');
+    }
+
+    if (emojiRow) {
+        emojiRow.innerHTML = EMOJI_LIST.map(e => `
+            <div class="emoji-option ${e === profileDesign.status ? 'active' : ''}" 
+                 onclick="selectStatusEmoji('${e}')">
+                ${e}
+            </div>
+        `).join('');
+    }
+}
+
+function selectGradient(id, start, end) {
+    profileDesign.colorId = id;
+    profileDesign.start = start;
+    profileDesign.end = end;
+    renderCustomizerControls();
+    applyDesign();
+}
+
+function selectStatusEmoji(emoji) {
+    profileDesign.status = emoji;
+    renderCustomizerControls();
+    applyDesign();
 }
 
 function toggleProfileCustomizer() {
@@ -715,16 +757,10 @@ function toggleProfileCustomizer() {
 }
 
 function saveProfileCustomization() {
-    const patternInput = document.getElementById('emojiPatternInput');
-    const statusInput = document.getElementById('statusEmojiInput');
-    
-    if (patternInput) profileDesign.pattern = patternInput.value;
-    if (statusInput) profileDesign.status = statusInput.value;
-    
     localStorage.setItem('wxs_profile', JSON.stringify(profileDesign));
     applyDesign();
     toggleProfileCustomizer();
-    showMessage("Профиль обновлен!");
+    showMessage("Настройки сохранены!");
 }
 
 function renderGifts() {
@@ -776,7 +812,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBalance();
     renderTransactions();
     goHome();
-    // Инициализация нового функционала:
     applyDesign();
     renderGifts();
 });
