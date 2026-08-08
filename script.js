@@ -302,7 +302,7 @@ function initMinesGrid() {
 
     grid.innerHTML = '';
     for (let i = 0; i < 25; i++) {
-        grid.innerHTML += `<div class="mine-tile disabled" id="tile-${i}" onclick="clickMinesTile(${i})">•</div>`;
+        grid.innerHTML += `<div class="mine-tile disabled" id="tile-${i}" onclick="clickMinesTile(${i})"></div>`;
     }
     renderMinesCoefBar();
 }
@@ -351,11 +351,13 @@ function startMinesGame() {
     if (actionBtn) actionBtn.textContent = 'ЗАБРАТЬ 0.00$';
     if (autoBtn) autoBtn.disabled = false;
 
+    // Сброс всех плиток перед новой игрой
     for (let i = 0; i < 25; i++) {
         const tile = document.getElementById(`tile-${i}`);
         if (tile) {
             tile.className = 'mine-tile';
-            tile.textContent = '•';
+            tile.textContent = '';
+            tile.removeAttribute('style');
         }
     }
 
@@ -423,14 +425,15 @@ function endMinesGame(isWin) {
     for (let i = 0; i < 25; i++) {
         const tile = document.getElementById(`tile-${i}`);
         if (!tile) continue;
+        
         tile.classList.add('disabled');
+        
         if (!minesGame.revealed[i]) {
+            tile.classList.add('end-show');
             if (minesGame.field[i] === 'bomb') {
                 tile.textContent = '💣';
-                tile.style.opacity = '0.4';
             } else {
                 tile.textContent = '💎';
-                tile.style.opacity = '0.3';
             }
         }
     }
