@@ -73,10 +73,10 @@
                     <div class="game-name">Куб</div>
                     <div class="game-description">Испытай удачу</div>
                 </button>
-                <button class="game" onclick="showMessage('Игра «Мины» пока в разработке')">
+                <button class="game" onclick="openMines()">
                     <div class="game-image mines"><div class="game-glow"></div><span class="game-emoji">💣</span></div>
                     <div class="game-name">Мины</div>
-                    <div class="game-description">Найди безопасные клетки</div>
+                    <div class="game-description">Найди алмазы</div>
                 </button>
                 <button class="game" onclick="openWheel()">
                     <div class="game-image wheel"><div class="game-glow"></div><span class="game-emoji">🎡</span></div>
@@ -88,6 +88,62 @@
                     <div class="game-name">Краш</div>
                     <div class="game-description">Забери вовремя</div>
                 </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== МИНЫ ==================== -->
+    <main id="minesPage" class="mines-page hidden">
+        <div class="page-header" style="margin-top: 10px;">
+            <button class="back-button" aria-label="Назад" onclick="goHome()"></button>
+            <h1>Мины</h1>
+            <div class="header-space"></div>
+        </div>
+
+        <section class="mines-card">
+            <!-- Лента текущих коэффициентов -->
+            <div class="mines-coef-bar" id="minesCoefBar">
+                <!-- Генерируется скриптом -->
+            </div>
+
+            <!-- Игровое поле 5х5 -->
+            <div class="mines-grid" id="minesGrid">
+                <!-- Клетки генерируются скриптом -->
+            </div>
+
+            <!-- Панель управления ставкой и минами -->
+            <div class="mines-controls">
+                <div class="control-row">
+                    <div class="ctrl-box">
+                        <label>СТАВКА</label>
+                        <input type="number" id="minesBetInput" value="0.10" min="0.1" step="any">
+                        <div class="ctrl-btns-row">
+                            <button class="pct-btn" onclick="adjustMinesBet(0.5)">½</button>
+                            <button class="pct-btn" onclick="adjustMinesBet(2)">x2</button>
+                            <button class="pct-btn" onclick="setMinesMaxBet()">MAX</button>
+                        </div>
+                    </div>
+
+                    <div class="ctrl-box">
+                        <label>МИНЫ</label>
+                        <div class="mines-count-selector">
+                            <button class="mines-count-btn active" onclick="selectMinesCount(3, this)">3</button>
+                            <button class="mines-count-btn" onclick="selectMinesCount(5, this)">5</button>
+                            <button class="mines-count-btn" onclick="selectMinesCount(10, this)">10</button>
+                            <button class="mines-count-btn" onclick="selectMinesCount(24, this)">24</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Главные действия -->
+                <div class="mines-actions">
+                    <button class="mines-main-btn" id="minesActionBtn" onclick="handleMinesAction()">
+                        Начать игру
+                    </button>
+                    <button class="mines-auto-btn" id="minesAutoBtn" onclick="autoPickMinesTile()" disabled>
+                        Автовыбор
+                    </button>
+                </div>
             </div>
         </section>
     </main>
