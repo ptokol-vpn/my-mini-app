@@ -337,6 +337,21 @@ function onActiveColorInput(val) {
     updateTotalBet();
 }
 
+// Минимальная ставка 0.10 $
+function applyMinToActive() {
+    if (wheelSpinning) return;
+    colorBets[activeColor] = 0.10;
+
+    const input = document.getElementById('activeBetInput');
+    if (input) input.value = '0.1';
+
+    const tabVal = document.getElementById(`tab-val-${activeColor}`);
+    if (tabVal) tabVal.textContent = '0.1 $';
+
+    updateTotalBet();
+}
+
+// Процентная ставка (от 10% до MAX)
 function applyPercentToActive(pct) {
     if (wheelSpinning) return;
 
@@ -358,6 +373,23 @@ function applyPercentToActive(pct) {
     if (tabVal) {
         const cfg = COLOR_CONFIG[activeColor];
         tabVal.textContent = amount > 0 ? `${amount} $` : cfg.label;
+    }
+
+    updateTotalBet();
+}
+
+// Сброс ставки для активного цвета
+function resetActiveBet() {
+    if (wheelSpinning) return;
+    colorBets[activeColor] = 0;
+
+    const input = document.getElementById('activeBetInput');
+    if (input) input.value = '';
+
+    const tabVal = document.getElementById(`tab-val-${activeColor}`);
+    if (tabVal) {
+        const cfg = COLOR_CONFIG[activeColor];
+        tabVal.textContent = cfg.label;
     }
 
     updateTotalBet();
