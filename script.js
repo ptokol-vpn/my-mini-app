@@ -156,14 +156,12 @@ function openGamesMenu() {
     const homePage = document.getElementById('homePage');
     const gamesSection = document.getElementById('gamesListSection');
 
-    // Если закрыта главная страница — переходим на главную
     if (homePage && homePage.classList.contains('hidden')) {
         showPage("homePage");
     }
 
     updateNav("games");
 
-    // Плавный скролл к блоку со списком игр
     if (gamesSection) {
         gamesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -266,7 +264,6 @@ function drawWheel() {
    ТАБЫ ЦВЕТОВ И СТАВКИ
 ========================= */
 
-// 1. Отрисовка табов с индикатором того, что на цвет уже сделана ставка
 function renderColorTabs() {
     const row = document.getElementById('colorTabsRow');
     if (!row) return;
@@ -289,11 +286,9 @@ function renderColorTabs() {
     }).join('');
 }
 
-// 2. Переключение табов без сброса предыдущих ставок
 function selectColorTab(color) {
     if (wheelSpinning) return;
 
-    // Сохраняем введенное значение из текущего поля перед переключением
     const currentInput = document.getElementById('activeBetInput');
     if (currentInput) {
         onActiveColorInput(currentInput.value);
@@ -301,22 +296,22 @@ function selectColorTab(color) {
 
     activeColor = color;
 
-    // Обновляем визуальный класс табов
     document.querySelectorAll('.color-tab-btn').forEach(btn => btn.classList.remove('active'));
     const currentTab = document.getElementById(`tab-${color}`);
     if (currentTab) currentTab.classList.add('active');
 
-    // Обновляем заголовок инпута
     const cfg = COLOR_CONFIG[color];
     const titleBox = document.getElementById('activeColorTitle');
     if (titleBox) {
         titleBox.innerHTML = `
             <span class="color-indicator" style="background: ${cfg.color};"></span>
-            <span>Ставка на ${cfg.name} (${cfg.label})</span>
+            <div>
+                <span>Ставка на ${cfg.name}</span><br>
+                <span style="color: #888888; font-size: 11px; font-weight: 700;">(${cfg.label})</span>
+            </div>
         `;
     }
 
-    // Загружаем сохраненную ставку именно для ЭТОГО цвета
     if (currentInput) {
         const savedVal = colorBets[color];
         currentInput.value = savedVal > 0 ? savedVal : '';
@@ -325,7 +320,6 @@ function selectColorTab(color) {
     updateTotalBet();
 }
 
-// 3. Обработка ввода суммы
 function onActiveColorInput(val) {
     let parsed = parseFloat(val);
     if (isNaN(parsed) || parsed <= 0) {
@@ -334,7 +328,6 @@ function onActiveColorInput(val) {
         colorBets[activeColor] = parsed;
     }
 
-    // Обновляем текст на кнопке таба (показываем сумму или x-множитель)
     const tabVal = document.getElementById(`tab-val-${activeColor}`);
     if (tabVal) {
         const cfg = COLOR_CONFIG[activeColor];
@@ -344,11 +337,9 @@ function onActiveColorInput(val) {
     updateTotalBet();
 }
 
-// 4. Быстрые проценты для выбранного цвета
 function applyPercentToActive(pct) {
     if (wheelSpinning) return;
 
-    // Считаем доступный остаток баланса за вычетом ставок на ДРУГИЕ цвета
     let otherBetsSum = 0;
     Object.keys(colorBets).forEach(key => {
         if (key !== activeColor) otherBetsSum += colorBets[key];
@@ -363,7 +354,6 @@ function applyPercentToActive(pct) {
     const input = document.getElementById('activeBetInput');
     if (input) input.value = amount > 0 ? amount : '';
 
-    // Обновляем подпись в табе
     const tabVal = document.getElementById(`tab-val-${activeColor}`);
     if (tabVal) {
         const cfg = COLOR_CONFIG[activeColor];
@@ -373,7 +363,6 @@ function applyPercentToActive(pct) {
     updateTotalBet();
 }
 
-// 5. Расчет суммарной ставки со всех выбранных цветов
 function updateTotalBet() {
     const totalInfo = document.getElementById('totalBetInfo');
     let totalSum = 0;
@@ -429,7 +418,6 @@ async function spinWheel() {
     const totalSectors = sectors.length;
     const sectorAngle = 360 / totalSectors;
 
-    // Случайное смещение внутри сектора
     const padding = 0.15; 
     const randomOffset = (Math.random() * (1 - 2 * padding) + padding) * sectorAngle;
 
@@ -441,7 +429,6 @@ async function spinWheel() {
 
     wheelSvg.style.transform = `rotate(${wheelRotation}deg)`;
 
-    // Плавный глубокий зум в конце вращения
     setTimeout(() => {
         if (wheelStage) wheelStage.classList.add('zoomed');
     }, 3600);
