@@ -2107,3 +2107,13 @@ a {
         font-size: 9px;
     }
    }
+
+/* Убираем случайный символ < в левом верхнем углу */
+body::before,
+.app::before,
+.balance-page::before,
+.profile-page::before,
+.bonus-page::before {
+    content: none !important;
+    display: none !important;
+}
